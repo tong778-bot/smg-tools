@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMG — คำนวณกระจกกันเสียง v3</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,'Helvetica Neue',sans-serif;background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+.hdr{background:#1a1a1a;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.hdr-title{font-size:16px;font-weight:700;color:#fff;}
+.hdr-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.hdr-badge{font-size:11px;font-weight:700;padding:4px 12px;background:#fff;color:#1a1a1a;border-radius:8px;}
+.wrap{max-width:900px;margin:0 auto;padding:24px 16px;}
+.card{background:#fff;border:1.5px solid #ddd;border-radius:12px;padding:22px;margin-bottom:18px;}
+.card-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #f0f0f0;display:flex;align-items:center;gap:8px;}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:#1a1a1a;color:#fff;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0;}
+/* Toggle buttons */
+.tog2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tog3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.tog4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.tbtn{padding:14px 10px;border:2px solid #ddd;border-radius:10px;background:#f8f8f8;cursor:pointer;text-align:center;font-weight:700;color:#666;transition:.2s;line-height:1.45;}
+.tbtn.on{background:#1a1a1a;border-color:#1a1a1a;color:#fff;}
+.tbtn:hover:not(.on){background:#f0f0f0;}
+.tbtn .ti{font-size:26px;display:block;margin-bottom:5px;}
+.tbtn .ts{font-size:11px;font-weight:400;opacity:.7;display:block;margin-top:3px;}
+.tbtn.sz14{font-size:14px;}.tbtn.sz13{font-size:13px;}.tbtn.sz12{font-size:12px;}.tbtn.sz11{font-size:11px;}
+/* Section */
+.sec{display:none;}.sec.show{display:block;}
+/* Fields */
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.fld{background:#f8f8f8;border:1.5px solid #ddd;border-radius:9px;padding:13px;}
+.fld-lbl{font-size:11px;font-weight:700;color:#666;margin-bottom:5px;letter-spacing:.04em;}
+.fld-inp{width:100%;border:none;background:transparent;font-size:22px;font-weight:700;color:#1a1a1a;outline:none;}
+.fld-unit{font-size:10px;color:#aaa;margin-top:2px;}
+.fld-hint{font-size:11px;color:#888;margin-top:4px;line-height:1.5;}
+.fld-computed{font-size:22px;font-weight:700;color:#1a1a1a;}
+/* Noise presets */
+.noise-presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.np{padding:10px 6px;border:2px solid #ddd;border-radius:8px;background:#f8f8f8;cursor:pointer;text-align:center;font-size:11px;font-weight:700;color:#666;transition:.2s;line-height:1.4;}
+.np.on{background:#cc0000;border-color:#cc0000;color:#fff;}
+.np-db{font-size:17px;font-weight:700;margin-top:3px;}
+/* Room presets */
+.rp{padding:9px 6px;border:2px solid #ddd;border-radius:8px;background:#f8f8f8;cursor:pointer;text-align:center;font-size:11px;font-weight:700;color:#666;transition:.2s;line-height:1.4;}
+.rp.on{background:#1a1a1a;border-color:#1a1a1a;color:#fff;}
+.rp-db{font-size:16px;font-weight:700;margin-top:2px;}
+/* Frame opts */
+.frame-sec{background:#fff8ee;border:1.5px solid #f0c060;border-radius:9px;padding:14px;margin-bottom:14px;}
+.frame-title{font-size:13px;font-weight:700;color:#7a5000;margin-bottom:10px;}
+.fo{padding:9px 4px;border:2px solid #e0c070;border-radius:7px;background:#fff;cursor:pointer;text-align:center;font-size:10px;font-weight:700;color:#7a5000;transition:.2s;line-height:1.4;}
+.fo.on{background:#7a5000;border-color:#7a5000;color:#fff;}
+.fo-mm{font-size:15px;font-weight:700;margin-top:2px;}
+/* Info boxes */
+.info-box{border-radius:9px;padding:13px 15px;margin-bottom:14px;border:1.5px solid;}
+.ib-warn{background:#fff8ee;border-color:#f0c060;}
+.ib-warn .ib-title{color:#7a5000;}
+.ib-green{background:#efffef;border-color:#a3d9a5;}
+.ib-green .ib-title{color:#1a7a4a;}
+.ib-red{background:#fff0f0;border-color:#f5a5a5;}
+.ib-red .ib-title{color:#b00020;}
+.ib-blue{background:#eef4ff;border-color:#a0b8f0;}
+.ib-blue .ib-title{color:#1a3a9a;}
+.ib-title{font-size:13px;font-weight:700;margin-bottom:7px;}
+.ib-body{font-size:13px;color:#333;line-height:1.75;}
+/* Guide steps */
+.guide-steps{display:flex;flex-direction:column;gap:10px;}
+.guide-step{display:flex;gap:12px;padding:12px 14px;background:#f8f8f8;border-radius:9px;border-left:3px solid #1a1a1a;}
+.gs-num{font-size:18px;font-weight:700;color:#1a1a1a;flex-shrink:0;line-height:1.2;}
+.gs-text{font-size:13px;color:#333;line-height:1.7;}
+.app-hint{background:#fff8ee;border:1.5px solid #f0c060;border-radius:7px;padding:9px 13px;font-size:12px;color:#7a5000;margin-top:8px;line-height:1.6;}
+/* Calc button */
+.calc-btn{width:100%;padding:16px;background:#1a1a1a;color:#fff;font-size:16px;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:.2s;}
+.calc-btn:hover{background:#333;}
+/* Results */
+.result-wrap{display:none;}
+.res-sum{background:#1a1a1a;border-radius:10px;padding:18px 20px;margin-bottom:14px;color:#fff;}
+.rs-lbl{font-size:11px;color:#aaa;letter-spacing:.1em;margin-bottom:4px;}
+.rs-main{font-size:17px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+.rs-detail{font-size:13px;color:#ccc;line-height:1.7;}
+.rs-stl{display:inline-block;background:#cc0000;color:#fff;font-size:17px;font-weight:700;padding:3px 12px;border-radius:6px;}
+.glass-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.g-opt{border:2px solid #ddd;border-radius:10px;padding:16px 18px;position:relative;}
+.g-top{border-color:#1a1a1a;background:#fafafa;}
+.g-prem{border-color:#555;}
+.g-eco{background:#fafafa;}
+.g-dbl{border-color:#1a7a4a;background:#efffef;}
+.g-upvc{border-color:#1a3a9a;background:#eef4ff;}
+.g-dw{border-color:#6610f2;background:#f5eeff;}
+.g-tag{position:absolute;top:-10px;left:14px;font-size:10px;font-weight:700;padding:2px 10px;border-radius:8px;letter-spacing:.07em;}
+.t-top{background:#1a1a1a;color:#fff;}.t-prem{background:#555;color:#fff;}
+.t-eco{background:#888;color:#fff;}.t-dbl{background:#1a7a4a;color:#fff;}
+.t-upvc{background:#1a3a9a;color:#fff;}.t-dw{background:#6610f2;color:#fff;}
+.g-name{font-size:15px;font-weight:700;margin-bottom:4px;}
+.g-spec{font-size:12px;color:#666;margin-bottom:10px;}
+.g-mets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.g-met{background:#f5f5f5;border-radius:7px;padding:8px 9px;text-align:center;}
+.g-met-k{font-size:9px;color:#888;font-weight:700;letter-spacing:.05em;margin-bottom:2px;}
+.g-met-v{font-size:14px;font-weight:700;color:#1a1a1a;}
+.g-met-u{font-size:9px;color:#aaa;}
+.g-bar{margin-top:10px;}
+.g-bar-lbl{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:3px;}
+.g-bar-bg{height:7px;background:#eee;border-radius:4px;overflow:hidden;}
+.g-bar-fill{height:100%;border-radius:4px;transition:.5s;}
+.f-ok{background:#1a7a4a;}.f-warn{background:#b05000;}
+.g-note{font-size:12px;color:#666;margin-top:7px;line-height:1.55;}
+/* STC Table */
+.stc-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.stc-tbl th{background:#1a1a1a;color:#fff;padding:9px 12px;text-align:left;font-size:11px;letter-spacing:.05em;}
+.stc-tbl td{padding:9px 12px;border-bottom:1px solid #eee;}
+.stc-tbl tr:nth-child(even) td{background:#fafafa;}
+.pill{display:inline-block;padding:2px 8px;border-radius:8px;font-weight:700;font-size:12px;}
+.p-r{background:#ffe0e0;color:#b00020;}.p-o{background:#fff0dc;color:#b05000;}
+.p-y{background:#fffadc;color:#8a7000;}.p-g{background:#e0fff0;color:#1a7a4a;}.p-b{background:#e0eaff;color:#1a3a9a;}
+.p-v{background:#f0e0ff;color:#6610f2;}
+/* CTA */
+.cta-box{background:#f8f8f8;border:1.5px solid #ddd;border-radius:10px;padding:18px;text-align:center;}
+.cta-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.cta-sub{font-size:13px;color:#666;margin-bottom:16px;line-height:1.6;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cta-btn{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;}
+.btn-line{background:#06c755;color:#fff;}.btn-tel{background:#1a1a1a;color:#fff;}
+@media(max-width:600px){
+  .fg3,.noise-presets,.tog4{grid-template-columns:1fr 1fr;}
+  .tog3{grid-template-columns:1fr;}
+  .g-mets{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">SMG — คำนวณกระจกกันเสียง</div>
+    <div class="hdr-sub">Acoustic Glass Calculator · v3.0 · smg-con.co.th</div>
+  </div>
+  <div class="hdr-badge">v3.0</div>
+</div>
+
+<div class="wrap">
+
+<!-- ═══ STEP 1: รูปแบบงาน ═══ -->
+<div class="card">
+  <div class="card-title"><span class="step-badge">1</span>เลือกรูปแบบงาน</div>
+  <div class="tog2" style="margin-bottom:0;">
+    <div class="tbtn sz13 on" id="btnNew" onclick="setJob('new')">
+      <span class="ti">🏗️</span>งานใหม่ / ต่อเติม
+      <span class="ts">สร้างใหม่หรือต่อเติมห้องใหม่ ยังไม่มีกระจก</span>
+    </div>
+    <div class="tbtn sz13" id="btnExist" onclick="setJob('exist')">
+      <span class="ti">🏠</span>มีกระจกอยู่แล้ว
+      <span class="ts">คอนโด/บ้านที่ต้องการแก้ปัญหาเสียง</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ งานใหม่/ต่อเติม ═══ -->
+<div class="sec show" id="secNew">
+  <div class="card">
+    <div class="card-title"><span class="step-badge">2</span>ระดับเสียงและเป้าหมาย</div>
+    <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px;">แหล่งเสียงใกล้บ้าน (เลือกหรือกรอกเอง)</div>
+    <div class="noise-presets">
+      <div class="np" onclick="setNP(60,this)">ถนนซอย<div class="np-db">60 dB</div></div>
+      <div class="np on" onclick="setNP(70,this)">ถนนทั่วไป<div class="np-db">70 dB</div></div>
+      <div class="np" onclick="setNP(80,this)">ถนนใหญ่<div class="np-db">80 dB</div></div>
+      <div class="np" onclick="setNP(90,this)">ทางด่วน<div class="np-db">90 dB</div></div>
+    </div>
+    <div class="fg3">
+      <div class="fld">
+        <div class="fld-lbl">เสียงนอกบ้านโดยประมาณ</div>
+        <input class="fld-inp" type="number" id="nOut" value="70" min="40" max="130" oninput="syncN()">
+        <div class="fld-unit">dB</div>
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">เป้าหมายในห้อง</div>
+        <input class="fld-inp" type="number" id="nTgt" value="38" min="20" max="60" oninput="syncN()">
+        <div class="fld-unit">dB</div>
+        <div class="fld-hint">ห้องนอน=35 / ทำงาน=38 / นั่งเล่น=40</div>
+      </div>
+      <div class="fld" style="background:#f0fff4;border-color:#a3d9a5;">
+        <div class="fld-lbl" style="color:#1a7a4a;">STL ที่ต้องการ (อัตโนมัติ)</div>
+        <div class="fld-computed" id="nStl" style="color:#1a7a4a;">32</div>
+        <div class="fld-unit">dB = เสียงนอก − เป้าหมาย</div>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:8px;">หรือเลือกประเภทห้อง</div>
+    <div class="tog4" style="margin-bottom:14px;">
+      <div class="rp" onclick="setRN(35,this)">ห้องนอน<div class="rp-db">35 dB</div></div>
+      <div class="rp on" onclick="setRN(38,this)">ห้องทำงาน<div class="rp-db">38 dB</div></div>
+      <div class="rp" onclick="setRN(40,this)">ห้องนั่งเล่น<div class="rp-db">40 dB</div></div>
+      <div class="rp" onclick="setRN(45,this)">ห้องครัว<div class="rp-db">45 dB</div></div>
+    </div>
+    <button class="calc-btn" onclick="calcNew()">แนะนำกระจกสำหรับงานใหม่ →</button>
+  </div>
+</div>
+
+<!-- ═══ งานเดิม ═══ -->
+<div class="sec" id="secExist">
+
+  <!-- Step 2A: คอนโด หรือ บ้าน -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">2</span>สถานที่</div>
+    <div class="tog2">
+      <div class="tbtn sz13 on" id="btnHouse" onclick="setProp('house')">
+        <span class="ti">🏡</span>บ้าน / ทาวน์เฮ้าส์
+        <span class="ts">เจ้าของอาคาร ปรับแต่งได้อิสระ</span>
+      </div>
+      <div class="tbtn sz13" id="btnCondo" onclick="setProp('condo')">
+        <span class="ti">🏢</span>คอนโด / อพาร์ทเม้นท์
+        <span class="ts">มีกฎนิติบุคคล จำกัดการดัดแปลง</span>
+      </div>
+    </div>
+    <!-- คอนโด warning -->
+    <div class="info-box ib-red" id="condoWarn" style="display:none;margin-top:12px;">
+      <div class="ib-title">⚠️ ข้อจำกัดคอนโด — กฎนิติบุคคลและกฎหมายภูมิทัศน์อาคาร</div>
+      <div class="ib-body">
+        คอนโดส่วนใหญ่ <strong>ห้ามดัดแปลงเฟรมหน้าต่างและประตู</strong> เพราะส่งผลต่อภูมิทัศน์อาคาร ตามกฎหมายควบคุมอาคาร<br><br>
+        <strong>สิ่งที่ทำได้:</strong><br>
+        ✓ เปลี่ยนกระจกในเฟรมเดิม (ถ้าเจ้าของอาคารอนุญาต)<br>
+        ✓ เบิ้ลกระจกในบาน Fix โดยไม่แตะเฟรมนอก<br>
+        ✓ เพิ่มหน้าต่าง/ประตูชั้นที่ 2 ด้านใน (Double Window) — วิธีนี้ดีที่สุดและทำได้โดยไม่กระทบอาคาร
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2B: วัดเสียง -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">3</span>วัดเสียง 3 ขั้นตอน</div>
+    <div class="guide-steps">
+      <div class="guide-step"><div class="gs-num">①</div>
+        <div class="gs-text"><strong>ดาวน์โหลด App วัดเสียง</strong> — Sound Meter, Decibel X หรือ NIOSH SLM (ฟรี)
+          <div class="app-hint">iOS: ค้นหา "Decibel X" | Android: ค้นหา "Sound Meter" — App Store / Play Store</div>
+        </div>
+      </div>
+      <div class="guide-step"><div class="gs-num">②</div>
+        <div class="gs-text"><strong>เปิดกระจก/หน้าต่าง วัด 3–5 นาที</strong> บันทึกค่าเฉลี่ย (เสียงนอก)</div>
+      </div>
+      <div class="guide-step"><div class="gs-num">③</div>
+        <div class="gs-text"><strong>ปิดกระจกทุกบาน วัดใหม่ 3–5 นาที</strong> บันทึกค่าเฉลี่ย (เสียงใน) แล้วกรอกด้านล่าง</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2C: กรอกค่า -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">4</span>กรอกค่าที่วัดได้</div>
+    <div class="fg3">
+      <div class="fld">
+        <div class="fld-lbl">เสียงนอก (ก่อนปิดกระจก)</div>
+        <input class="fld-inp" type="number" id="eOut" value="75" min="30" max="130">
+        <div class="fld-unit">dB</div>
+        <div class="fld-hint">วัดขณะเปิดกระจก</div>
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">เสียงใน (หลังปิดกระจก)</div>
+        <input class="fld-inp" type="number" id="eIn" value="60" min="20" max="120">
+        <div class="fld-unit">dB</div>
+        <div class="fld-hint">วัดหลังปิดหน้าต่างทั้งหมด</div>
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">เป้าหมายในห้อง</div>
+        <input class="fld-inp" type="number" id="eTgt" value="38" min="20" max="60">
+        <div class="fld-unit">dB</div>
+        <div class="fld-hint">ห้องนอน=35 / ทำงาน=38</div>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#666;margin-bottom:8px;">ประเภทห้อง</div>
+    <div class="tog4" style="margin-bottom:0;">
+      <div class="rp" onclick="setRE(35,this)">ห้องนอน<div class="rp-db">35 dB</div></div>
+      <div class="rp on" onclick="setRE(38,this)">ห้องทำงาน<div class="rp-db">38 dB</div></div>
+      <div class="rp" onclick="setRE(40,this)">ห้องนั่งเล่น<div class="rp-db">40 dB</div></div>
+      <div class="rp" onclick="setRE(45,this)">ห้องครัว<div class="rp-db">45 dB</div></div>
+    </div>
+  </div>
+
+  <!-- Step 2D: วิธีแก้ปัญหา -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">5</span>เลือกวิธีแก้ปัญหา</div>
+    <div class="tog3" style="margin-bottom:14px;" id="methodToggle">
+      <div class="tbtn sz12 on" id="btnRepl" onclick="setMeth('replace')">
+        <span class="ti">🔄</span>เปลี่ยนกระจกใหม่
+        <span class="ts">ถอดกระจกเดิม ใส่กระจกกันเสียงใหม่</span>
+      </div>
+      <div class="tbtn sz12" id="btnDbl" onclick="setMeth('double')">
+        <span class="ti">🔲</span>เบิ้ลกระจก
+        <span class="ts">ไม่ถอดเดิม เพิ่มกระจกใหม่ด้านใน (Fix เท่านั้น)</span>
+      </div>
+      <div class="tbtn sz12" id="btnDW" onclick="setMeth('dwindow')">
+        <span class="ti">🪟</span>เบิ้ลหน้าต่าง/ประตู
+        <span class="ts">เพิ่มชุดหน้าต่างใหม่ด้านใน ลดเสียงสูงสุด</span>
+      </div>
+    </div>
+
+    <!-- เปลี่ยนกระจก -->
+    <div id="divRepl">
+      <!-- เฟรม -->
+      <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px;">ประเภทเฟรม</div>
+      <div class="tog3" style="margin-bottom:14px;">
+        <div class="tbtn sz12 on" id="fAlu" onclick="setFT('alu')">
+          <span class="ti">🔩</span>อลูมิเนียม
+          <span class="ts">เฟรมอลูมิเนียมทั่วไป</span>
+        </div>
+        <div class="tbtn sz12" id="fUpvc" onclick="setFT('upvc')">
+          <span class="ti">⬜</span>UPVC
+          <span class="ts">เฟรมพลาสติก ปรับคิ้วรัดกระจกได้</span>
+        </div>
+        <div class="tbtn sz12" id="fOther" onclick="setFT('other')">
+          <span class="ti">❓</span>ไม่แน่ใจ
+          <span class="ts">ให้ทีม SMG ประเมิน</span>
+        </div>
+      </div>
+
+      <!-- อลูมิเนียม: เลือกร่อง -->
+      <div id="divAlu">
+        <div class="frame-sec">
+          <div class="frame-title">⚠️ ความกว้างร่องเฟรมอลูมิเนียม (วัดก่อนสั่งกระจกทุกครั้ง)</div>
+          <div style="font-size:12px;color:#7a5000;margin-bottom:10px;line-height:1.6;">ร่องเฟรมกำหนดความหนากระจกสูงสุดที่ใส่ได้</div>
+          <div class="tog4">
+            <div class="fo" id="fw8" onclick="setFW(8,this)">เก่า/มาตรฐาน<div class="fo-mm">ร่อง 10mm</div><div style="font-size:9px;margin-top:2px;">กระจกสูงสุด 8mm</div></div>
+            <div class="fo on" id="fw16" onclick="setFW(16,this)">รุ่นกลาง<div class="fo-mm">ร่อง 16mm</div><div style="font-size:9px;margin-top:2px;">กระจกสูงสุด 14mm</div></div>
+            <div class="fo" id="fw20" onclick="setFW(20,this)">รุ่นใหม่<div class="fo-mm">ร่อง 20mm</div><div style="font-size:9px;margin-top:2px;">กระจกสูงสุด 18mm</div></div>
+            <div class="fo" id="fw28" onclick="setFW(28,this)">IGU-ready<div class="fo-mm">ร่อง 28mm+</div><div style="font-size:9px;margin-top:2px;">IGU / Lam 20mm</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPVC -->
+      <div id="divUpvc" style="display:none;">
+        <div class="info-box ib-blue">
+          <div class="ib-title">✓ เฟรม UPVC — ยืดหยุ่นกว่าอลูมิเนียม</div>
+          <div class="ib-body">
+            เฟรม UPVC สามารถ <strong>เปลี่ยนคิ้วรัดกระจก</strong> ได้โดยไม่ต้องเปลี่ยนทั้งชุด ทำให้ใส่กระจกหนาขึ้นได้มากกว่าอลูมิเนียม<br>
+            ทีม SMG จะประเมินขนาดร่องและแนะนำกระจกที่เหมาะสมให้ครับ
+          </div>
+        </div>
+      </div>
+
+      <!-- ไม่แน่ใจ -->
+      <div id="divOther" style="display:none;">
+        <div class="info-box ib-warn">
+          <div class="ib-title">ให้ทีม SMG ประเมินเฟรมให้</div>
+          <div class="ib-body">ถ่ายรูปเฟรมหน้าต่าง/ประตูส่งมาที่ LINE @smg58 ทีมจะประเมินร่องและแนะนำวิธีที่เหมาะสมให้ฟรีครับ</div>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calcExist()">คำนวณและแนะนำกระจก →</button>
+    </div>
+
+    <!-- เบิ้ลกระจก -->
+    <div id="divDbl" style="display:none;">
+      <div class="info-box ib-green">
+        <div class="ib-title">🔲 เบิ้ลกระจก — ใช้ได้เฉพาะบาน Fix เท่านั้น</div>
+        <div class="ib-body">
+          <strong>⚠️ ข้อจำกัดสำคัญ:</strong> วิธีนี้ <strong>ใช้ไม่ได้กับบานเลื่อน</strong> (Sliding Window/Door) เพราะไม่มีพื้นที่สำหรับติดตั้งกระจกใหม่ด้านใน<br>
+          ใช้ได้เฉพาะ <strong>บาน Fix</strong> ที่มีพื้นที่ว่างด้านในเพียงพอ<br><br>
+          <strong>กระจกที่แนะนำ:</strong> Lam 6mm (3+Acoustic PVB+3) ลดเสียงได้ดีที่สุดสำหรับความหนานี้<br>
+          <strong>Air Gap:</strong> ยิ่งกว้างยิ่งดี — ควรได้อย่างน้อย 50mm<br>
+          <strong>ผลลัพธ์:</strong> ลดเสียงเพิ่มได้ 8–15 dB โดยไม่ต้องรื้อเฟรม
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcDouble()">คำนวณการเบิ้ลกระจก →</button>
+    </div>
+
+    <!-- เบิ้ลหน้าต่าง/ประตู -->
+    <div id="divDW" style="display:none;">
+      <div class="info-box" style="background:#f5eeff;border-color:#c0a0e0;margin-bottom:14px;">
+        <div class="ib-title" style="color:#6610f2;">🪟 เบิ้ลหน้าต่าง/ประตู (Double Window System)</div>
+        <div class="ib-body">
+          ติดตั้ง <strong>ชุดหน้าต่างหรือประตูใหม่ทั้งชุดด้านใน</strong> ห่างจากเดิมอย่างน้อย 50–200mm<br>
+          วิธีนี้ <strong>ไม่แตะเฟรมอาคารเดิม</strong> เหมาะมากสำหรับคอนโดที่มีกฎนิติบุคคล<br><br>
+          <strong>ผลลัพธ์:</strong> ลดเสียงได้สูงสุด <strong>15–25 dB เพิ่มเติม</strong> จากกระจกเดิม<br>
+          <strong>Air Gap 50mm:</strong> +15 dB | <strong>Air Gap 100mm+:</strong> +20–25 dB<br><br>
+          <strong>เหมาะกับ:</strong> คอนโดติดทางด่วน / บ้านริมถนนใหญ่ / ต้องการความเงียบสูง
+        </div>
+      </div>
+      <button class="calc-btn" style="background:#6610f2;" onclick="calcDW()">คำนวณการเบิ้ลหน้าต่าง →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div class="result-wrap" id="resWrap">
+  <div class="card">
+    <div class="res-sum" id="resSumm"></div>
+    <div id="resWarn"></div>
+    <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:12px;" id="resSubtitle">กระจกที่แนะนำ</div>
+    <div class="glass-opts" id="resGlass"></div>
+  </div>
+  <div class="card">
+    <div class="cta-box">
+      <div class="cta-title">ขอใบเสนอราคาฟรีจาก SMG</div>
+      <div class="cta-sub">แจ้งผลคำนวณที่ได้ให้ทีม SMG — เราจะเสนอราคาและ Spec Sheet ให้ทันทีครับ</div>
+      <div class="cta-btns">
+        <a class="cta-btn btn-line" href="https://line.me/R/ti/p/@smg58" target="_blank">LINE @smg58</a>
+        <a class="cta-btn btn-tel" href="tel:0863174966">โทร 086-317-4966</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STC TABLE ═══ -->
+<div class="card">
+  <div class="card-title"><span class="step-badge">📊</span>ตาราง STC กระจกและระบบกันเสียง (อ้างอิง AGC JIS A4706)</div>
+  <div style="overflow-x:auto;">
+    <table class="stc-tbl">
+      <thead>
+        <tr><th>ประเภท</th><th>โครงสร้าง</th><th>STC (dB)</th><th>ร่องขั้นต่ำ</th><th>เหมาะกับ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>กระจกเดี่ยว</td><td>Float 6mm</td><td><span class="pill p-r">28</span></td><td>6mm</td><td>ซอยเงียบ ทั่วไป</td></tr>
+        <tr><td>กระจกเดี่ยว</td><td>Float 10mm</td><td><span class="pill p-o">31</span></td><td>10mm</td><td>ถนนในเมือง</td></tr>
+        <tr><td>กระจกเดี่ยว</td><td>Float 12mm</td><td><span class="pill p-o">33</span></td><td>12mm</td><td>ถนนสายหลัก</td></tr>
+        <tr><td>Lam Acoustic</td><td>Lam 6mm (3+AcPVB+3)</td><td><span class="pill p-o">32–35</span></td><td>6mm</td><td>เฟรมเก่า ร่องแคบ — ดีกว่า Float 6mm มาก</td></tr>
+        <tr><td>กระจกลามิเนต</td><td>Lam 8mm (4+PVB+4)</td><td><span class="pill p-o">30</span></td><td>8mm</td><td>Safety + กันเสียงพื้นฐาน</td></tr>
+        <tr><td><strong>กระจกลามิเนต</strong></td><td><strong>Lam 12mm (6+PVB+6)</strong></td><td><span class="pill p-y">35</span></td><td>12mm</td><td><strong>ถนนใหญ่ ห้องพัก (แนะนำ)</strong></td></tr>
+        <tr><td>กระจกลามิเนต</td><td>Lam 20mm (10+PVB+10)</td><td><span class="pill p-g">38</span></td><td>20mm</td><td>ทางด่วน บ้านริมถนนใหญ่</td></tr>
+        <tr><td>IGU สองชั้น</td><td>6+12Air+6mm</td><td><span class="pill p-o">33</span></td><td>24mm</td><td>กันร้อน+เสียง</td></tr>
+        <tr><td><strong>IGU + Lam</strong></td><td><strong>Lam6+12Air+6mm</strong></td><td><span class="pill p-g">38</span></td><td>28mm</td><td><strong>ทางด่วน สนามบิน</strong></td></tr>
+        <tr style="background:#efffef;"><td><strong>เบิ้ลกระจก (Fix)</strong></td><td>กระจกเดิม + Air Gap + Lam ใหม่</td><td><span class="pill p-g">+8–15</span></td><td>ไม่เปลี่ยนเฟรม</td><td><strong>เฉพาะบาน Fix — เฟรมเก่า ประหยัด</strong></td></tr>
+        <tr style="background:#f5eeff;"><td><strong>เบิ้ลหน้าต่าง (Double Window)</strong></td><td>เฟรมเดิม + Air Gap 50–200mm + เฟรมใหม่ด้านใน</td><td><span class="pill p-v">+15–25</span></td><td>ไม่แตะเฟรมอาคาร</td><td><strong>คอนโด / ทางด่วน / ต้องการเงียบสูงสุด</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:11px;color:#aaa;margin-top:10px;">อ้างอิง: AGC JIS A4706 · Guardian Acoustics Data · SMG Internal Reference v3.0</div>
+</div>
+
+<div style="text-align:center;font-size:12px;color:#aaa;padding:16px 0 8px;">
+  SMG Glass And Metal Co., Ltd. · Only The Significant · smg-con.co.th
+</div>
+</div>
+
+<script>
+(function(){
+var G=function(id){return document.getElementById(id);};
+var jobType='new', propType='house', methType='replace', frameType='alu', frameW=16;
+
+/* Glass DB — แก้ไข minF ตาม spec จริง */
+var GLASS=[
+  /* Acoustic Lam 6mm เหมาะร่องแคบ ≤8mm */
+  {id:'lac6', name:'ลามิเนต Acoustic 6mm (3+AcPVB+3)', spec:'Lam Acoustic PVB 3+3mm', stc:33, minF:6,  tag:'top', note:'เหมาะเฟรมเก่าร่อง 10mm ดีกว่า Float 6mm มาก เพราะ Acoustic PVB ดูดซับการสั่นสะเทือน'},
+  {id:'fl10', name:'กระจกใสเดี่ยว 10mm', spec:'Float Clear 10mm', stc:31, minF:10, tag:'eco', note:'ราคาประหยัด เหมาะเฟรมรุ่นกลาง'},
+  {id:'fl12', name:'กระจกใสเดี่ยว 12mm', spec:'Float Clear 12mm', stc:33, minF:12, tag:'eco', note:'กระจกเดี่ยวหนาที่สุดที่แนะนำ'},
+  {id:'l8',  name:'ลามิเนต 8mm (4+PVB+4)', spec:'Lam PVB 4+4mm', stc:30, minF:8,  tag:'fair',note:'Safety Glass + กันเสียงดีกว่าเดี่ยว'},
+  {id:'l10', name:'ลามิเนต 10mm (5+PVB+5)', spec:'Lam PVB 5+5mm', stc:32, minF:10, tag:'fair',note:'Safety + กันเสียงดี เหมาะบ้านทั่วไป'},
+  {id:'l12', name:'ลามิเนต 12mm (6+PVB+6)', spec:'Lam PVB 6+6mm', stc:35, minF:12, tag:'top', note:'แนะนำ — Safety + กันเสียงดีมาก คุ้มค่าสูงสุด'},
+  {id:'l20', name:'ลามิเนต 20mm (10+PVB+10)', spec:'Lam PVB 10+10mm', stc:38, minF:20, tag:'top', note:'กันเสียงสูง เหมาะบ้านริมทางด่วน'},
+  {id:'igu', name:'IGU 6+12Air+6mm', spec:'IGU Float 6+Air12+6mm', stc:33, minF:24, tag:'top', note:'กันทั้งร้อน+เสียง'},
+  {id:'igul',name:'IGU + Lam (Lam ด้านนอก)', spec:'IGU Lam6+Air12+6mm', stc:38, minF:28, tag:'prem',note:'ดีที่สุดสำหรับกันร้อน+เสียง'},
+];
+
+/* ── State setters ── */
+window.setJob=function(t){
+  jobType=t;
+  G('btnNew').className='tbtn sz13'+(t==='new'?' on':'');
+  G('btnExist').className='tbtn sz13'+(t==='exist'?' on':'');
+  G('secNew').className='sec'+(t==='new'?' show':'');
+  G('secExist').className='sec'+(t==='exist'?' show':'');
+  G('resWrap').style.display='none';
+};
+
+window.setProp=function(p){
+  propType=p;
+  G('btnHouse').className='tbtn sz13'+(p==='house'?' on':'');
+  G('btnCondo').className='tbtn sz13'+(p==='condo'?' on':'');
+  G('condoWarn').style.display=p==='condo'?'block':'none';
+};
+
+window.setMeth=function(m){
+  methType=m;
+  ['Repl','Dbl','DW'].forEach(function(x){
+    G('btn'+x).className='tbtn sz12'+(m===x.toLowerCase().replace('dw','dwindow').replace('repl','replace').replace('dbl','double')?' on':'');
+  });
+  G('btnRepl').className='tbtn sz12'+(m==='replace'?' on':'');
+  G('btnDbl').className='tbtn sz12'+(m==='double'?' on':'');
+  G('btnDW').className='tbtn sz12'+(m==='dwindow'?' on':'');
+  G('divRepl').style.display=m==='replace'?'':'none';
+  G('divDbl').style.display=m==='double'?'':'none';
+  G('divDW').style.display=m==='dwindow'?'':'none';
+  G('resWrap').style.display='none';
+};
+
+window.setFT=function(t){
+  frameType=t;
+  G('fAlu').className='tbtn sz12'+(t==='alu'?' on':'');
+  G('fUpvc').className='tbtn sz12'+(t==='upvc'?' on':'');
+  G('fOther').className='tbtn sz12'+(t==='other'?' on':'');
+  G('divAlu').style.display=t==='alu'?'':'none';
+  G('divUpvc').style.display=t==='upvc'?'':'none';
+  G('divOther').style.display=t==='other'?'':'none';
+};
+
+window.setFW=function(w,el){
+  frameW=w;
+  document.querySelectorAll('.fo').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+};
+
+window.setNP=function(db,el){
+  G('nOut').value=db;
+  document.querySelectorAll('.np').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');syncN();
+};
+
+window.syncN=function(){
+  var o=+G('nOut').value||70,t=+G('nTgt').value||38;
+  G('nStl').textContent=Math.max(0,o-t);
+  document.querySelectorAll('.np').forEach(function(b){
+    var db=+b.querySelector('.np-db').textContent;
+    b.classList.toggle('on',db===o);
+  });
+};
+
+window.setRN=function(db,el){
+  G('nTgt').value=db;
+  document.querySelectorAll('#secNew .rp').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');syncN();
+};
+
+window.setRE=function(db,el){
+  G('eTgt').value=db;
+  document.querySelectorAll('#secExist .rp').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+};
+
+/* ── Build result ── */
+function buildResult(cfg){
+  var stlNeed=cfg.stlNeed,dbOut=cfg.dbOut,dbIn=cfg.dbIn,dbTgt=cfg.dbTgt;
+  var fw=cfg.fw,mode=cfg.mode,curSTL=cfg.curSTL;
+
+  /* summary */
+  var sh='<div class="rs-lbl">ผลการคำนวณ</div>';
+  if(dbIn!==null){
+    sh+='<div class="rs-main">เสียงนอก <strong>'+dbOut+'</strong> dB → ในบ้านตอนนี้ <strong>'+dbIn+'</strong> dB → เป้าหมาย <strong>'+dbTgt+'</strong> dB</div>';
+    sh+='<div class="rs-detail">กระจกเดิมลดได้: <strong>'+curSTL+' dB</strong> &nbsp;|&nbsp; ต้องการเพิ่มอีก: <span class="rs-stl">'+Math.max(0,stlNeed)+' dB</span></div>';
+  } else {
+    sh+='<div class="rs-main">เสียงนอก <strong>'+dbOut+'</strong> dB → เป้าหมาย <strong>'+dbTgt+'</strong> dB</div>';
+    sh+='<div class="rs-detail">ต้องการกระจกที่กันเสียงได้: <span class="rs-stl">'+stlNeed+' dB</span></div>';
+  }
+  G('resSumm').innerHTML=sh;
+
+  /* warn */
+  var wh='';
+  if(propType==='condo'&&mode==='replace'){
+    wh='<div class="info-box ib-red" style="margin-bottom:14px;"><div class="ib-title">⚠️ คอนโด — ตรวจสอบกฎนิติบุคคลก่อน</div><div class="ib-body">การเปลี่ยนกระจกในคอนโดต้องได้รับอนุญาตจากนิติบุคคลก่อนเสมอ หากไม่ได้รับอนุญาต แนะนำเปลี่ยนวิธีเป็น <strong>เบิ้ลหน้าต่าง</strong> แทนครับ</div></div>';
+  }
+  if(fw&&fw<=8&&mode==='replace'&&frameType==='alu'){
+    wh+='<div class="info-box ib-warn" style="margin-bottom:14px;"><div class="ib-title">⚠️ ร่องเฟรม 10mm — กระจกหนาเกิน 8mm ใส่ไม่ได้</div><div class="ib-body">แนะนำ <strong>Lam Acoustic 6mm (3+AcPVB+3)</strong> ซึ่งให้ STC สูงกว่า Float 6mm มากเพราะ Acoustic PVB ดูดซับการสั่นสะเทือนได้ดี หรือพิจารณา <strong>เบิ้ลกระจก / เบิ้ลหน้าต่าง</strong> แทนครับ</div></div>';
+  }
+  G('resWarn').innerHTML=wh;
+
+  /* glass options */
+  var gh='';
+
+  if(mode==='double'){
+    G('resSubtitle').textContent='วิธีเบิ้ลกระจก (เฉพาะบาน Fix)';
+    gh='<div class="g-opt g-dbl">';
+    gh+='<div class="g-tag t-dbl">เบิ้ลกระจก — บาน Fix เท่านั้น</div>';
+    gh+='<div class="g-name">เพิ่ม Lam Acoustic 6mm ด้านใน + Air Gap</div>';
+    gh+='<div class="g-spec">Lam 3+Acoustic PVB+3mm · ไม่ถอดกระจกเดิม · Air Gap ≥50mm</div>';
+    gh+='<div class="g-mets">';
+    gh+='<div class="g-met"><div class="g-met-k">ลดเสียงเพิ่ม</div><div class="g-met-v">8–15<span class="g-met-u">dB</span></div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">รื้อเฟรม?</div><div class="g-met-v" style="color:#1a7a4a;font-size:13px;">ไม่ต้อง</div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">ใช้กับบานเลื่อน</div><div class="g-met-v" style="color:#b00020;font-size:13px;">ไม่ได้</div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">Air Gap แนะนำ</div><div class="g-met-v" style="font-size:12px;">≥50mm</div></div>';
+    gh+='</div><div class="g-note" style="color:#1a7a4a;">✓ เหมาะบาน Fix ที่มีพื้นที่ว่าง · ประหยัดกว่าเปลี่ยนทั้งชุด · ไม่แตะเฟรมอาคาร</div></div>';
+
+  } else if(mode==='dwindow'){
+    G('resSubtitle').textContent='วิธีเบิ้ลหน้าต่าง/ประตู (Double Window)';
+    gh='<div class="g-opt g-dw">';
+    gh+='<div class="g-tag t-dw">Double Window System</div>';
+    gh+='<div class="g-name">ติดตั้งชุดหน้าต่าง/ประตูใหม่ด้านใน</div>';
+    gh+='<div class="g-spec">เฟรมใหม่ + กระจก Lam 6mm หรือ Lam 12mm · Air Gap 50–200mm จากเฟรมเดิม</div>';
+    gh+='<div class="g-mets">';
+    gh+='<div class="g-met"><div class="g-met-k">ลดเสียงเพิ่ม</div><div class="g-met-v">15–25<span class="g-met-u">dB</span></div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">Air Gap 50mm</div><div class="g-met-v" style="font-size:12px;">+15 dB</div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">Air Gap 100mm+</div><div class="g-met-v" style="font-size:12px;">+20–25 dB</div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">แตะเฟรมอาคาร?</div><div class="g-met-v" style="color:#1a7a4a;font-size:13px;">ไม่ต้อง</div></div>';
+    gh+='</div><div class="g-note" style="color:#6610f2;">✓ เหมาะคอนโด · ใช้ได้ทั้งบาน Fix และบานเลื่อน · ลดเสียงได้มากที่สุด</div></div>';
+
+  } else if(mode==='upvc'){
+    G('resSubtitle').textContent='คำแนะนำสำหรับเฟรม UPVC';
+    gh='<div class="g-opt g-upvc">';
+    gh+='<div class="g-tag t-upvc">เฟรม UPVC</div>';
+    gh+='<div class="g-name">เปลี่ยนกระจกหนาขึ้น + เปลี่ยนคิ้วรัดกระจกใหม่</div>';
+    gh+='<div class="g-spec">เฟรม UPVC ยืดหยุ่นกว่าอลูมิเนียม — เปลี่ยนเฉพาะคิ้วรัดกระจกโดยไม่ต้องเปลี่ยนเฟรมทั้งชุด</div>';
+    gh+='<div class="g-mets">';
+    gh+='<div class="g-met"><div class="g-met-k">กระจกแนะนำ</div><div class="g-met-v" style="font-size:12px;">Lam 12–20mm</div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">STC ที่ได้</div><div class="g-met-v">35–38<span class="g-met-u">dB</span></div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">เปลี่ยนเฟรม?</div><div class="g-met-v" style="color:#1a7a4a;font-size:13px;">ไม่ต้อง</div></div>';
+    gh+='<div class="g-met"><div class="g-met-k">เปลี่ยนคิ้ว?</div><div class="g-met-v" style="color:#b05000;font-size:13px;">ต้องทำ</div></div>';
+    gh+='</div><div class="g-note" style="color:#1a3a9a;">ให้ทีม SMG ประเมินขนาดร่องเฟรม UPVC ก่อนสั่งกระจก — ส่งรูปมาที่ LINE @smg58 ได้เลยครับ</div></div>';
+
+  } else {
+    /* replace mode */
+    G('resSubtitle').textContent='กระจกที่แนะนำ';
+    var elig=GLASS.filter(function(g){
+      if(g.stc<stlNeed)return false;
+      if(fw&&g.minF>fw)return false;
+      return true;
+    }).sort(function(a,b){return a.stc-b.stc;});
+
+    if(elig.length===0){
+      gh='<div class="info-box ib-red"><div class="ib-title">ไม่มีกระจกที่เหมาะสมสำหรับร่องเฟรมนี้</div><div class="ib-body">ร่องเฟรมแคบเกินไปสำหรับ STL ที่ต้องการ — แนะนำเปลี่ยนวิธีเป็น <strong>เบิ้ลกระจก</strong> หรือ <strong>เบิ้ลหน้าต่าง</strong> ครับ หรือติดต่อ SMG เพื่อประเมินการเปลี่ยนเฟรมใหม่</div></div>';
+    } else {
+      var picks=[];
+      picks.push({g:elig[0],lb:'eco'});
+      var mid=elig.filter(function(g){return g.stc>=stlNeed+2;});
+      if(mid.length>0&&mid[0].id!==elig[0].id)picks.push({g:mid[0],lb:'top'});
+      var top=elig[elig.length-1];
+      if(top.id!==picks[picks.length-1].g.id)picks.push({g:top,lb:'prem'});
+      var lbTH={eco:'ประหยัด',top:'แนะนำ',prem:'Premium'};
+      var tC={eco:'t-eco',top:'t-top',prem:'t-prem'};
+      var oC={eco:'g-eco',top:'g-top',prem:'g-prem'};
+      picks.forEach(function(p){
+        var g=p.g,pct=Math.min(100,Math.round(g.stc/50*100));
+        var bc=g.stc>=stlNeed?'f-ok':'f-warn';
+        gh+='<div class="g-opt '+oC[p.lb]+'">';
+        gh+='<div class="g-tag '+tC[p.lb]+'">'+lbTH[p.lb]+'</div>';
+        gh+='<div class="g-name">'+g.name+'</div>';
+        gh+='<div class="g-spec">'+g.spec+'</div>';
+        gh+='<div class="g-mets">';
+        gh+='<div class="g-met"><div class="g-met-k">STC กันเสียง</div><div class="g-met-v">'+g.stc+'<span class="g-met-u">dB</span></div></div>';
+        gh+='<div class="g-met"><div class="g-met-k">ร่องขั้นต่ำ</div><div class="g-met-v">'+g.minF+'<span class="g-met-u">mm</span></div></div>';
+        gh+='<div class="g-met"><div class="g-met-k">เทียบเป้าหมาย</div><div class="g-met-v" style="color:'+(g.stc>=stlNeed?'#1a7a4a':'#b05000')+';font-size:12px;">'+(g.stc>=stlNeed?'✓ ผ่าน':'ใกล้เคียง')+'</div></div>';
+        gh+='<div class="g-met"><div class="g-met-k">ประเภท</div><div class="g-met-v" style="font-size:11px;">'+g.spec.split(' ')[0]+'</div></div>';
+        gh+='</div>';
+        gh+='<div class="g-bar"><div class="g-bar-lbl"><span>ประสิทธิภาพ STC</span><span>'+g.stc+' dB</span></div>';
+        gh+='<div class="g-bar-bg"><div class="g-bar-fill '+bc+'" style="width:'+pct+'%"></div></div></div>';
+        gh+='<div class="g-note">'+g.note+'</div></div>';
+      });
+    }
+  }
+
+  G('resGlass').innerHTML=gh;
+  G('resWrap').style.display='block';
+  G('resWrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── Calc functions ── */
+window.calcNew=function(){
+  var o=+G('nOut').value||70,t=+G('nTgt').value||38;
+  buildResult({stlNeed:Math.max(0,o-t),dbOut:o,dbIn:null,dbTgt:t,fw:null,mode:'replace',curSTL:null});
+};
+
+window.calcExist=function(){
+  var o=+G('eOut').value||75,i=+G('eIn').value||60,t=+G('eTgt').value||38;
+  var fw=frameType==='alu'?frameW:(frameType==='upvc'?999:null);
+  var mode=frameType==='upvc'?'upvc':'replace';
+  buildResult({stlNeed:Math.max(0,i-t),dbOut:o,dbIn:i,dbTgt:t,fw:fw,mode:mode,curSTL:o-i});
+};
+
+window.calcDouble=function(){
+  var o=+G('eOut').value||75,i=+G('eIn').value||60,t=+G('eTgt').value||38;
+  buildResult({stlNeed:Math.max(0,i-t),dbOut:o,dbIn:i,dbTgt:t,fw:null,mode:'double',curSTL:o-i});
+};
+
+window.calcDW=function(){
+  var o=+G('eOut').value||75,i=+G('eIn').value||60,t=+G('eTgt').value||38;
+  buildResult({stlNeed:Math.max(0,i-t),dbOut:o,dbIn:i,dbTgt:t,fw:null,mode:'dwindow',curSTL:o-i});
+};
+
+/* init */
+G('nOut').addEventListener('input',syncN);
+G('nTgt').addEventListener('input',syncN);
+syncN();
+})();
+</script>
+</body>
+</html>
