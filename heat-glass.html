@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMG — คำนวณกระจกกันร้อน v2 | Heat Control Calculator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,'Helvetica Neue',sans-serif;background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+
+.hdr{background:#7a2000;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.hdr-title{font-size:16px;font-weight:700;color:#fff;}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+.hdr-badge{font-size:11px;font-weight:700;padding:4px 12px;background:#fff;color:#7a2000;border-radius:8px;}
+
+.wrap{max-width:920px;margin:0 auto;padding:24px 16px;}
+
+.card{background:#fff;border:1.5px solid #ddd;border-radius:12px;padding:22px;margin-bottom:18px;}
+.card-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #f0f0f0;display:flex;align-items:center;gap:8px;}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:#7a2000;color:#fff;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0;}
+
+/* Guide steps */
+.guide-steps{display:flex;flex-direction:column;gap:10px;}
+.guide-step{display:flex;gap:12px;padding:12px 14px;background:#f8f8f8;border-radius:9px;border-left:3px solid #7a2000;}
+.gs-num{font-size:18px;font-weight:700;color:#7a2000;flex-shrink:0;line-height:1.2;}
+.gs-text{font-size:13px;color:#333;line-height:1.7;}
+.gs-text strong{color:#1a1a1a;}
+.tool-hint{background:#fff8ee;border:1.5px solid #f0c060;border-radius:7px;padding:9px 13px;font-size:12px;color:#7a5000;margin-top:8px;line-height:1.6;}
+
+/* Temp inputs */
+.temp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
+.temp-field{background:#f8f8f8;border:1.5px solid #ddd;border-radius:9px;padding:14px;text-align:center;}
+.temp-field.hot{background:#fff4f0;border-color:#e06040;}
+.temp-field.warm{background:#fff8ee;border-color:#f0c060;}
+.temp-field.cool{background:#f0fff8;border-color:#60c080;}
+.temp-field.target{background:#eef4ff;border-color:#6090e0;}
+.temp-lbl{font-size:11px;font-weight:700;color:#666;margin-bottom:8px;letter-spacing:.04em;line-height:1.4;}
+.temp-icon{font-size:22px;margin-bottom:6px;display:block;}
+.temp-inp{width:100%;border:none;background:transparent;font-size:28px;font-weight:700;color:#1a1a1a;outline:none;text-align:center;}
+.temp-unit{font-size:12px;color:#aaa;margin-top:3px;}
+.temp-hint{font-size:10px;color:#888;margin-top:4px;line-height:1.4;}
+
+/* Computed diff */
+.diff-display{background:#1a1a1a;border-radius:10px;padding:14px 18px;margin-bottom:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;}
+.diff-item{color:#fff;}
+.diff-lbl{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.08em;margin-bottom:4px;}
+.diff-val{font-size:22px;font-weight:700;}
+.diff-val.red{color:#ff7755;}
+.diff-val.orange{color:#ffaa44;}
+.diff-val.green{color:#55cc88;}
+
+/* Direction & room presets */
+.tog4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.tbtn{padding:10px 8px;border:2px solid #ddd;border-radius:9px;background:#f8f8f8;cursor:pointer;text-align:center;font-weight:700;color:#666;transition:.2s;line-height:1.4;font-size:12px;}
+.tbtn.on{background:#7a2000;border-color:#7a2000;color:#fff;}
+.tbtn:hover:not(.on){background:#f0e8e8;}
+.tbtn .ti{font-size:20px;display:block;margin-bottom:4px;}
+.tbtn .ts{font-size:10px;font-weight:400;opacity:.7;display:block;margin-top:2px;}
+
+/* Room target presets */
+.room-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.rp{padding:9px 6px;border:2px solid #ddd;border-radius:8px;background:#f8f8f8;cursor:pointer;text-align:center;font-size:11px;font-weight:700;color:#666;transition:.2s;line-height:1.4;}
+.rp.on{background:#7a2000;border-color:#7a2000;color:#fff;}
+.rp-temp{font-size:16px;font-weight:700;margin-top:2px;}
+
+/* Calc button */
+.calc-btn{width:100%;padding:16px;background:#7a2000;color:#fff;font-size:16px;font-weight:700;border:none;border-radius:10px;cursor:pointer;letter-spacing:.03em;transition:.2s;}
+.calc-btn:hover{background:#a03000;}
+
+/* Results */
+.result-wrap{display:none;}
+.res-hero{background:#7a2000;border-radius:12px;padding:20px 22px;margin-bottom:16px;color:#fff;}
+.rh-lbl{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.1em;margin-bottom:4px;}
+.rh-main{font-size:20px;font-weight:700;margin-bottom:8px;line-height:1.4;}
+.rh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+.rh-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:10px;text-align:center;}
+.rh-stat-k{font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.07em;margin-bottom:3px;}
+.rh-stat-v{font-size:18px;font-weight:700;color:#fff;}
+.rh-stat-u{font-size:9px;color:rgba(255,255,255,.5);}
+
+/* Solution cards */
+.sol-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.sol-card{border:2px solid #ddd;border-radius:10px;padding:16px 18px;position:relative;}
+.sol-card.sol-free{border-color:#1a7a4a;background:#efffef;}
+.sol-card.sol-low{border-color:#7a5000;background:#fff8ee;}
+.sol-card.sol-mid{border-color:#7a2000;background:#fff4f0;}
+.sol-card.sol-high{border-color:#1a3a9a;background:#eef4ff;}
+.sol-card.sol-prem{border-color:#555;background:#fafafa;}
+.sol-tag{position:absolute;top:-10px;left:14px;font-size:10px;font-weight:700;padding:2px 10px;border-radius:8px;letter-spacing:.07em;}
+.t-free{background:#1a7a4a;color:#fff;}
+.t-low{background:#7a5000;color:#fff;}
+.t-mid{background:#7a2000;color:#fff;}
+.t-high{background:#1a3a9a;color:#fff;}
+.t-prem{background:#555;color:#fff;}
+.sol-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.sol-icon{font-size:24px;flex-shrink:0;}
+.sol-name{font-size:15px;font-weight:700;color:#1a1a1a;}
+.sol-spec{font-size:12px;color:#666;margin-top:2px;}
+.sol-mets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:8px;}
+.sol-met{background:rgba(255,255,255,.7);border-radius:7px;padding:7px 9px;text-align:center;}
+.sol-met-k{font-size:9px;color:#888;font-weight:700;letter-spacing:.05em;margin-bottom:2px;}
+.sol-met-v{font-size:14px;font-weight:700;color:#1a1a1a;}
+.sol-met-u{font-size:9px;color:#aaa;}
+.sol-met-v.good{color:#1a7a4a;}
+.sol-bar{margin-bottom:6px;}
+.sol-bar-lbl{display:flex;justify-content:space-between;font-size:11px;color:#666;margin-bottom:3px;}
+.sol-bar-bg{height:8px;background:rgba(0,0,0,.08);border-radius:4px;overflow:hidden;}
+.sol-bar-fill{height:100%;border-radius:4px;transition:.6s;}
+.fill-free{background:#1a7a4a;}
+.fill-low{background:#d08000;}
+.fill-mid{background:#7a2000;}
+.fill-high{background:#1a3a9a;}
+.fill-prem{background:#333;}
+.sol-note{font-size:12px;color:#555;line-height:1.55;}
+.sol-warning{font-size:11px;font-weight:700;margin-top:6px;color:#7a5000;background:#fff8ee;padding:4px 8px;border-radius:5px;display:inline-block;}
+
+/* Combo bar */
+.combo-bar{background:#1a1a1a;border-radius:9px;padding:14px 16px;margin-bottom:14px;color:#fff;}
+.cb-title{font-size:13px;font-weight:700;margin-bottom:6px;}
+.cb-body{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;}
+.cb-link{color:#88aaff;}
+
+/* Ref table */
+.gtbl{width:100%;border-collapse:collapse;font-size:13px;}
+.gtbl th{background:#7a2000;color:#fff;padding:9px 12px;text-align:left;font-size:11px;letter-spacing:.05em;}
+.gtbl td{padding:9px 12px;border-bottom:1px solid #eee;}
+.gtbl tr:nth-child(even) td{background:#fafafa;}
+.pill{display:inline-block;padding:2px 8px;border-radius:8px;font-weight:700;font-size:12px;}
+.p-r{background:#ffe0e0;color:#b00020;}
+.p-o{background:#fff0dc;color:#b05000;}
+.p-y{background:#fffadc;color:#8a7000;}
+.p-g{background:#e0fff0;color:#1a7a4a;}
+.p-b{background:#e0eaff;color:#1a3a9a;}
+
+/* CTA */
+.cta-box{background:#f8f8f8;border:1.5px solid #ddd;border-radius:10px;padding:18px;text-align:center;}
+.cta-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.cta-sub{font-size:13px;color:#666;margin-bottom:16px;line-height:1.6;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cta-btn{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;}
+.btn-line{background:#06c755;color:#fff;}
+.btn-tel{background:#1a1a1a;color:#fff;}
+
+@media(max-width:640px){
+  .temp-grid{grid-template-columns:1fr 1fr;}
+  .tog4,.room-grid{grid-template-columns:repeat(2,1fr);}
+  .sol-mets{grid-template-columns:repeat(2,1fr);}
+  .rh-stats{grid-template-columns:1fr 1fr;}
+  .diff-display{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">SMG — คำนวณกระจกกันร้อน</div>
+    <div class="hdr-sub">Heat Control Glass Calculator · v2.0 · smg-con.co.th</div>
+  </div>
+  <div class="hdr-badge">v2.0</div>
+</div>
+
+<div class="wrap">
+
+<!-- STEP 1: วิธีวัดอุณหภูมิ -->
+<div class="card">
+  <div class="card-title"><span class="step-badge">1</span>วัดอุณหภูมิก่อน — รู้จริงว่าต้องลดเท่าไหร่</div>
+  <div class="guide-steps">
+    <div class="guide-step">
+      <div class="gs-num">①</div>
+      <div class="gs-text">
+        <strong>เตรียมเครื่องวัดอุณหภูมิแบบอินฟาเรด (Infrared Thermometer)</strong> — เครื่องเดียวกับที่ใช้วัดไข้ช่วงโควิด หรือซื้อเพิ่มราคา 300–800 บาท ใช้ได้กับงานนี้โดยตรง
+        <div class="tool-hint">🌡️ ใช้ Infrared Thermometer ยิงที่ผิวกระจก ไม่ใช่วัดอากาศ — จะได้ค่าอุณหภูมิผิวกระจกจริงๆ ครับ</div>
+      </div>
+    </div>
+    <div class="guide-step">
+      <div class="gs-num">②</div>
+      <div class="gs-text">
+        <strong>วัดช่วงพีคร้อน</strong> — ทิศตะวันตกวัด 13:00–15:00 น. / ทิศใต้วัด 11:00–13:00 น. / ทิศตะวันออกวัด 08:00–10:00 น.
+      </div>
+    </div>
+    <div class="guide-step">
+      <div class="gs-num">③</div>
+      <div class="gs-text">
+        <strong>วัด 3 ค่าต่อไปนี้:</strong><br>
+        • <strong>ผิวกระจกด้านนอก</strong> — ยิงที่กระจกฝั่งนอกอาคาร<br>
+        • <strong>ผิวกระจกด้านใน</strong> — ยิงที่กระจกฝั่งในห้อง<br>
+        • <strong>อุณหภูมิอากาศในห้อง</strong> — ดูจากเทอร์โมมิเตอร์หรือ App มือถือ
+      </div>
+    </div>
+    <div class="guide-step">
+      <div class="gs-num">④</div>
+      <div class="gs-text"><strong>กรอกค่าที่วัดได้ในช่องด้านล่าง</strong> — ระบบจะคำนวณและแนะนำวิธีแก้ปัญหาที่เหมาะสมกับสถานการณ์ของคุณครับ</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: กรอกอุณหภูมิ -->
+<div class="card">
+  <div class="card-title"><span class="step-badge">2</span>กรอกอุณหภูมิที่วัดได้</div>
+  <div class="temp-grid">
+    <div class="temp-field hot">
+      <span class="temp-icon">🌡️</span>
+      <div class="temp-lbl">ผิวกระจกด้านนอก</div>
+      <input class="temp-inp" type="number" id="tOut" value="65" min="20" max="100" oninput="syncTemps()">
+      <div class="temp-unit">°C</div>
+      <div class="temp-hint">ยิง Infrared ที่ผิวกระจกด้านนอก</div>
+    </div>
+    <div class="temp-field warm">
+      <span class="temp-icon">🪟</span>
+      <div class="temp-lbl">ผิวกระจกด้านใน</div>
+      <input class="temp-inp" type="number" id="tIn" value="45" min="20" max="90" oninput="syncTemps()">
+      <div class="temp-unit">°C</div>
+      <div class="temp-hint">ยิง Infrared ที่ผิวกระจกด้านใน</div>
+    </div>
+    <div class="temp-field warm">
+      <span class="temp-icon">🏠</span>
+      <div class="temp-lbl">อุณหภูมิในห้องตอนนี้</div>
+      <input class="temp-inp" type="number" id="tRoom" value="38" min="20" max="60" oninput="syncTemps()">
+      <div class="temp-unit">°C</div>
+      <div class="temp-hint">เทอร์โมมิเตอร์หรือ App มือถือ</div>
+    </div>
+    <div class="temp-field target">
+      <span class="temp-icon">🎯</span>
+      <div class="temp-lbl">เป้าหมายอุณหภูมิในห้อง</div>
+      <input class="temp-inp" type="number" id="tTarget" value="30" min="18" max="40" oninput="syncTemps()">
+      <div class="temp-unit">°C</div>
+      <div class="temp-hint">อุณหภูมิที่ต้องการลดลงถึง</div>
+    </div>
+  </div>
+
+  <!-- Computed display -->
+  <div class="diff-display" id="diffDisplay">
+    <div class="diff-item">
+      <div class="diff-lbl">ผลต่างที่ต้องลด</div>
+      <div class="diff-val red" id="diffMain">8 °C</div>
+    </div>
+    <div class="diff-item">
+      <div class="diff-lbl">กระจกเดิมถ่ายเทความร้อน</div>
+      <div class="diff-val orange" id="diffGlass">20 °C</div>
+    </div>
+    <div class="diff-item">
+      <div class="diff-lbl">ระดับความรุนแรง</div>
+      <div class="diff-val red" id="diffLevel">สูงมาก</div>
+    </div>
+  </div>
+
+  <!-- เป้าหมายห้อง preset -->
+  <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px;">หรือเลือกเป้าหมายตามการใช้งานห้อง</div>
+  <div class="room-grid">
+    <div class="rp" onclick="setRT(28,this)">ห้องนอน สบาย<div class="rp-temp">28 °C</div></div>
+    <div class="rp on" onclick="setRT(30,this)">ห้องนอน ทั่วไป<div class="rp-temp">30 °C</div></div>
+    <div class="rp" onclick="setRT(32,this)">ห้องนั่งเล่น<div class="rp-temp">32 °C</div></div>
+    <div class="rp" onclick="setRT(35,this)">ห้องอื่นๆ<div class="rp-temp">35 °C</div></div>
+  </div>
+</div>
+
+<!-- STEP 3: ทิศและข้อมูลเพิ่ม -->
+<div class="card">
+  <div class="card-title"><span class="step-badge">3</span>ทิศหน้าต่างและกระจกเดิม</div>
+
+  <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px;">ทิศของหน้าต่าง</div>
+  <div class="tog4" style="margin-bottom:14px;">
+    <div class="tbtn" id="dW" onclick="setDir('W',this)">
+      <span class="ti">🌅</span>ตะวันตก<span class="ts">ร้อนมากที่สุด 13-15น.</span>
+    </div>
+    <div class="tbtn on" id="dS" onclick="setDir('S',this)">
+      <span class="ti">🌞</span>ใต้<span class="ts">ร้อนมาก 11-13น.</span>
+    </div>
+    <div class="tbtn" id="dE" onclick="setDir('E',this)">
+      <span class="ti">🌄</span>ตะวันออก<span class="ts">ร้อนเช้า 8-10น.</span>
+    </div>
+    <div class="tbtn" id="dN" onclick="setDir('N',this)">
+      <span class="ti">🧭</span>เหนือ<span class="ts">ร้อนน้อยสุด</span>
+    </div>
+  </div>
+
+  <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px;">กระจกปัจจุบัน</div>
+  <div class="tog4" style="margin-bottom:0;">
+    <div class="tbtn on" id="gcClear" onclick="setGlass('clear',this)">
+      <span class="ti">🪟</span>กระจกใส<span class="ts">Float Clear</span>
+    </div>
+    <div class="tbtn" id="gcTint" onclick="setGlass('tint',this)">
+      <span class="ti">🟩</span>กระจกสี<span class="ts">เขียว/น้ำตาล</span>
+    </div>
+    <div class="tbtn" id="gcRefl" onclick="setGlass('refl',this)">
+      <span class="ti">🪞</span>กระจกสะท้อน<span class="ts">Reflective</span>
+    </div>
+    <div class="tbtn" id="gcIGU" onclick="setGlass('igu',this)">
+      <span class="ti">🔲</span>กระจกสองชั้น<span class="ts">IGU</span>
+    </div>
+  </div>
+
+  <div style="margin-top:14px;">
+    <button class="calc-btn" onclick="calcHeat2()">วิเคราะห์และแนะนำวิธีแก้ปัญหา →</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="result-wrap" id="resWrap">
+  <div class="card">
+    <div class="res-hero" id="resHero"></div>
+
+    <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:12px;">วิธีแก้ปัญหาเรียงตามงบประมาณ</div>
+    <div class="sol-cards" id="resSols"></div>
+
+    <div class="combo-bar">
+      <div class="cb-title">💡 ต้องการกันเสียงด้วยไหม?</div>
+      <div class="cb-body">IGU Low-E กันทั้งร้อนและเสียงในชิ้นเดียว — ถ้าต้องการ STC สูงขึ้นแนะนำ <strong>IGU + Lam</strong> ดูการคำนวณที่ <a class="cb-link" href="https://tong778-bot.github.io/smg-tools/acoustic-glass.html" target="_blank">SMG Acoustic Calculator</a></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="cta-box">
+      <div class="cta-title">ขอคำแนะนำและใบเสนอราคาฟรี</div>
+      <div class="cta-sub">ส่งผลการวัดอุณหภูมิให้ทีม SMG — เราจะประเมินและเสนอวิธีที่คุ้มค่าที่สุดสำหรับบ้านของคุณครับ</div>
+      <div class="cta-btns">
+        <a class="cta-btn btn-line" href="https://line.me/R/ti/p/@smg58" target="_blank">LINE @smg58</a>
+        <a class="cta-btn btn-tel" href="tel:0863174966">โทร 086-317-4966</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reference Table -->
+<div class="card">
+  <div class="card-title"><span class="step-badge">📊</span>ตารางเปรียบเทียบวิธีลดความร้อน</div>
+  <div style="overflow-x:auto;">
+    <table class="gtbl">
+      <thead>
+        <tr><th>วิธีแก้ปัญหา</th><th>ลดอุณหภูมิห้อง</th><th>SHGC</th><th>งบประมาณ</th><th>ข้อดี</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ต้นไม้ / ชายคา / กันสาด</td><td><span class="pill p-y">3–8 °C</span></td><td>ขึ้นกับร่มเงา</td><td>ต่ำ–กลาง</td><td>ยั่งยืน ไม่ต้องรื้อกระจก</td></tr>
+        <tr><td>ม่านสะท้อนความร้อน (Thermal)</td><td><span class="pill p-y">2–5 °C</span></td><td>—</td><td>ต่ำ</td><td>ทำได้เอง ย้ายได้</td></tr>
+        <tr><td>ฟิล์มกรองแสง (Solar Film)</td><td><span class="pill p-y">3–7 °C</span></td><td>0.45–0.60</td><td>ต่ำ–กลาง</td><td>ไม่ต้องเปลี่ยนกระจก</td></tr>
+        <tr><td>ระบายอากาศ / Return Air</td><td><span class="pill p-y">2–5 °C</span></td><td>—</td><td>กลาง</td><td>ลดความร้อนสะสม</td></tr>
+        <tr><td>กระจกสี Lam Ocean Green 12mm</td><td><span class="pill p-o">4–8 °C</span></td><td>0.65</td><td>กลาง</td><td>Safety + กันร้อนพื้นฐาน</td></tr>
+        <tr><td>Lam SolarTAG CS130</td><td><span class="pill p-o">6–10 °C</span></td><td>0.51</td><td>กลาง</td><td>ลดร้อน 38% Safety Glass</td></tr>
+        <tr><td>Lam SolarTAG CS214</td><td><span class="pill p-g">8–13 °C</span></td><td>0.38</td><td>กลาง–สูง</td><td>ลดร้อน 54% แสงน้อย</td></tr>
+        <tr><td><strong>IGU Low-E SN68 (แนะนำ)</strong></td><td><span class="pill p-g">8–14 °C</span></td><td>0.38</td><td>สูง</td><td>แสงดี 68% + กันร้อนสูง</td></tr>
+        <tr><td>IGU SNX 62/27</td><td><span class="pill p-g">10–16 °C</span></td><td>0.27</td><td>สูง–Premium</td><td>LSG=2.30 Spectrally Selective</td></tr>
+        <tr><td>IGU CS120 (กันร้อนสูงสุด)</td><td><span class="pill p-g">11–17 °C</span></td><td>0.26</td><td>Premium</td><td>ลดร้อนสูงสุด 68%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:11px;color:#aaa;margin-top:10px;">ค่าลดอุณหภูมิโดยประมาณ ขึ้นกับพื้นที่กระจก ทิศ และสภาพแวดล้อม · SHGC อ้างอิง AGC Guardian SMG Catalog</div>
+</div>
+
+<div style="text-align:center;font-size:12px;color:#aaa;padding:16px 0 8px;">
+  SMG Glass And Metal Co., Ltd. · Only The Significant · smg-con.co.th
+</div>
+</div>
+
+<script>
+(function(){
+var G=function(id){return document.getElementById(id);};
+var curDir='S', curGlass='clear';
+
+/* ── Solution Database ── */
+var SOLS=[
+  {
+    id:'ventilation',
+    name:'ปรับระบบระบายอากาศ / Return Air',
+    icon:'💨',
+    cls:'sol-free', tagCls:'t-free', tag:'ฟรี / งบต่ำมาก',
+    fillCls:'fill-free',
+    spec:'เพิ่มช่องระบายอากาศ ปล่อยให้ความร้อนออก ไม่สะสมในห้อง',
+    tempReduce:[2,5],
+    shgc:null, cost:'ฟรี – หลักร้อย',
+    note:'เหมือนรีเทิร์นแอร์ — เปิดช่องอากาศด้านบนให้ความร้อนลอยออก เปิดด้านล่างรับอากาศเย็น ถ้าห้องปิดสนิทความร้อนจะสะสมแม้เปลี่ยนกระจกใหม่',
+    warn:'ควรทำควบคู่กับวิธีอื่นเสมอ',
+    minDiff:0
+  },
+  {
+    id:'shade',
+    name:'ร่มเงา — ต้นไม้ / ชายคา / กันสาด',
+    icon:'🌳',
+    cls:'sol-free', tagCls:'t-free', tag:'งบต่ำ',
+    fillCls:'fill-free',
+    spec:'ต้นไม้ใหญ่ให้ร่มเงา หรือติดกันสาด Awning / Pergola',
+    tempReduce:[3,8],
+    shgc:null, cost:'หลักร้อย – หลักหมื่น',
+    note:'ร่มเงาลดความร้อนก่อนถึงกระจก ดีกว่าเปลี่ยนกระจกแต่ต้องมีพื้นที่ ต้นไม้ใหญ่ผลัดใบด้านใต้ช่วยกันร้อนฤดูร้อนแต่รับแสงฤดูหนาว',
+    warn:null,
+    minDiff:0
+  },
+  {
+    id:'curtain',
+    name:'ม่านสะท้อนความร้อน (Thermal Curtain)',
+    icon:'🪟',
+    cls:'sol-low', tagCls:'t-low', tag:'งบต่ำ',
+    fillCls:'fill-low',
+    spec:'ม่าน Blackout หรือ Thermal ที่มีชั้นสะท้อนรังสีด้านนอก',
+    tempReduce:[2,5],
+    shgc:null, cost:'หลักพัน',
+    note:'ม่านสะท้อนความร้อนลดได้ 2–5°C ใช้ร่วมกับกระจกกันร้อนได้ดีมาก เลือกม่านที่มี White Backing หรือ Metallic Lining ด้านนอก',
+    warn:'ใช้เฉพาะลดอุณหภูมิ ไม่ใช่ SHGC',
+    minDiff:0
+  },
+  {
+    id:'film',
+    name:'ฟิล์มกรองแสงกันร้อน (Solar Film)',
+    icon:'🎞️',
+    cls:'sol-low', tagCls:'t-low', tag:'งบต่ำ',
+    fillCls:'fill-low',
+    spec:'ฟิล์มกรองแสง Solar Control Film ติดด้านในกระจก',
+    tempReduce:[3,7],
+    shgc:0.50, cost:'หลักพัน/m2',
+    note:'วิธีที่คุ้มค่าที่สุดถ้าไม่ต้องการเปลี่ยนกระจก ลด SHGC จาก 0.82 เหลือ 0.45–0.55 ข้อจำกัดคือทำให้กระจกอมความร้อนมากขึ้น (ไม่เหมาะกระจก Tempered บางประเภท)',
+    warn:'ตรวจสอบก่อนว่ากระจกเดิมรองรับฟิล์มได้',
+    minDiff:3
+  },
+  {
+    id:'lam_ogr',
+    name:'เปลี่ยนกระจก Lam Ocean Green 12mm',
+    icon:'🟩',
+    cls:'sol-mid', tagCls:'t-mid', tag:'งบกลาง',
+    fillCls:'fill-mid',
+    spec:'Laminated 6+PVB+6mm Ocean Green · SHGC 0.65 · Safety Glass',
+    tempReduce:[4,8],
+    shgc:0.65, cost:'หลักพัน/m2',
+    note:'Safety Glass + ลดร้อนเบื้องต้น 20% เหมาะเปลี่ยนกระจกเดิมที่ไม่ปลอดภัยและต้องการกันร้อนเพิ่มขึ้น',
+    warn:null,
+    minDiff:3
+  },
+  {
+    id:'lam_cs130',
+    name:'เปลี่ยนกระจก Lam SolarTAG CS130',
+    icon:'🧡',
+    cls:'sol-mid', tagCls:'t-mid', tag:'งบกลาง',
+    fillCls:'fill-mid',
+    spec:'Lamitag Cool CS130 · 10mm · SHGC 0.51 · Safety Glass',
+    tempReduce:[6,10],
+    shgc:0.51, cost:'หลักพัน/m2',
+    note:'ลดร้อน 38% แสงผ่าน 33% เหมาะด้านรับแดดจัด ผ่านมาตรฐาน Thai BEC ใช้แทนกระจกสีเดิมได้ทันที',
+    warn:null,
+    minDiff:5
+  },
+  {
+    id:'lam_cs214',
+    name:'เปลี่ยนกระจก Lam SolarTAG CS214',
+    icon:'🔴',
+    cls:'sol-mid', tagCls:'t-mid', tag:'งบกลาง-สูง',
+    fillCls:'fill-mid',
+    spec:'Lamitag Cool CS214 · 10mm · SHGC 0.38 · HS Safety',
+    tempReduce:[8,13],
+    shgc:0.38, cost:'หลักพัน-หมื่น/m2',
+    note:'ลดร้อน 54% เหมาะทิศตะวันตกที่ร้อนมากที่สุด แสงผ่านน้อย 12% เหมาะ Facade ที่ต้องการลด Solar Load สูง',
+    warn:'แสงผ่านน้อย ควรพิจารณาแสงธรรมชาติในห้องด้วย',
+    minDiff:7
+  },
+  {
+    id:'igu_lowe',
+    name:'เปลี่ยน IGU Low-E SN68 (แนะนำ)',
+    icon:'⭐',
+    cls:'sol-high', tagCls:'t-high', tag:'งบสูง — แนะนำ',
+    fillCls:'fill-high',
+    spec:'PairTAG Low-E SN68 · 22mm · SHGC 0.38 · U-Value 1.91',
+    tempReduce:[8,14],
+    shgc:0.38, cost:'2,000–4,000 บ./m2',
+    note:'ดีที่สุดสำหรับบ้านและคอนโด — แสงผ่านมาก 68% แต่กันร้อนได้ดีเท่ากระจกสี ลดค่าไฟแอร์ได้ประมาณ 35–40% U-Value 1.91 ดีกว่ากระจกธรรมดา 3 เท่า',
+    warn:null,
+    minDiff:7
+  },
+  {
+    id:'igu_snx',
+    name:'IGU SNX 62/27 — Spectrally Selective',
+    icon:'🏆',
+    cls:'sol-prem', tagCls:'t-prem', tag:'Premium',
+    fillCls:'fill-prem',
+    spec:'Guardian SunGuard SNX 62/27 · SHGC 0.27 · VLT 62% · LSG 2.30',
+    tempReduce:[10,16],
+    shgc:0.27, cost:'4,000–6,000 บ./m2',
+    note:'ระดับ Premium สำหรับทิศตะวันตกที่ร้อนที่สุด กันร้อน 67% แต่แสงยังดี 62% LSG=2.30 ผ่านมาตรฐาน Spectrally Selective (DOE) เหมาะอาคารสำนักงานและโครงการระดับสูง',
+    warn:null,
+    minDiff:10
+  },
+];
+
+/* ── State ── */
+window.setDir=function(d,el){
+  curDir=d;
+  ['W','S','E','N'].forEach(function(x){G('d'+x).classList.remove('on');});
+  el.classList.add('on');
+};
+window.setGlass=function(g,el){
+  curGlass=g;
+  ['Clear','Tint','Refl','IGU'].forEach(function(x){G('gc'+x).classList.remove('on');});
+  el.classList.add('on');
+};
+window.setRT=function(t,el){
+  G('tTarget').value=t;
+  document.querySelectorAll('.rp').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  syncTemps();
+};
+
+window.syncTemps=function(){
+  var out=+G('tOut').value||65;
+  var inn=+G('tIn').value||45;
+  var room=+G('tRoom').value||38;
+  var tgt=+G('tTarget').value||30;
+  var glassConduct=out-inn;
+  var mainDiff=room-tgt;
+  var level=mainDiff>=10?'สูงมาก':mainDiff>=6?'สูง':mainDiff>=3?'ปานกลาง':'ต่ำ';
+  var levelColor=mainDiff>=10?'red':mainDiff>=6?'orange':'green';
+  G('diffMain').textContent=Math.max(0,mainDiff)+' °C';
+  G('diffMain').className='diff-val '+levelColor;
+  G('diffGlass').textContent=Math.max(0,glassConduct)+' °C';
+  G('diffLevel').textContent=level;
+  G('diffLevel').className='diff-val '+levelColor;
+  /* sync target room buttons */
+  var t=+G('tTarget').value;
+  document.querySelectorAll('.rp').forEach(function(b){
+    var bt=+b.querySelector('.rp-temp').textContent;
+    b.classList.toggle('on',bt===t);
+  });
+};
+
+/* ── Main calc ── */
+window.calcHeat2=function(){
+  var tOut=+G('tOut').value||65;
+  var tIn=+G('tIn').value||45;
+  var tRoom=+G('tRoom').value||38;
+  var tTgt=+G('tTarget').value||30;
+  var diff=Math.max(0,tRoom-tTgt);
+  var glassConduct=tOut-tIn;
+  var dirName={W:'ทิศตะวันตก',S:'ทิศใต้',E:'ทิศตะวันออก',N:'ทิศเหนือ'};
+  var glassName={clear:'กระจกใส Float',tint:'กระจกสี',refl:'กระจกสะท้อน',igu:'IGU สองชั้น'};
+  var dirHeat={W:5,S:4,E:3,N:1};
+  var heat=dirHeat[curDir]||3;
+  var urgency=diff>=10?'สูงมาก':diff>=6?'สูง':diff>=3?'ปานกลาง':'ต่ำ';
+
+  /* Build hero */
+  var hh='<div class="rh-lbl">ผลการวิเคราะห์ความร้อน</div>';
+  hh+='<div class="rh-main">'+dirName[curDir]+' · '+glassName[curGlass]+'<br>';
+  hh+='ห้องร้อน '+tRoom+'°C → เป้าหมาย '+tTgt+'°C ต้องลดอีก <strong>'+diff+'°C</strong></div>';
+  hh+='<div class="rh-stats">';
+  hh+='<div class="rh-stat"><div class="rh-stat-k">ผิวกระจกนอก</div><div class="rh-stat-v">'+tOut+'<span class="rh-stat-u">°C</span></div></div>';
+  hh+='<div class="rh-stat"><div class="rh-stat-k">ความร้อนผ่านกระจก</div><div class="rh-stat-v">'+glassConduct+'<span class="rh-stat-u">°C</span></div></div>';
+  hh+='<div class="rh-stat"><div class="rh-stat-k">ความเร่งด่วน</div><div class="rh-stat-v">'+urgency+'</div></div>';
+  hh+='</div>';
+  G('resHero').innerHTML=hh;
+
+  /* Filter & build solutions */
+  var sols=SOLS.filter(function(s){return diff>=s.minDiff;});
+  /* if diff is small, show all easy options */
+  if(diff<3) sols=SOLS.slice(0,4);
+
+  var sh='';
+  sols.forEach(function(s){
+    var mid=(s.tempReduce[0]+s.tempReduce[1])/2;
+    var pct=Math.min(100,Math.round(mid/20*100));
+    var afterTemp=Math.max(tTgt-2,tRoom-mid);
+    sh+='<div class="sol-card '+s.cls+'">';
+    sh+='<div class="sol-tag '+s.tagCls+'">'+s.tag+'</div>';
+    sh+='<div class="sol-header"><span class="sol-icon">'+s.icon+'</span>';
+    sh+='<div><div class="sol-name">'+s.name+'</div><div class="sol-spec">'+s.spec+'</div></div></div>';
+    sh+='<div class="sol-mets">';
+    sh+='<div class="sol-met"><div class="sol-met-k">ลดอุณหภูมิ</div><div class="sol-met-v good">'+s.tempReduce[0]+'–'+s.tempReduce[1]+'<span class="sol-met-u">°C</span></div></div>';
+    sh+='<div class="sol-met"><div class="sol-met-k">ห้องหลังปรับ</div><div class="sol-met-v">~'+Math.round(afterTemp)+'<span class="sol-met-u">°C</span></div></div>';
+    if(s.shgc){
+      sh+='<div class="sol-met"><div class="sol-met-k">SHGC</div><div class="sol-met-v '+(s.shgc<0.40?'good':'')+'">'+s.shgc+'</div></div>';
+    } else {
+      sh+='<div class="sol-met"><div class="sol-met-k">SHGC</div><div class="sol-met-v" style="font-size:11px;">ไม่เกี่ยว</div></div>';
+    }
+    sh+='<div class="sol-met"><div class="sol-met-k">งบประมาณ</div><div class="sol-met-v" style="font-size:11px;">'+s.cost+'</div></div>';
+    sh+='</div>';
+    sh+='<div class="sol-bar"><div class="sol-bar-lbl"><span>ประสิทธิภาพลดความร้อน</span><span>~'+Math.round(mid)+'°C</span></div>';
+    sh+='<div class="sol-bar-bg"><div class="sol-bar-fill '+s.fillCls+'" style="width:'+pct+'%"></div></div></div>';
+    if(s.warn) sh+='<div class="sol-warning">⚠️ '+s.warn+'</div>';
+    sh+='<div class="sol-note">'+s.note+'</div></div>';
+  });
+
+  /* Best combo suggestion */
+  if(diff>=8&&heat>=4){
+    sh+='<div class="sol-card" style="border-color:#6610f2;background:#f5eeff;">';
+    sh+='<div class="sol-tag" style="background:#6610f2;color:#fff;">คำแนะนำ SMG</div>';
+    sh+='<div class="sol-header"><span class="sol-icon">💡</span>';
+    sh+='<div><div class="sol-name">ผสมวิธีสำหรับ'+dirName[curDir]+'ร้อนมาก</div></div></div>';
+    sh+='<div class="sol-note" style="font-size:13px;line-height:1.75;">กรณีร้อนหนักแนะนำทำ <strong>3 อย่างพร้อมกัน</strong>:<br>';
+    sh+='① ติดกันสาด/ชายคาภายนอก → ลด 3–8°C<br>';
+    sh+='② เปลี่ยนกระจก IGU Low-E → ลด 8–14°C<br>';
+    sh+='③ ปรับระบบระบายอากาศ → ลด 2–5°C<br>';
+    sh+='<strong>รวมลดได้ถึง 13–27°C</strong> จาก '+tRoom+'°C เหลือ ~'+Math.max(20,tRoom-20)+'°C ซึ่งเพียงพอสำหรับการใช้แอร์อย่างประหยัดครับ</div></div>';
+  }
+
+  G('resSols').innerHTML=sh;
+  G('resWrap').style.display='block';
+  G('resWrap').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+/* Init */
+['tOut','tIn','tRoom','tTarget'].forEach(function(id){
+  G(id).addEventListener('input',syncTemps);
+});
+syncTemps();
+})();
+</script>
+</body>
+</html>
