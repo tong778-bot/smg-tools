@@ -12,6 +12,28 @@
     <style>
         body { font-family: 'Kanit', sans-serif; }
         .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        /* ลูกเล่น FX: แสงวิบวับวิ่งพาดผ่านรูปภาพ */
+        .glass-fx {
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-fx::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            z-index: 20;
+            transition: left 0.7s ease-in-out;
+        }
+        /* เมื่อเอาเมาส์ชี้ให้แสงวิ่งจากซ้ายไปขวา */
+        .group:hover .glass-fx::after {
+            left: 150%;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-[#231f20]">
@@ -22,14 +44,14 @@
                 <img src="logo_3_deepblue.png" alt="SMG GLASS AND METALS" class="h-10 sm:h-12 w-auto object-contain">
             </a>
             <div class="hidden md:flex space-x-6 text-sm font-medium text-white/90">
-                <a href="heat-glass.html" class="hover:text-[#6fa088] transition-colors">🔥 กระจกกันความร้อน</a>
-                <a href="acoustic-glass.html" class="hover:text-[#6fa088] transition-colors">🔊 กระจกซับเสียง</a>
-                <a href="curved-glass.html" class="hover:text-[#6fa088] transition-colors">📐 กระจกดัดโค้ง</a>
+                <a href="heat-glass.html" target="_blank" class="hover:text-[#6fa088] transition-colors">🔥 กระจกกันความร้อน</a>
+                <a href="acoustic-glass.html" target="_blank" class="hover:text-[#6fa088] transition-colors">🔊 กระจกซับเสียง</a>
+                <a href="curved-glass.html" target="_blank" class="hover:text-[#6fa088] transition-colors">📐 กระจกดัดโค้ง</a>
             </div>
         </div>
     </nav>
 
-    <section class="relative min-h-[calc(100vh-73px)] flex items-center justify-center bg-white overflow-hidden py-16 lg:py-0">
+    <section class="relative py-16 lg:py-24 bg-white overflow-hidden border-b border-gray-100">
         <div class="absolute inset-0 z-0 opacity-30">
             <div class="absolute top-0 left-1/4 w-[1px] h-full bg-gray-200"></div>
             <div class="absolute top-0 left-2/4 w-[1px] h-full bg-gray-200"></div>
@@ -56,21 +78,18 @@
                     </p>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <a href="heat-glass.html" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
+                        <a href="heat-glass.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
                             <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">📊 ระบบกระจกกันความร้อน</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-                        
-                        <a href="acoustic-glass.html" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
+                        <a href="acoustic-glass.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
                             <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">🔊 ระบบกระจกซับเสียง</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-                        
-                        <a href="curved-glass.html" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
+                        <a href="curved-glass.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
                             <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">📐 ระบบกระจกดัดโค้ง</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-
                         <a href="https://line.me/R/ti/p/@smg58" target="_blank" class="flex items-center justify-between p-4 bg-gradient-to-r from-[#003e52] to-[#6fa088] text-white rounded-xl shadow-sm hover:opacity-90 transition-all duration-300">
                             <span class="font-semibold font-montserrat">💬 LINE: @smg58</span>
                             <span>↗</span>
@@ -81,15 +100,83 @@
                 <div class="lg:col-span-6 relative">
                     <div class="absolute -top-4 -left-4 w-16 h-16 border-t-4 border-l-4 border-[#6fa088] rounded-tl-xl hidden sm:block"></div>
                     <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-4 border-r-4 border-[#003e52] rounded-br-xl hidden sm:block"></div>
-                    
                     <div class="rounded-2xl overflow-hidden shadow-xl">
                         <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="SMG Premium Glass" class="w-full h-[400px] object-cover">
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6 lg:px-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-[#003e52] font-montserrat uppercase">Featured Highlights</h2>
+                <div class="h-1 w-16 bg-[#6fa088] mx-auto mt-4 rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="https://www.smg-con.co.th/news_detail.php?id=62" target="_blank" class="group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white">
+                    <div class="glass-fx w-full h-64 rounded-2xl relative">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" alt="SMG Project" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div class="absolute bottom-6 left-6 right-6 text-white z-30 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                            <span class="inline-block px-3 py-1 bg-[#6fa088] rounded-full text-[10px] font-semibold mb-2 tracking-widest uppercase font-montserrat">News / Update</span>
+                            <h3 class="text-lg font-bold font-montserrat flex items-center justify-between">
+                                อ่านรายละเอียดเพิ่มเติม
+                                <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-10px] group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </h3>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.smg-con.co.th/news_detail.php?id=61" target="_blank" class="group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white">
+                    <div class="glass-fx w-full h-64 rounded-2xl relative">
+                        <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=600&q=80" alt="SMG Project" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div class="absolute bottom-6 left-6 right-6 text-white z-30 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                            <span class="inline-block px-3 py-1 bg-[#6fa088] rounded-full text-[10px] font-semibold mb-2 tracking-widest uppercase font-montserrat">News / Update</span>
+                            <h3 class="text-lg font-bold font-montserrat flex items-center justify-between">
+                                อ่านรายละเอียดเพิ่มเติม
+                                <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-10px] group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </h3>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.smg-con.co.th/news_detail.php?id=59" target="_blank" class="group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white">
+                    <div class="glass-fx w-full h-64 rounded-2xl relative">
+                        <img src="https://images.unsplash.com/photo-1545214041-383738092284?auto=format&fit=crop&w=600&q=80" alt="SMG Project" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div class="absolute bottom-6 left-6 right-6 text-white z-30 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                            <span class="inline-block px-3 py-1 bg-[#6fa088] rounded-full text-[10px] font-semibold mb-2 tracking-widest uppercase font-montserrat">News / Update</span>
+                            <h3 class="text-lg font-bold font-montserrat flex items-center justify-between">
+                                อ่านรายละเอียดเพิ่มเติม
+                                <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-10px] group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#002b3a] pt-12 pb-8 border-t-4 border-[#6fa088]">
+        <div class="container mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-white/80">
+            <div>
+                <h4 class="text-xl font-bold text-white mb-2 font-montserrat">บริษัท เอส เอ็ม จี กลาส แอนด์ เมทัล จำกัด</h4>
+                <p class="text-sm font-light mb-1">SMG Glass And Metal Co., Ltd.</p>
+                <p class="text-sm font-light text-[#6fa088]">Tax ID: 010 555 80666 94</p>
+            </div>
+            <div class="md:text-right flex flex-col justify-center">
+                <p class="mb-2 text-sm leading-relaxed"><strong class="text-white">ที่อยู่:</strong> 24/22 ซอยกำนันแม้น 13 แยก 18<br>แขวงบางบอน เขตบางบอน กรุงเทพฯ 10150</p>
+                <p class="mb-1 text-sm"><strong class="text-white">เบอร์โทร:</strong> 086-317-4966, 094-663-9951</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 lg:px-16 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/50 font-montserrat">
+            &copy; 2026 SMG GLASS AND METALS. All Rights Reserved.
+        </div>
+    </footer>
 
 </body>
 </html>
