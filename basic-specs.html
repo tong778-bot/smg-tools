@@ -12,10 +12,10 @@
     <style>
         body { font-family: 'Kanit', sans-serif; background-color: #f8fafc; }
         .font-montserrat { font-family: 'Montserrat', sans-serif; }
-        .tab-active { background-color: #003e52; color: white; border-color: #003e52; box-shadow: 0 4px 6px -1px rgba(0, 62, 82, 0.2); }
+        .tab-active { background-color: #003e52; color: white; border-color: #003e52; }
         .tab-inactive { background-color: white; color: #64748b; border-color: #e2e8f0; }
-        .tech-table th { background-color: #f1f5f9; color: #334155; font-weight: 600; padding: 10px; border: 1px solid #e2e8f0; text-align: center; font-size: 11px; }
-        .tech-table td { padding: 10px; border: 1px solid #e2e8f0; text-align: center; color: #003e52; font-weight: 600; font-size: 12px; }
+        .tech-table th { background-color: #f1f5f9; color: #334155; font-weight: 600; padding: 8px; border: 1px solid #e2e8f0; text-align: center; font-size: 11px; }
+        .tech-table td { padding: 8px; border: 1px solid #e2e8f0; text-align: center; color: #003e52; font-weight: 600; font-size: 11px; }
         .tech-table .label-col { text-align: left; font-weight: 500; color: #475569; background-color: #f8fafc; }
     </style>
 </head>
@@ -27,39 +27,37 @@
                 <img src="logo_3_deepblue.png" alt="SMG Logo" class="h-10 sm:h-12 w-auto object-contain">
                 <span class="text-white font-montserrat font-bold tracking-widest text-sm group-hover:text-[#6fa088] transition-colors hidden sm:block">PERFORMANCE DATA</span>
             </a>
-            <a href="index.html" class="text-white/80 hover:text-white text-sm font-light flex items-center gap-2 transition-colors">
+            <a href="index.html" class="text-white/80 hover:text-white text-sm font-light flex items-center gap-2">
                 <span>← กลับหน้าหลัก</span>
             </a>
         </div>
     </nav>
 
-    <section class="bg-white border-b border-gray-200 py-10">
+    <section class="bg-white border-b border-gray-200 py-8">
         <div class="container mx-auto px-6 lg:px-16 text-center">
-            <h1 class="text-3xl font-bold text-[#003e52] mb-3">วิเคราะห์สเปกกระจก & เกณฑ์พลังงาน</h1>
-            <p class="text-gray-500 max-w-2xl mx-auto text-sm">ระบบช่วยวิเคราะห์คุณสมบัติกระจก SMG ตามหลักวิศวกรรม เพื่อการออกแบบ Façade และประเมินอาคารประหยัดพลังงาน</p>
+            <h1 class="text-2xl font-bold text-[#003e52] mb-2">วิเคราะห์สเปกกระจก & เกณฑ์พลังงาน</h1>
+            <p class="text-gray-500 max-w-2xl mx-auto text-xs">ระบบช่วยวิเคราะห์คุณสมบัติกระจก SMG ตามหลักวิศวกรรม เพื่อการออกแบบ Façade และประเมินอาคารประหยัดพลังงาน</p>
         </div>
     </section>
 
-    <section class="py-10">
+    <section class="py-8">
         <div class="container mx-auto px-6 lg:px-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
-                <div class="lg:col-span-4 space-y-6 sticky top-24">
-                    
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="h-40 w-full relative">
+                <div class="lg:col-span-4 space-y-4 sticky top-24">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="h-32 w-full relative">
                             <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#003e52] to-transparent opacity-90"></div>
-                            <div class="absolute bottom-4 left-5 right-5">
-                                <span class="text-white/80 text-[10px] font-bold tracking-widest font-montserrat uppercase mb-1 block">Configuration</span>
-                                <h2 class="text-white text-lg font-bold">เลือกรุ่นกระจกที่ต้องการ</h2>
+                            <div class="absolute bottom-3 left-4">
+                                <span class="text-white/70 text-[9px] font-bold tracking-widest font-montserrat uppercase block">Configuration</span>
+                                <h2 class="text-white text-base font-bold">เลือกรุ่นกระจก</h2>
                             </div>
                         </div>
-                        
-                        <div class="p-5 space-y-4">
+                        <div class="p-4 space-y-3">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-500 mb-1.5">รูปแบบสีกระจก (Glass Type)</label>
-                                <select id="selType" class="w-full border border-gray-200 rounded-lg p-2.5 text-gray-800 text-sm focus:ring-2 focus:ring-[#6fa088] focus:border-[#6fa088] bg-gray-50 font-medium transition-all">
+                                <label class="block text-[11px] font-semibold text-gray-500 mb-1">รูปแบบสีกระจก (Glass Type)</label>
+                                <select id="selType" class="w-full border border-gray-200 rounded-lg p-2 text-gray-800 text-xs bg-gray-50 font-medium transition-all focus:ring-1 focus:ring-[#003e52]">
                                     <option value="clear">กระจกโฟลตใส (Clear Float)</option>
                                     <option value="coolgray">สีชาอ่อน (Coolgray)</option>
                                     <option value="darkcoolgray">สีชาดำ (Dark Coolgray)</option>
@@ -68,130 +66,128 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-gray-500 mb-1.5">ความหนา (Thickness)</label>
-                                <select id="selThick" class="w-full border border-gray-200 rounded-lg p-2.5 text-gray-800 text-sm focus:ring-2 focus:ring-[#6fa088] focus:border-[#6fa088] bg-gray-50 font-medium transition-all">
+                                <label class="block text-[11px] font-semibold text-gray-500 mb-1">ความหนา (Thickness)</label>
+                                <select id="selThick" class="w-full border border-gray-200 rounded-lg p-2 text-gray-800 text-xs bg-gray-50 font-medium transition-all focus:ring-1 focus:ring-[#003e52]">
                                     </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
-                        <div class="absolute top-0 left-0 w-full h-1.5 bg-emerald-500"></div>
-                        <div class="p-5">
-                            <h2 class="text-base font-bold text-gray-800 mb-1 flex items-center gap-2">🌱 ประเมินเกณฑ์พลังงาน (BEC)</h2>
-                            <p class="text-[11px] text-gray-400 mb-4">อ้างอิงกฎกระทรวงและเกณฑ์ความร้อนรวม (OTTV)</p>
-                            
-                            <div class="pt-3 border-t border-gray-100 space-y-3">
-                                <div>
-                                    <div id="becStatus">
-                                        </div>
-                                </div>
-                                <div class="bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-100 text-xs text-gray-700 leading-relaxed">
-                                    <span class="font-bold text-[#003e52] block mb-1">💡 คำแนะนำสเปกหน้างาน:</span>
-                                    <div id="becAdvice">
-                                        </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden relative">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+                        <div class="p-4">
+                            <h2 class="text-sm font-bold text-gray-800 mb-1 flex items-center gap-1.5">🌱 ประเมินเกณฑ์พลังงาน (BEC)</h2>
+                            <div class="pt-2 border-t border-gray-100 space-y-2 mt-2">
+                                <div id="becStatus"></div>
+                                <div class="bg-emerald-50/40 p-3 rounded-lg border border-emerald-100 text-[11px] text-gray-700 leading-relaxed">
+                                    <span class="font-bold text-[#003e52] block mb-0.5">💡 คำแนะนำสเปกหน้างาน:</span>
+                                    <div id="becAdvice"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <div class="lg:col-span-8">
+                <div class="lg:col-span-8 space-y-4">
                     
-                    <div class="flex flex-col sm:flex-row gap-3 mb-6 bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
-                        <button id="btnHomeowner" onclick="switchTab('homeowner')" class="tab-inactive flex-1 py-2.5 px-4 rounded-xl border font-bold transition-all text-sm flex items-center justify-center gap-2">
+                    <div class="flex flex-col sm:flex-row gap-2 bg-white p-1.5 rounded-xl shadow-sm border border-gray-100">
+                        <button id="btnHomeowner" onclick="switchTab('homeowner')" class="tab-inactive flex-1 py-2 px-3 rounded-lg border font-bold transition-all text-xs flex items-center justify-center gap-1.5">
                             👨‍👩‍👧‍👦 ข้อมูลสำหรับเจ้าของบ้าน
                         </button>
-                        <button id="btnArchitect" onclick="switchTab('architect')" class="tab-active flex-1 py-2.5 px-4 rounded-xl border font-bold transition-all text-sm flex items-center justify-center gap-2">
+                        <button id="btnArchitect" onclick="switchTab('architect')" class="tab-active flex-1 py-2 px-3 rounded-lg border font-bold transition-all text-xs flex items-center justify-center gap-1.5">
                             📐 ข้อมูลสำหรับสถาปนิก / วิศวกร
                         </button>
                     </div>
 
-                    <div id="contentHomeowner" class="hidden">
-                        <div class="bg-[#003e52] text-white p-5 rounded-2xl shadow-sm mb-6 flex items-center justify-between">
+                    <div id="contentHomeowner" class="hidden space-y-4">
+                        <div class="bg-[#003e52] text-white p-4 rounded-xl shadow-sm flex items-center justify-between">
                             <div>
-                                <h3 class="font-bold text-lg">ประสิทธิภาพรุ่นที่เลือก</h3>
-                                <p class="text-white/70 text-sm" id="ho_model_name">กระจกสีเขียวเข้ม (Ocean green) หนา 6 มม.</p>
+                                <h3 class="font-bold text-sm">ประสิทธิภาพรุ่นที่เลือก</h3>
+                                <p class="text-white/70 text-xs" id="ho_model_name">-</p>
                             </div>
-                            <div class="text-3xl opacity-50">🏠</div>
+                            <div class="text-2xl opacity-40">🏠</div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:border-blue-200 transition-all">
-                                <div class="text-2xl mb-2">☀️</div>
-                                <h3 class="text-sm font-bold text-gray-500 mb-1">แสงสว่างส่องผ่าน (VLT)</h3>
-                                <div class="text-3xl font-bold text-[#003e52] mb-3"><span id="ho_vlt">72</span>%</div>
-                                <div class="bg-blue-50 text-blue-800 p-2.5 rounded-lg text-xs"><strong class="text-blue-900">📈 ยิ่งเปอร์เซ็นต์มาก ยิ่งสว่าง!</strong> ช่วยให้บ้านโปร่งโล่ง ไม่อึดอัด และลดการใช้ไฟส่องสว่างตอนกลางวัน</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <h3 class="text-xs font-bold text-gray-400 mb-0.5">ความสว่างภายในห้อง (VLT)</h3>
+                                <div class="text-2xl font-bold text-[#003e52] mb-1"><span id="ho_vlt">-</span>%</div>
+                                <p class="text-[11px] text-gray-500"><strong class="text-blue-700">📈 ยิ่งมากยิ่งสว่าง:</strong> ช่วยให้บ้านสว่างจากแสงธรรมชาติอย่างเหมาะสม ลดการเปิดไฟตอนกลางวัน</p>
                             </div>
-                            
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:border-blue-200 transition-all">
-                                <div class="text-2xl mb-2">🌡️</div>
-                                <h3 class="text-sm font-bold text-gray-500 mb-1">ค่าถ่ายเทความร้อน (U-Value)</h3>
-                                <div class="text-3xl font-bold text-[#003e52] mb-3"><span id="ho_u">5.83</span></div>
-                                <div class="bg-emerald-50 text-emerald-800 p-2.5 rounded-lg text-xs"><strong class="text-emerald-900">📉 ยิ่งค่าน้อย ยิ่งกันความร้อนดี!</strong> บล็อกความร้อนจากอากาศภายนอกไม่ให้ซึมเข้ามาในตัวบ้าน</div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <h3 class="text-xs font-bold text-gray-400 mb-0.5">การป้องกันความร้อนจากภายนอก (U-Value)</h3>
+                                <div class="text-2xl font-bold text-[#003e52] mb-1"><span id="ho_u">-</span></div>
+                                <p class="text-[11px] text-gray-500"><strong class="text-emerald-700">📉 ยิ่งน้อยยิ่งกันความร้อนดี:</strong> บล็อกความร้อนอุณหภูมิอากาศภายนอกไม่ให้ซึมเข้าสู่ตัวบ้าน</p>
                             </div>
-
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:border-blue-200 transition-all">
-                                <div class="text-2xl mb-2">❄️</div>
-                                <h3 class="text-sm font-bold text-gray-500 mb-1">ภาระความร้อนรวม (RHG)</h3>
-                                <div class="text-3xl font-bold text-red-600 mb-3"><span id="ho_rhg">460</span> <span class="text-sm text-gray-400 font-medium">W/m²</span></div>
-                                <div class="bg-emerald-50 text-emerald-800 p-2.5 rounded-lg text-xs"><strong class="text-emerald-900">📉 ยิ่งค่าน้อย แอร์ยิ่งทำงานเบา!</strong> เป็นค่าความร้อนรวมทั้งหมดที่ทะลุเข้ามาได้ ค่านี้น้อย = ประหยัดค่าไฟแอร์</div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <h3 class="text-xs font-bold text-gray-400 mb-0.5">การประหยัดค่าไฟแอร์ภาพรวม (RHG)</h3>
+                                <div class="text-2xl font-bold text-red-600 mb-1"><span id="ho_rhg">-</span> <span class="text-xs text-gray-400 font-medium">W/m²</span></div>
+                                <p class="text-[11px] text-gray-500"><strong class="text-emerald-700">📉 ยิ่งน้อยยิ่งประหยัดแอร์:</strong> ค่าปริมาณความร้อนรวมทั้งหมดที่ทะลุเข้ามาจริง ยิ่งต่ำแอร์ยิ่งทำงานเบา</p>
                             </div>
-
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:border-blue-200 transition-all">
-                                <div class="text-2xl mb-2">✨</div>
-                                <h3 class="text-sm font-bold text-gray-500 mb-1">แสงสะท้อนภายนอก</h3>
-                                <div class="text-3xl font-bold text-[#003e52] mb-3"><span id="ho_ref">7</span>%</div>
-                                <div class="bg-blue-50 text-blue-800 p-2.5 rounded-lg text-xs"><strong class="text-blue-900">📉 ยิ่งค่าน้อย ยิ่งใสเคลียร์</strong> ไม่ก่อให้เกิดแสงสะท้อนไปรบกวนบ้านข้างเคียง มองทะลุเห็นวิวชัดเจน</div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <h3 class="text-xs font-bold text-gray-400 mb-0.5">แสงสะท้อนรบกวนภายนอก</h3>
+                                <div class="text-2xl font-bold text-[#003e52] mb-1"><span id="ho_ref">-</span>%</div>
+                                <p class="text-[11px] text-gray-500"><strong class="text-blue-700">📉 ยิ่งน้อยยิ่งดี:</strong> กระจกมีความใสเคลียร์ มองวิวด้านนอกชัดเจน และไม่สะท้อนแสงแดดจ้าไปรบกวนเพื่อนบ้าน</p>
                             </div>
                         </div>
                     </div>
 
-                    <div id="contentArchitect" class="space-y-6 block">
+                    <div id="contentArchitect" class="space-y-4 block">
                         
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="bg-white p-3 rounded-xl border border-gray-200 text-center shadow-sm">
-                                <span class="block text-[10px] text-gray-400 font-semibold mb-1">จุดอ่อนตัวจากความร้อน</span>
-                                <span class="block text-[#003e52] font-bold text-sm">650-700 °C</span>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-center shadow-sm">
+                                <span class="block text-[10px] text-gray-400 font-semibold mb-0.5">จุดอ่อนตัวจากความร้อน</span>
+                                <span class="block text-[#003e52] font-bold text-xs">650-700 °C</span>
                             </div>
-                            <div class="bg-white p-3 rounded-xl border border-gray-200 text-center shadow-sm">
-                                <span class="block text-[10px] text-gray-400 font-semibold mb-1">ความแข็งผิว (Mohs)</span>
-                                <span class="block text-[#003e52] font-bold text-sm">ระดับ 6</span>
+                            <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-center shadow-sm">
+                                <span class="block text-[10px] text-gray-400 font-semibold mb-0.5">ความแข็งผิว (MOHS)</span>
+                                <span class="block text-[#003e52] font-bold text-xs">ระดับ 6</span>
                             </div>
-                            <div class="bg-white p-3 rounded-xl border border-gray-200 text-center shadow-sm">
-                                <span class="block text-[10px] text-gray-400 font-semibold mb-1">ความถ่วงจำเพาะ</span>
-                                <span class="block text-[#003e52] font-bold text-sm">2.5</span>
+                            <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-center shadow-sm">
+                                <span class="block text-[10px] text-gray-400 font-semibold mb-0.5">ความถ่วงจำเพาะ</span>
+                                <span class="block text-[#003e52] font-bold text-xs">2.5</span>
                             </div>
-                            <div class="bg-white p-3 rounded-xl border border-gray-200 text-center shadow-sm">
-                                <span class="block text-[10px] text-gray-400 font-semibold mb-1">การนำความร้อน</span>
-                                <span class="block text-[#003e52] font-bold text-sm">0.68 kcal/m²hr°C</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-blue-50/70 p-5 rounded-2xl border border-blue-100">
-                            <h3 class="text-sm font-bold text-[#003e52] mb-3 flex items-center gap-2">📖 Façade Spec Guide (SHGC vs RHG)</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                                <div class="bg-white p-3.5 rounded-xl border border-blue-50/50 shadow-sm leading-relaxed">
-                                    <strong class="text-gray-800 text-sm block mb-1.5">☀️ ค่า SHGC vs ค่า RHG</strong>
-                                    • <span class="font-semibold text-blue-700">SHGC (สัดส่วน):</span> ความร้อนจากแสงแดดที่ผ่านกระจกตรงๆ (ค่าทางฟิสิกส์ 0-1) ยิ่งต่ำยิ่งกันแดดดี<br>
-                                    • <span class="font-semibold text-blue-700">RHG (ปริมาณรวม):</span> ความร้อนรวมที่ผ่านเข้าอาคารจริง <span class="bg-yellow-100 px-1 rounded text-yellow-900 font-semibold">RHG = โซลาร์(SHGC) + การนำความร้อน(U-Value)</span>
-                                </div>
-                                <div class="bg-white p-3.5 rounded-xl border border-blue-50/50 shadow-sm leading-relaxed">
-                                    <strong class="text-gray-800 text-sm block mb-1.5">💡 การเลือกใช้ (Rule of Thumb)</strong>
-                                    • <span class="font-bold text-emerald-700">ต้องการประเมินภาระแอร์:</span> ให้ดูที่ค่า **RHG** เป็นหลัก ยิ่งต่ำ แอร์ยิ่งทำงานน้อย<br>
-                                    • กระจกที่ SHGC ต่ำเหมือนกัน <span class="text-red-600 font-semibold">แต่ถ้า U-Value แย่ ค่าความร้อนรวม (RHG) ก็จะยังคงสูงอยู่ดี</span> จึงต้องดูควบคู่กันเสมอ
-                                </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-center shadow-sm">
+                                <span class="block text-[10px] text-gray-400 font-semibold mb-0.5">การนำความร้อน</span>
+                                <span class="block text-[#003e52] font-bold text-xs">0.68 kcal/m²hr°C</span>
                             </div>
                         </div>
 
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
-                            <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center justify-between">
-                                <span>TECHNICAL DATA</span>
-                                <span class="text-[#6fa088] font-montserrat text-[10px] tracking-wider uppercase" id="tbl_model_name">Ocean green (6mm)</span>
-                            </h3>
+                        <div class="bg-blue-50/60 p-3.5 rounded-xl border border-blue-100 text-[11px] text-gray-600 leading-relaxed">
+                            <strong class="text-[#003e52] text-xs block mb-1">📖 Façade Spec Guide: SHGC vs RHG ต่างกันอย่างไร?</strong>
+                            • <span class="font-semibold text-blue-800">SHGC (สัดส่วนรังสีแดด):</span> ค่าทางฟิสิกส์พื้นฐาน (0-1) <span class="text-emerald-700 font-bold">📉 ยิ่งน้อย = ยิ่งกันแดดได้ดี</span><br>
+                            • <span class="font-semibold text-blue-800">RHG (ปริมาณความร้อนรวม):</span> คำนวณจาก <span class="font-medium text-gray-800">[รังสีแดด (SHGC) + การนำความร้อน (U-Value)]</span> ใช้ประเมินภาระแอร์ภาพรวมอาคาร <span class="text-emerald-700 font-bold">📉 ยิ่งต่ำ = ยิ่งประหยัดค่าไฟแอร์</span>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2.5">📋 คำอธิบายคำศัพท์เทคนิคและเกณฑ์ประสิทธิภาพ</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-100">
+                                    <strong class="text-gray-800 block">Shading Coefficient (SC)</strong>
+                                    ค่าสัมประสิทธิ์การบังแดด <span class="text-emerald-600 font-bold">📉 ยิ่งน้อยยิ่งดี</span> เพราะบ่งบอกถึงการกรองและสกัดกั้นพลังงานรังสีตรงจากดวงอาทิตย์ได้อย่างมีประสิทธิภาพ
+                                </div>
+                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-100">
+                                    <strong class="text-gray-800 block">U-Value (Thermal Transmittance)</strong>
+                                    ค่าการถ่ายเทความร้อน <span class="text-emerald-600 font-bold">📉 ยิ่งน้อยยิ่งดี</span> แสดงว่าวัสดุเนื้อกระจกยอมให้ความร้อนจากอุณหภูมิอากาศภายนอกผ่านเข้ามาได้ยาก
+                                </div>
+                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-100">
+                                    <strong class="text-gray-800 block">Relative Heat Gain (RHG)</strong>
+                                    ค่าการถ่ายเทความร้อนรวมรวมรังสี <span class="text-emerald-600 font-bold">📉 ยิ่งน้อยยิ่งดี</span> เป็นดัชนีชี้วัดหลักที่วิศวกรนำไปคำนวณขนาดและภาระการทำความเย็นของแอร์
+                                </div>
+                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-100">
+                                    <strong class="text-gray-800 block">Visible Rays Transmittance (VLT)</strong>
+                                    ค่าแสงสว่างส่องผ่าน <span class="text-blue-600 font-bold">📈 ยิ่งมากยิ่งสว่าง</span> เหมาะกับพื้นที่ต้องการความโปร่งเคลียร์ แต่ถ้าแดดแรงจัดสามารถเลือกค่าน้อยลงเพื่อลดการแสบตา
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                            <div class="flex items-center justify-between mb-3 border-b pb-2">
+                                <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider">TECHNICAL DATA (ฉบับสมบูรณ์อ้างอิงหน้า 9)</h3>
+                                <span class="text-xs font-bold text-[#003e52]" id="tbl_model_name">-</span>
+                            </div>
                             
-                            <div class="overflow-x-auto rounded-xl border border-gray-200 mb-4">
+                            <div class="overflow-x-auto rounded-lg border border-gray-200 mb-3">
                                 <table class="w-full tech-table">
                                     <thead>
                                         <tr>
@@ -222,14 +218,14 @@
                                 </table>
                             </div>
                             
-                            <div class="overflow-x-auto rounded-xl border border-gray-200">
+                            <div class="overflow-x-auto rounded-lg border border-gray-200">
                                 <table class="w-full tech-table">
                                     <thead>
                                         <tr>
                                             <th colspan="2">Relative Heat Gain (RHG)</th>
                                             <th colspan="4">U-Value</th>
-                                            <th rowspan="2" class="bg-emerald-50">Shading Coefficient (SC)</th>
-                                            <th rowspan="2" class="bg-blue-50 text-blue-900">SHGC (สัดส่วน)</th>
+                                            <th rowspan="2" class="bg-emerald-50 text-emerald-900 font-bold text-[10px]">SC</th>
+                                            <th rowspan="2" class="bg-blue-50 text-blue-900 font-bold text-[10px]">SHGC (สัดส่วน)</th>
                                         </tr>
                                         <tr>
                                             <th>(watt/m²)</th>
@@ -242,19 +238,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td id="rhg_w" class="text-red-600 font-bold bg-red-50/30">-</td>
+                                            <td id="rhg_w" class="text-red-600 font-bold bg-red-50/10">-</td>
                                             <td id="rhg_b">-</td>
                                             <td id="u_wn_w">-</td>
                                             <td id="u_wn_b">-</td>
                                             <td id="u_sd_w">-</td>
                                             <td id="u_sd_b">-</td>
-                                            <td id="sc" class="text-emerald-700 font-bold bg-emerald-50">-</td>
-                                            <td id="shgc" class="text-blue-700 font-bold bg-blue-50 text-sm">-</td>
+                                            <td id="sc" class="text-emerald-700 font-bold bg-emerald-50/50">-</td>
+                                            <td id="shgc" class="text-blue-700 font-bold bg-blue-50/50">-</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-[10px] text-gray-400 mt-3 text-right">* ข้อมูลอ้างอิงจาก Technical Data Sheet หน้า 9 (เพิ่มค่า SHGC เพื่อการคำนวณ)</p>
                         </div>
 
                     </div>
@@ -265,7 +260,6 @@
     </section>
 
     <script>
-        // ฐานข้อมูลกระจก
         const glassData = {
             "clear": {
                 name: "กระจกโฟลตใส (Clear Float)",
@@ -307,9 +301,8 @@
         const becStatus = document.getElementById('becStatus');
         const becAdvice = document.getElementById('becAdvice');
 
-        // อัปเดต Dropdown ความหนา
-        function updateThickness() {
-            const curThick = selThick.value;
+        function updateThicknessDropdown() {
+            const currentSelected = selThick.value;
             selThick.innerHTML = '';
             const type = selType.value;
             for (let th in glassData[type]) {
@@ -319,26 +312,25 @@
                     selThick.appendChild(opt);
                 }
             }
-            if (glassData[type][curThick]) { selThick.value = curThick; } 
+            if (glassData[type][currentSelected]) { selThick.value = currentSelected; } 
             else if (type === 'oceangreen') { selThick.value = "6"; }
             updateDashboard();
         }
 
-        // อัปเดตข้อมูลทั้งหมดในหน้าจอ
         function updateDashboard() {
             const type = selType.value;
             const thick = selThick.value;
             const data = glassData[type][thick];
             const fullName = `${glassData[type].name} หนา ${thick} มม.`;
 
-            // 1. อัปเดตฝั่งเจ้าของบ้าน (Dynamic Cards)
+            // อัปเดตฝั่งเจ้าของบ้าน
             document.getElementById('ho_model_name').textContent = fullName;
             document.getElementById('ho_vlt').textContent = data.v_trans;
             document.getElementById('ho_u').textContent = data.u_sd_w.toFixed(2);
             document.getElementById('ho_rhg').textContent = data.rhg_w;
             document.getElementById('ho_ref').textContent = data.v_ref;
 
-            // 2. อัปเดตตารางสถาปนิก
+            // อัปเดตตารางฝั่งสถาปนิก
             document.getElementById('tbl_model_name').textContent = fullName;
             document.getElementById('v_trans').textContent = data.v_trans;
             document.getElementById('v_ref').textContent = data.v_ref;
@@ -353,27 +345,26 @@
             document.getElementById('u_sd_w').textContent = data.u_sd_w.toFixed(2);
             document.getElementById('u_sd_b').textContent = data.u_sd_b.toFixed(2);
             document.getElementById('sc').textContent = data.sc;
-            document.getElementById('shgc').textContent = data.shgc.toFixed(2); // เพิ่มค่า SHGC
+            document.getElementById('shgc').textContent = data.shgc.toFixed(2);
 
-            // 3. อัปเดต BEC Advisor
+            // คำแนะนำเกณฑ์พลังงานอาคาร (BEC)
             if (type === 'clear') {
-                becStatus.innerHTML = '<span class="inline-block px-2.5 py-1 rounded-md text-xs font-bold bg-red-100 text-red-800 border border-red-200">❌ เสี่ยงไม่ผ่านเกณฑ์พลังงาน (BEC)</span>';
-                becAdvice.innerHTML = 'กระจกโฟลตใสยอมให้รังสีความร้อนผ่านสูงมาก (SHGC > 0.8) ส่งผลให้ค่า OTTV ผนังอาคารสูงเกินเกณฑ์กฎหมายปี 2565<br><br>👉 <span class="text-emerald-700">แนะนำ:</span> ควรเปลี่ยนเป็นกลุ่มสีกระจกตัดแสง (เช่น เขียว/ชา) เพื่อลดภาระแอร์';
+                becStatus.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-red-100 text-red-800 border border-red-200">❌ เสี่ยงไม่ผ่านเกณฑ์พลังงาน (BEC)</span>';
+                becAdvice.innerHTML = 'กระจกโฟลตใสยอมให้รังสีความร้อนผ่านสูงมาก (SHGC > 0.8) ส่งผลให้ค่า OTTV ผนังอาคารสูงเกินเกณฑ์กฎหมายปี 2565 แนะนำเปลี่ยนเป็นกลุ่มกระจกสีตัดแสง';
             } else if (type === 'oceangreen' || type === 'skyblue') {
                 if (parseFloat(thick) >= 6) {
-                    becStatus.innerHTML = '<span class="inline-block px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">✅ ผ่านเกณฑ์เริ่มต้น (กระจกอนุรักษ์พลังงาน)</span>';
-                    becAdvice.innerHTML = `สมดุลยอดเยี่ยม! ได้แสงสว่างธรรมชาติ (VLT ${data.v_trans}%) เพียงพอ ลดการเปิดไฟตอนกลางวัน และสกัดรังสีความร้อนได้ดีเยี่ยม<br><br>👉 <span class="text-emerald-700">คำแนะนำ:</span> ความหนา ${thick} มม. ตอบโจทย์ทั้งการรับแรงลมและลดค่าความร้อนรวม (RHG)`;
+                    becStatus.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">✅ ผ่านเกณฑ์อาคารอนุรักษ์พลังงาน</span>';
+                    becAdvice.innerHTML = `สมดุลสเปกดีเยี่ยม! แสงธรรมชาติผ่านดี (VLT ${data.v_trans}%) ช่วยลดการใช้ไฟแสงสว่าง และสกัดรังสีความร้อนได้อย่างเหมาะสมตามประกาศกระทรวงพลังงาน`;
                 } else {
-                    becStatus.innerHTML = '<span class="inline-block px-2.5 py-1 rounded-md text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200">⚠️ พลังงานผ่านเกณฑ์ แต่ความหนาต่ำไป</span>';
-                    becAdvice.innerHTML = `การกันความร้อนทำได้ดี แต่ความหนา 5 มม. อาจไม่ปลอดภัยพอต่อการรับแรงปะทะลม (Wind Load) ในอาคารสูง<br><br>👉 <span class="text-emerald-700">แนะนำ:</span> ควรอัปเกรดเป็นความหนา 6 มม. หรือ 8 มม. ขึ้นไป`;
+                    becStatus.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-yellow-100 text-yellow-800 border border-yellow-200">⚠️ ผ่านเกณฑ์พลังงาน แต่ความหนาต่ำไป</span>';
+                    becAdvice.innerHTML = `ประสิทธิภาพทางพลังงานผ่านเกณฑ์ แต่ความหนา 5 มม. อาจไม่ปลอดภัยต่อการรับแรงปะทะลมอาคารสูง แนะนำขยับสเปกเป็นความหนา 6 มม. หรือ 8 มม.`;
                 }
             } else {
-                becStatus.innerHTML = '<span class="inline-block px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">💎 โดดเด่นด้านการสกัดรังสีแดด</span>';
-                becAdvice.innerHTML = `ลดแสงจ้าและค่าสัมประสิทธิ์บังแดด (SHGC ${data.shgc.toFixed(2)}) ได้ต่ำสุดๆ เหมาะทำผนังทิศใต้และทิศตะวันตกเพื่อสู้แดดบ่าย<br><br>👉 <span class="text-emerald-700">เคล็ดลับ:</span> หากต้องการให้ U-Value ต่ำลงอีก แนะนำประกอบเป็นกระจกฉนวน (IGU) คู่กับกระจกรุ่นนี้ครับ`;
+                becStatus.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200">💎 สกัดรังสีแดดได้อย่างยอดเยี่ยม</span>';
+                becAdvice.innerHTML = `ลดค่าสัมประสิทธิ์บังแดดได้ต่ำมาก (SHGC ${data.shgc.toFixed(2)}) เหมาะแก่การสเปกผนังกระจกทิศใต้และทิศตะวันตกเพื่อสู้แดดจัดในช่วงบ่าย`;
             }
         }
 
-        // ระบบสลับแท็บ
         function switchTab(tabName) {
             const btnH = document.getElementById('btnHomeowner');
             const btnA = document.getElementById('btnArchitect');
@@ -381,21 +372,21 @@
             const contentA = document.getElementById('contentArchitect');
 
             if (tabName === 'homeowner') {
-                btnH.className = "tab-active flex-1 py-2.5 px-4 rounded-xl border font-bold transition-all text-sm flex items-center justify-center gap-2";
-                btnA.className = "tab-inactive flex-1 py-2.5 px-4 rounded-xl border font-bold transition-all text-sm flex items-center justify-center gap-2";
+                btnH.className = "tab-active flex-1 py-2 px-3 rounded-lg border font-bold transition-all text-xs flex items-center justify-center gap-1.5";
+                btnA.className = "tab-inactive flex-1 py-2 px-3 rounded-lg border font-bold transition-all text-xs flex items-center justify-center gap-1.5";
                 contentH.classList.remove('hidden'); contentH.classList.add('block');
                 contentA.classList.add('hidden'); contentA.classList.remove('block');
             } else {
-                btnA.className = "tab-active flex-1 py-2.5 px-4 rounded-xl border font-bold transition-all text-sm flex items-center justify-center gap-2";
-                btnH.className = "tab-inactive flex-1 py-2.5 px-4 rounded-xl border font-bold transition-all text-sm flex items-center justify-center gap-2";
+                btnA.className = "tab-active flex-1 py-2 px-3 rounded-lg border font-bold transition-all text-xs flex items-center justify-center gap-1.5";
+                btnH.className = "tab-inactive flex-1 py-2 px-3 rounded-lg border font-bold transition-all text-xs flex items-center justify-center gap-1.5";
                 contentA.classList.remove('hidden'); contentA.classList.add('block');
                 contentH.classList.add('hidden'); contentH.classList.remove('block');
             }
         }
 
-        selType.addEventListener('change', updateThickness);
+        selType.addEventListener('change', updateThicknessDropdown);
         selThick.addEventListener('change', updateDashboard);
-        updateThickness(); // รันครั้งแรก
+        updateThicknessDropdown();
     </script>
 </body>
 </html>
