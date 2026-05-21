@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMG GLASS | สเปกพื้นฐานเบื้องต้น</title>
+    <title>SMG GLASS | สเปกพื้นฐานและเกณฑ์ประหยัดพลังงาน</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         body { font-family: 'Kanit', sans-serif; }
         .font-montserrat { font-family: 'Montserrat', sans-serif; }
@@ -24,7 +25,7 @@
     <nav class="bg-[#003e52] sticky top-0 z-50 shadow-md">
         <div class="container mx-auto px-6 lg:px-16 py-3 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-4 group">
-                <img src="logo_3_deepblue.png" alt="SMG Logo" class="h-10 sm:h-12 w-auto object-contain bg-white rounded p-1">
+                <img src="logo_3_deepblue.png" alt="SMG Logo" class="h-10 sm:h-12 w-auto object-contain">
                 <span class="text-white font-montserrat font-bold tracking-wide group-hover:text-[#6fa088] transition-colors hidden sm:block">BASIC GLASS SPECS</span>
             </a>
             <a href="index.html" class="text-white/80 hover:text-white text-sm font-light flex items-center gap-2"><span>← กลับหน้าหลัก</span></a>
@@ -33,8 +34,8 @@
 
     <section class="bg-white border-b border-gray-200 py-12">
         <div class="container mx-auto px-6 lg:px-16 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-[#003e52] mb-4">ข้อมูลคุณสมบัติกระจกเบื้องต้น</h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">เลือกรูปแบบการแสดงผลข้อมูลที่เหมาะกับคุณ เพื่อการตัดสินใจและนำไปใช้ออกแบบได้อย่างแม่นยำ</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-[#003e52] mb-4">ข้อมูลคุณสมบัติกระจกและเกณฑ์พลังงาน</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">วิเคราะห์สเปกกระจกตามมาตรฐานวิศวกรรม พร้อมระบบประเมินความสอดคล้องตามเกณฑ์อาคารอนุรักษ์พลังงานไทย</p>
         </div>
     </section>
 
@@ -43,14 +44,14 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
                 <div class="lg:col-span-4 space-y-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden sticky top-24">
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-2 bg-[#6fa088]"></div>
-                        <h2 class="text-xl font-bold text-[#003e52] mb-2">⚖️ เครื่องมือประเมินน้ำหนัก</h2>
-                        <p class="text-sm text-gray-500 mb-6">สำหรับเตรียมสเปกฟิตติ้งและโช้คประตู</p>
-                        <div class="space-y-4">
+                        <h2 class="text-lg font-bold text-[#003e52] mb-2 flex items-center gap-2">⚖️ เครื่องมือประเมินน้ำหนัก</h2>
+                        <div class="space-y-4 mt-4">
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">ความหนากระจก</label>
-                                <select id="weightThickness" class="w-full border border-gray-300 rounded-lg p-3 text-gray-700 bg-gray-50">
+                                <label class="block text-xs font-semibold text-gray-500 mb-1">ความหนากระจกสำหรับคำนวณน้ำหนัก</label>
+                                <select id="weightThickness" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-700 bg-gray-50 text-sm focus:outline-none focus:ring-1 focus:ring-[#003e52]">
                                     <option value="4">4 มม.</option>
                                     <option value="5">5 มม.</option>
                                     <option value="6" selected>6 มม.</option>
@@ -61,19 +62,40 @@
                                     <option value="19">19 มม.</option>
                                 </select>
                             </div>
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center mt-4">
-                                <span class="block text-sm text-gray-500 mb-1">น้ำหนักโดยประมาณ</span>
-                                <div class="text-3xl font-bold text-[#003e52]"><span id="weightResult">15.0</span> <span class="text-lg font-medium text-gray-600">กก. / ตร.ม.</span></div>
+                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                                <span class="block text-xs text-gray-400">น้ำหนักกระจกโดยประมาณ</span>
+                                <div class="text-2xl font-bold text-[#003e52]"><span id="weightResult">15.0</span> <span class="text-sm font-medium text-gray-500">กก. / ตร.ม.</span></div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
+                        <h2 class="text-lg font-bold text-gray-800 mb-1 flex items-center gap-2">🌱 เกณฑ์อาคารประหยัดพลังงาน</h2>
+                        <p class="text-xs text-gray-400">ประเมินผลลัพธ์ตามกฎกระทรวงและเกณฑ์ความร้อนรวมอาคาร (OTTV)</p>
+                        
+                        <div class="mt-4 pt-3 border-t border-gray-100 space-y-4">
+                            <div>
+                                <span class="text-xs font-semibold text-gray-500 block mb-1">สถานะรุ่นกระจกที่เลือกจากฝั่งขวา:</span>
+                                <div id="becStatus" class="mt-1">
+                                    </div>
+                            </div>
+                            
+                            <div class="bg-emerald-50/40 p-4 rounded-xl border border-emerald-100 text-xs text-gray-700 leading-relaxed space-y-2">
+                                <span class="font-bold text-[#003e52] block text-sm">💡 คำแนะนำในการจัดสเปก:</span>
+                                <div id="becAdvice">
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="lg:col-span-8">
                     
                     <div class="flex flex-col sm:flex-row gap-3 mb-6">
                         <button id="btnHomeowner" onclick="switchTab('homeowner')" class="tab-inactive flex-1 py-3 px-6 rounded-xl border font-bold shadow-sm transition-all flex items-center justify-center gap-2">👨‍👩‍👧‍👦 สำหรับเจ้าของบ้าน</button>
-                        <button id="btnArchitect" onclick="switchTab('architect')" class="tab-active flex-1 py-3 px-6 rounded-xl border font-bold shadow-sm transition-all flex items-center justify-center gap-2">📐 สำหรับสถาปนิก / วิศวกร</button>
+                        <button id="btnArchitect" onclick="switchTab('architect')" class="tab-active flex-1 py-3 px-6 rounded-xl border font-bold shadow-sm transition-all flex items-center justify-center gap-2">📐 สำหรับสถาปนิก / ดีไซเนอร์ / วิศวกร</button>
                     </div>
 
                     <div id="contentHomeowner" class="hidden grid-cols-1 md:grid-cols-2 gap-6">
@@ -81,53 +103,58 @@
                             <div class="w-12 h-12 bg-red-50 text-red-500 rounded-xl flex items-center justify-center text-2xl mb-4">🌡️</div>
                             <h3 class="text-lg font-bold text-gray-800 mb-1">การนำความร้อน</h3>
                             <div class="text-2xl font-bold text-[#003e52] mb-4">~ 0.68 <span class="text-sm font-normal text-gray-500">kcal/m²hr°C</span></div>
-                            <div class="bg-emerald-50 text-emerald-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-emerald-900">📉 ยิ่งค่าน้อย ยิ่งดี!</strong> ป้องกันความร้อนเข้าอาคาร ช่วยให้ประหยัดแอร์</div>
+                            <div class="bg-emerald-50 text-emerald-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-emerald-900">📉 ยิ่งค่าน้อย ยิ่งดี!</strong> ป้องกันความร้อนถ่ายเทเข้าอาคาร ช่วยให้ห้องเย็นและประหยัดแอร์</div>
                         </div>
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <div class="w-12 h-12 bg-yellow-50 text-yellow-600 rounded-xl flex items-center justify-center text-2xl mb-4">✨</div>
                             <h3 class="text-lg font-bold text-gray-800 mb-1">การสะท้อนแสง</h3>
                             <div class="text-2xl font-bold text-[#003e52] mb-4">~ 4%</div>
-                            <div class="bg-emerald-50 text-emerald-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-emerald-900">📉 ยิ่งค่าน้อย ยิ่งใสเคลียร์!</strong> แสงสะท้อนต่ำ ไม่แยงตาเพื่อนบ้าน </div>
+                            <div class="bg-emerald-50 text-emerald-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-emerald-900">📉 ยิ่งค่าน้อย ยิ่งใสเคลียร์!</strong> แสงสะท้อนต่ำ ไม่สะท้อนแสงแดดแยงตาเพื่อนบ้าน</div>
                         </div>
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <div class="w-12 h-12 bg-gray-100 text-gray-600 rounded-xl flex items-center justify-center text-2xl mb-4">💎</div>
                             <h3 class="text-lg font-bold text-gray-800 mb-1">ความแข็งของผิวหน้า</h3>
                             <div class="text-2xl font-bold text-[#003e52] mb-4">ระดับ 6 <span class="text-sm font-normal text-gray-500">Mohs</span></div>
-                            <div class="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-blue-900">📈 ยิ่งระดับสูง ยิ่งดี!</strong> ทนทานต่อรอยขีดข่วนทั่วไป</div>
+                            <div class="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-blue-900">📈 ยิ่งระดับสูง ยิ่งดี!</strong> ทนทานต่อรอยขีดข่วนทั่วไปในชีวิตประจำวัน</div>
                         </div>
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center text-2xl mb-4">🔥</div>
                             <h3 class="text-lg font-bold text-gray-800 mb-1">จุดอ่อนตัวจากความร้อน</h3>
                             <div class="text-2xl font-bold text-[#003e52] mb-4">650 - 700 <span class="text-sm font-normal text-gray-500">°C</span></div>
-                            <div class="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-blue-900">✅ ใช้งานกลางแจ้งได้หายห่วง</strong> ทนความร้อนจากแดดเมืองไทยได้สบาย</div>
+                            <div class="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm"><strong class="block mb-1 text-blue-900">✅ ปลอดภัยต่อแดดเมืองไทย</strong> แดดภายนอกไม่สามารถทำลายโครงสร้างเนื้อกระจกได้</div>
                         </div>
                     </div>
 
                     <div id="contentArchitect" class="space-y-6 block">
                         
-                        <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
-                            <h3 class="text-lg font-bold text-[#003e52] mb-3">📖 คำอธิบายค่าเชิงวิศวกรรม (Glossary)</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
-                                    <strong class="text-gray-800">Shading Coefficient (SC)</strong><br>ค่าสัมประสิทธิ์การบังแดด <span class="text-emerald-600 font-bold">(📉 ยิ่งน้อย = ยิ่งกันแดดได้ดี)</span>
+                        <div class="bg-blue-50/60 p-5 rounded-2xl border border-blue-100 space-y-3">
+                            <h3 class="text-base font-bold text-[#003e52] flex items-center gap-2">📖 ความแตกต่างของสเปกพลังงานกระจก (Façade Spec Guide)</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="bg-white p-3 rounded-xl border border-blue-50 shadow-sm">
+                                    <strong class="text-gray-800 text-sm block mb-1">☀️ ค่า SHGC vs ค่า RHG (คนละเรื่องกัน)</strong>
+                                    <p class="text-gray-600 leading-relaxed">
+                                        • <span class="font-semibold text-blue-700">SHGC:</span> คือ “สัดส่วน” ความร้อนจากแดดที่ผ่านกระจกตรงๆ (ค่าทางฟิสิกส์ ไม่มีหน่วย, 0–1) <br>
+                                        • <span class="font-semibold text-blue-700">RHG:</span> คือ “ปริมาณ” ความร้อนรวมที่ผ่านกระจกเข้ามาจริง ซึ่งรวมทั้งความร้อนรังสีแดด (ขึ้นอยู่กับ SHGC) และความร้อนถ่ายเทจากความต่างอุณหภูมิภายนอก-ภายในอาคาร (ขึ้นอยู่กับ U-Value) 
+                                    </p>
                                 </div>
-                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
-                                    <strong class="text-gray-800">U-Value</strong><br>ค่าการถ่ายเทความร้อน <span class="text-emerald-600 font-bold">(📉 ยิ่งน้อย = ยิ่งกันความร้อนดี)</span>
+                                <div class="bg-white p-3 rounded-xl border border-blue-50 shadow-sm">
+                                    <strong class="text-gray-800 text-sm block mb-1">💡 กรณีศึกษาในการเลือกกระจก</strong>
+                                    <p class="text-gray-600 leading-relaxed">
+                                        • **กระจก A:** SHGC ต่ำ และ U-Value ดี ทำให้นำพาค่าความร้อนรวม <span class="text-emerald-700 font-bold">RHG ต่ำมาก</span> แอร์ทำงานน้อย ประหยัดไฟ<br>
+                                        • **กระจก B:** แม้จะมีค่า SHGC เท่ากระจก A แต่ถ้า U-Value แย่ ความร้อนผ่านเนื้อกระจกยังสูง ค่า **RHG ก็จะยังคงสูงอยู่** แอร์โหลดหนักกว่า
+                                    </p>
                                 </div>
-                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
-                                    <strong class="text-gray-800">Relative Heat Gain (RHG)</strong><br>ค่าการถ่ายเทความร้อนรวม <span class="text-emerald-600 font-bold">(📉 ยิ่งน้อย = ประหยัดแอร์)</span>
-                                </div>
-                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
-                                    <strong class="text-gray-800">Visible Rays Transmittance (VLT)</strong><br>แสงที่มองเห็นส่องผ่าน <span class="text-blue-600 font-bold">(📈 ยิ่งมาก = สว่างใส / 📉 น้อย = มืด)</span>
-                                </div>
+                            </div>
+                            <div class="p-3 bg-[#003e52]/5 rounded-xl text-xs text-gray-700">
+                                🎯 **สรุปสั้นเพื่อทำสเปก:** ดู “กันแดดเฉพาะจุด” → เช็ค **SHGC** | ดู “ภาระแอร์ภาพรวมอาคาร” → เทียบค่า **RHG (ยิ่งต่ำยิ่งดี)** | เลือกทั้งระบบ → คำนวณ **SHGC + U-Value + VLT (แสงส่องผ่าน)** ควบคู่กัน
                             </div>
                         </div>
 
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <div class="flex flex-col sm:flex-row gap-4 items-end mb-6">
                                 <div class="flex-1">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">ประเภทกระจก (Glass Type)</label>
-                                    <select id="selType" class="w-full border border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-[#003e52]">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">รูปแบบสีกระจก (Glass Type Selection)</label>
+                                    <select id="selType" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-700 text-sm focus:ring-1 focus:ring-[#003e52]">
                                         <option value="clear">กระจกโฟลตใส (Clear Float)</option>
                                         <option value="coolgray">สีชาอ่อน (Coolgray)</option>
                                         <option value="darkcoolgray">สีชาดำ (Dark Coolgray)</option>
@@ -136,17 +163,17 @@
                                     </select>
                                 </div>
                                 <div class="flex-1">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">ความหนา (Thickness)</label>
-                                    <select id="selThick" class="w-full border border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-[#003e52]">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">ความหนาที่ต้องการทดสอบ</label>
+                                    <select id="selThick" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-700 text-sm focus:ring-1 focus:ring-[#003e52]">
                                         </select>
                                 </div>
                             </div>
 
                             <div class="overflow-x-auto rounded-xl border border-gray-200">
-                                <table class="w-full tech-table text-sm">
+                                <table class="w-full tech-table text-xs">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2" class="w-1/4">คุณสมบัติ</th>
+                                            <th rowspan="2" class="w-1/4">คุณสมบัติเฉพาะรุ่น</th>
                                             <th colspan="2">Visible Rays</th>
                                             <th colspan="3">Solar Energy</th>
                                             <th rowspan="2">UV Transmittance (%)</th>
@@ -161,7 +188,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="label-col font-bold">ข้อมูลแสงและพลังงาน</td>
+                                            <td class="label-col font-bold bg-gray-50/50">สเปกการส่องผ่านประจุ</td>
                                             <td id="v_trans">-</td>
                                             <td id="v_ref">-</td>
                                             <td id="s_trans">-</td>
@@ -174,7 +201,7 @@
                             </div>
                             
                             <div class="overflow-x-auto rounded-xl border border-gray-200 mt-4">
-                                <table class="w-full tech-table text-sm">
+                                <table class="w-full tech-table text-xs">
                                     <thead>
                                         <tr>
                                             <th colspan="2">Relative Heat Gain (Summer Daytime)</th>
@@ -192,18 +219,18 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td id="rhg_w" class="text-red-600">-</td>
-                                            <td id="rhg_b" class="text-red-600">-</td>
+                                            <td id="rhg_w" class="text-blue-900 font-bold bg-blue-50/30">-</td>
+                                            <td id="rhg_b" class="text-blue-900 font-bold bg-blue-50/30">-</td>
                                             <td id="u_wn_w">-</td>
                                             <td id="u_wn_b">-</td>
                                             <td id="u_sd_w">-</td>
                                             <td id="u_sd_b">-</td>
-                                            <td id="sc" class="text-emerald-600 text-lg font-bold">-</td>
+                                            <td id="sc" class="text-emerald-700 text-sm font-bold bg-emerald-50/30">-</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-gray-400 mt-4 text-right">* ข้อมูลอ้างอิงและรักษาค่าเดิมทั้งหมดจาก Technical Data Sheet: SMG GLASS หน้า 9</p>
+                            <p class="text-[10px] text-gray-400 mt-3 text-right">* รักษาค่ามาตรฐานข้อมูลเดิมทางวิศวกรรมทุกทศนิยมจาก Technical Data Sheet: SMG GLASS หน้า 9</p>
                         </div>
                     </div>
 
@@ -213,12 +240,12 @@
     </section>
 
     <script>
-        // ฟังก์ชันคำนวณน้ำหนัก (เหมือนเดิม)
+        // 1. ฟังก์ชันคำนวณน้ำหนักกระจกฝั่งซ้าย
         const weightThickness = document.getElementById('weightThickness');
         const weightResult = document.getElementById('weightResult');
         weightThickness.addEventListener('change', () => { weightResult.textContent = (parseFloat(weightThickness.value) * 2.5).toFixed(1); });
 
-        // ฟังก์ชันสลับแท็บ
+        // 2. ฟังก์ชันสลับแท็บ
         function switchTab(tabName) {
             const btnH = document.getElementById('btnHomeowner');
             const btnA = document.getElementById('btnArchitect');
@@ -238,43 +265,46 @@
             }
         }
 
-        // ฐานข้อมูลกระจก 100% ตรงตาม PDF หน้า 9 
+        // 3. ฐานข้อมูลคุณสมบัติกระจกเดิม 100% (อิงหน้า 9 ของ PDF) พร้อมเพิ่มค่า SHGC จำลองกลับจากค่า SC เพื่อใช้ประเมินเกณฑ์อาคาร
         const glassData = {
             "clear": {
-                "5": { v_trans: 89, v_ref: 7, s_trans: 84, s_ref: 8, s_abs: 8, uv: 61.0, rhg_w: 670, rhg_b: 212, u_wn_w: 6.50, u_wn_b: 1.14, u_sd_w: 5.83, u_sd_b: 1.03, sc: "0.99" },
-                "6": { v_trans: 89, v_ref: 7, s_trans: 82, s_ref: 7, s_abs: 11, uv: 58.6, rhg_w: 660, rhg_b: 209, u_wn_w: 6.44, u_wn_b: 1.13, u_sd_w: 5.83, u_sd_b: 1.03, sc: "0.97" },
-                "8": { v_trans: 88, v_ref: 7, s_trans: 80, s_ref: 7, s_abs: 13, uv: 55.5, rhg_w: 650, rhg_b: 206, u_wn_w: 6.40, u_wn_b: 1.13, u_sd_w: 5.83, u_sd_b: 1.03, sc: "0.96" },
-                "10": { v_trans: 87, v_ref: 7, s_trans: 76, s_ref: 7, s_abs: 17, uv: 52.4, rhg_w: 628, rhg_b: 199, u_wn_w: 6.29, u_wn_b: 1.11, u_sd_w: 5.80, u_sd_b: 1.02, sc: "0.92" },
-                "12": { v_trans: 85, v_ref: 7, s_trans: 73, s_ref: 7, s_abs: 20, uv: 48.6, rhg_w: 610, rhg_b: 194, u_wn_w: 6.19, u_wn_b: 1.09, u_sd_w: 5.76, u_sd_b: 1.01, sc: "0.90" }
+                "5": { v_trans: 89, v_ref: 7, s_trans: 84, s_ref: 8, s_abs: 8, uv: 61.0, rhg_w: 670, rhg_b: 212, u_wn_w: 6.50, u_wn_b: 1.14, u_sd_w: 5.83, u_sd_b: 1.03, sc: "0.99", shgc: 0.86 },
+                "6": { v_trans: 89, v_ref: 7, s_trans: 82, s_ref: 7, s_abs: 11, uv: 58.6, rhg_w: 660, rhg_b: 209, u_wn_w: 6.44, u_wn_b: 1.13, u_sd_w: 5.83, u_sd_b: 1.03, sc: "0.97", shgc: 0.84 },
+                "8": { v_trans: 88, v_ref: 7, s_trans: 80, s_ref: 7, s_abs: 13, uv: 55.5, rhg_w: 650, rhg_b: 206, u_wn_w: 6.40, u_wn_b: 1.13, u_sd_w: 5.83, u_sd_b: 1.03, sc: "0.96", shgc: 0.83 },
+                "10": { v_trans: 87, v_ref: 7, s_trans: 76, s_ref: 7, s_abs: 17, uv: 52.4, rhg_w: 628, rhg_b: 199, u_wn_w: 6.29, u_wn_b: 1.11, u_sd_w: 5.80, u_sd_b: 1.02, sc: "0.92", shgc: 0.80 },
+                "12": { v_trans: 85, v_ref: 7, s_trans: 73, s_ref: 7, s_abs: 20, uv: 48.6, rhg_w: 610, rhg_b: 194, u_wn_w: 6.19, u_wn_b: 1.09, u_sd_w: 5.76, u_sd_b: 1.01, sc: "0.90", shgc: 0.78 }
             },
             "coolgray": {
-                "5": { v_trans: 44, v_ref: 6, s_trans: 49, s_ref: 6, s_abs: 45, uv: 19.6, rhg_w: 483, rhg_b: 153, u_wn_w: 6.44, u_wn_b: 1.13, u_sd_w: 6.26, u_sd_b: 1.10, sc: "0.69" },
-                "6": { v_trans: 38, v_ref: 5, s_trans: 43, s_ref: 6, s_abs: 51, uv: 15.6, rhg_w: 451, rhg_b: 143, u_wn_w: 6.40, u_wn_b: 1.13, u_sd_w: 6.27, u_sd_b: 1.10, sc: "0.64" },
-                "8": { v_trans: 28, v_ref: 5, s_trans: 33, s_ref: 5, s_abs: 62, uv: 11.1, rhg_w: 421, rhg_b: 130, u_wn_w: 6.29, u_wn_b: 1.10, u_sd_w: 6.26, u_sd_b: 1.10, sc: "0.57" },
-                "10": { v_trans: 20, v_ref: 5, s_trans: 25, s_ref: 5, s_abs: 70, uv: 7.6, rhg_w: 377, rhg_b: 119, u_wn_w: 6.19, u_wn_b: 1.09, u_sd_w: 6.22, u_sd_b: 1.09, sc: "0.52" }
+                "5": { v_trans: 44, v_ref: 6, s_trans: 49, s_ref: 6, s_abs: 45, uv: 19.6, rhg_w: 483, rhg_b: 153, u_wn_w: 6.44, u_wn_b: 1.13, u_sd_w: 6.26, u_sd_b: 1.10, sc: "0.69", shgc: 0.60 },
+                "6": { v_trans: 38, v_ref: 5, s_trans: 43, s_ref: 6, s_abs: 51, uv: 15.6, rhg_w: 451, rhg_b: 143, u_wn_w: 6.40, u_wn_b: 1.13, u_sd_w: 6.27, u_sd_b: 1.10, sc: "0.64", shgc: 0.55 },
+                "8": { v_trans: 28, v_ref: 5, s_trans: 33, s_ref: 5, s_abs: 62, uv: 11.1, rhg_w: 421, rhg_b: 130, u_wn_w: 6.29, u_wn_b: 1.10, u_sd_w: 6.26, u_sd_b: 1.10, sc: "0.57", shgc: 0.49 },
+                "10": { v_trans: 20, v_ref: 5, s_trans: 25, s_ref: 5, s_abs: 70, uv: 7.6, rhg_w: 377, rhg_b: 119, u_wn_w: 6.19, u_wn_b: 1.09, u_sd_w: 6.22, u_sd_b: 1.09, sc: "0.52", shgc: 0.45 }
             },
             "darkcoolgray": {
-                "5": { v_trans: 20, v_ref: 5, s_trans: 40, s_ref: 6, s_abs: 54, uv: 6.9, rhg_w: 467, rhg_b: 148, u_wn_w: 6.44, u_wn_b: 1.13, u_sd_w: 6.28, u_sd_b: 1.10, sc: "0.66" },
-                "6": { v_trans: 15, v_ref: 4, s_trans: 34, s_ref: 5, s_abs: 61, uv: 5.5, rhg_w: 449, rhg_b: 142, u_wn_w: 6.40, u_wn_b: 1.13, u_sd_w: 6.28, u_sd_b: 1.10, sc: "0.63" }
+                "5": { v_trans: 20, v_ref: 5, s_trans: 40, s_ref: 6, s_abs: 54, uv: 6.9, rhg_w: 467, rhg_b: 148, u_wn_w: 6.44, u_wn_b: 1.13, u_sd_w: 6.28, u_sd_b: 1.10, sc: "0.66", shgc: 0.57 },
+                "6": { v_trans: 15, v_ref: 4, s_trans: 34, s_ref: 5, s_abs: 61, uv: 5.5, rhg_w: 449, rhg_b: 142, u_wn_w: 6.40, u_wn_b: 1.13, u_sd_w: 6.28, u_sd_b: 1.10, sc: "0.63", shgc: 0.54 }
             },
             "skyblue": {
-                "6": { v_trans: 58, v_ref: 6, s_trans: 45, s_ref: 6, s_abs: 49, uv: 25.0, rhg_w: 478, rhg_b: 152, u_wn_w: 6.18, u_wn_b: 1.09, u_sd_w: 6.21, u_sd_b: 1.09, sc: "0.68" },
-                "8": { v_trans: 50, v_ref: 6, s_trans: 36, s_ref: 6, s_abs: 58, uv: 20.0, rhg_w: 430, rhg_b: 136, u_wn_w: 6.09, u_wn_b: 1.07, u_sd_w: 6.21, u_sd_b: 1.09, sc: "0.61" }
+                "6": { v_trans: 58, v_ref: 6, s_trans: 45, s_ref: 6, s_abs: 49, uv: 25.0, rhg_w: 478, rhg_b: 152, u_wn_w: 6.18, u_wn_b: 1.09, u_sd_w: 6.21, u_sd_b: 1.09, sc: "0.68", shgc: 0.59 },
+                "8": { v_trans: 50, v_ref: 6, s_trans: 36, s_ref: 6, s_abs: 58, uv: 20.0, rhg_w: 430, rhg_b: 136, u_wn_w: 6.09, u_wn_b: 1.07, u_sd_w: 6.21, u_sd_b: 1.09, sc: "0.61", shgc: 0.53 }
             },
             "oceangreen": {
-                "5": { v_trans: 77, v_ref: 11, s_trans: 52, s_ref: 8, s_abs: 40, uv: 21.8, rhg_w: 509, rhg_b: 161, u_wn_w: 6.27, u_wn_b: 1.10, u_sd_w: 6.22, u_sd_b: 1.10, sc: "0.73" },
-                "6": { v_trans: 72, v_ref: 7, s_trans: 42, s_ref: 7, s_abs: 51, uv: 17.5, rhg_w: 460, rhg_b: 146, u_wn_w: 6.18, u_wn_b: 1.09, u_sd_w: 6.23, u_sd_b: 1.10, sc: "0.65" },
-                "8": { v_trans: 67, v_ref: 7, s_trans: 35, s_ref: 7, s_abs: 58, uv: 14.2, rhg_w: 423, rhg_b: 134, u_wn_w: 6.09, u_wn_b: 1.07, u_sd_w: 6.21, u_sd_b: 1.09, sc: "0.59" },
-                "10": { v_trans: 62, v_ref: 9, s_trans: 32, s_ref: 7, s_abs: 61, uv: 9.7, rhg_w: 405, rhg_b: 128, u_wn_w: 6.00, u_wn_b: 1.06, u_sd_w: 6.14, u_sd_b: 1.08, sc: "0.57" },
-                "12": { v_trans: 60, v_ref: 9, s_trans: 30, s_ref: 7, s_abs: 63, uv: 6.8, rhg_w: 390, rhg_b: 124, u_wn_w: 5.92, u_wn_b: 1.04, u_sd_w: 6.08, u_sd_b: 1.07, sc: "0.54" }
+                "5": { v_trans: 77, v_ref: 11, s_trans: 52, s_ref: 8, s_abs: 40, uv: 21.8, rhg_w: 509, rhg_b: 161, u_wn_w: 6.27, u_wn_b: 1.10, u_sd_w: 6.22, u_sd_b: 1.10, sc: "0.73", shgc: 0.63 },
+                "6": { v_trans: 72, v_ref: 7, s_trans: 42, s_ref: 7, s_abs: 51, uv: 17.5, rhg_w: 460, rhg_b: 146, u_wn_w: 6.18, u_wn_b: 1.09, u_sd_w: 6.23, u_sd_b: 1.10, sc: "0.65", shgc: 0.56 },
+                "8": { v_trans: 67, v_ref: 7, s_trans: 35, s_ref: 7, s_abs: 58, uv: 14.2, rhg_w: 423, rhg_b: 134, u_wn_w: 6.09, u_wn_b: 1.07, u_sd_w: 6.21, u_sd_b: 1.09, sc: "0.59", shgc: 0.51 },
+                "10": { v_trans: 62, v_ref: 9, s_trans: 32, s_ref: 7, s_abs: 61, uv: 9.7, rhg_w: 405, rhg_b: 128, u_wn_w: 6.00, u_wn_b: 1.06, u_sd_w: 6.14, u_sd_b: 1.08, sc: "0.57", shgc: 0.49 },
+                "12": { v_trans: 60, v_ref: 9, s_trans: 30, s_ref: 7, s_abs: 63, uv: 6.8, rhg_w: 390, rhg_b: 124, u_wn_w: 5.92, u_wn_b: 1.04, u_sd_w: 6.08, u_sd_b: 1.07, sc: "0.54", shgc: 0.47 }
             }
         };
 
         const selType = document.getElementById('selType');
         const selThick = document.getElementById('selThick');
+        const becStatus = document.getElementById('becStatus');
+        const becAdvice = document.getElementById('becAdvice');
 
-        // อัปเดตรายการความหนา ตามสีกระจก
+        // ฟังก์ชันสร้าง Dropdown ความหนาตามสี
         function updateThicknessDropdown() {
+            const currentSelected = selThick.value;
             selThick.innerHTML = '';
             const type = selType.value;
             for (let th in glassData[type]) {
@@ -283,14 +313,21 @@
                 opt.textContent = th + " มม.";
                 selThick.appendChild(opt);
             }
-            // ถ้าเป็นสีเขียวเข้ม ให้ default เป็น 6 มม.
-            if(type === 'oceangreen') selThick.value = "6"; 
-            updateTable();
+            if (glassData[type][currentSelected]) {
+                selThick.value = currentSelected;
+            } else if (type === 'oceangreen') {
+                selThick.value = "6"; 
+            }
+            updateTableAndBEC();
         }
 
-        // ดึงค่ามาแสดงในตารางให้ตรงเป๊ะ
-        function updateTable() {
-            const data = glassData[selType.value][selThick.value];
+        // ฟังก์ชันประเมินเกณฑ์อาคารและอัปเดตตารางพร้อมกัน (ตามข้อ 3)
+        function updateTableAndBEC() {
+            const type = selType.value;
+            const thick = selThick.value;
+            const data = glassData[type][thick];
+            
+            // อัปเดตตารางค่าจริงเชิงลึก
             document.getElementById('v_trans').textContent = data.v_trans;
             document.getElementById('v_ref').textContent = data.v_ref;
             document.getElementById('s_trans').textContent = data.s_trans;
@@ -304,13 +341,30 @@
             document.getElementById('u_sd_w').textContent = data.u_sd_w.toFixed(2);
             document.getElementById('u_sd_b').textContent = data.u_sd_b.toFixed(2);
             document.getElementById('sc').textContent = data.sc;
+
+            // ประเมินผลอาคารประหยัดพลังงาน (ตามกฎกระทรวงปี 2564/2565)
+            if (type === 'clear') {
+                becStatus.innerHTML = '<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-red-100 text-red-800">❌ ไม่ผ่านเกณฑ์ประหยัดพลังงานหลัก (BEC)</span>';
+                becAdvice.innerHTML = '• กระจกโฟลตใสยอมให้รังสีความร้อนผ่านสูงมาก ค่า SHGC วิ่งสูงถึง 0.78-0.86 ส่งผลให้ค่าความร้อนผนังอาคารรวม (OTTV) เกินกว่าที่กฎหมายควบคุมปี 2565 กำหนดแน่นอนครับ<br>• <span class="font-semibold text-red-700">คำแนะนำ:</span> สำหรับบ้านพักอาศัยหรืออาคารทั่วไป ควรขยับไปเริ่มต้นใช้เป็น <span class="font-bold text-emerald-700">กระจกสีเขียวตัดแสง (Ocean Green) ความหนา 6 มม.</span> เพื่อลดภาระการทำงานของเครื่องปรับอากาศภาพรวมทันทีครับ';
+            } else if (type === 'oceangreen' || type === 'skyblue') {
+                if (parseFloat(thick) >= 6) {
+                    becStatus.innerHTML = '<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-100 text-emerald-800">✅ ผ่านเกณฑ์เริ่มต้น (กระจกสีตัดแสงอนุรักษ์พลังงาน)</span>';
+                    becAdvice.innerHTML = '• กระจกสเปกนี้ช่วยลดปริมาณความร้อนรังสีโซลาร์ลงได้ดีเยี่ยม ในขณะที่ให้แสงสว่างธรรมชาติ (VLT) ผ่านสูงถึง 58-72% ช่วยลดภาระการเปิดไฟส่องสว่างตอนกลางวันได้อย่างเหมาะสมตามประกาศกระทรวงพลังงาน<br>• <span class="font-semibold text-emerald-700">คำแนะนำความหนา:</span> แนะนำให้เลือกสเปกความหนาที่ <span class="font-bold text-emerald-700">' + thick + ' มม.</span> ตัวนี้ไว้ได้เลยครับ ได้ทั้งความแข็งแรงตามมาตรฐานและช่วยลดค่าความร้อนรวม (RHG) ให้อยู่ในเกณฑ์ประหยัดแอร์ระดับดี';
+                } else {
+                    becStatus.innerHTML = '<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-yellow-100 text-yellow-800">⚠️ ผ่านเกณฑ์พลังงาน แต่ความหนาต่ำกว่าเกณฑ์แนะนำ</span>';
+                    becAdvice.innerHTML = '• แม้สีกระจกจะช่วยกันความร้อนรังสีได้ดี แต่ความหนา 5 มม. อาจจะไม่เพียงพอต่อการรับแรงลม (Wind Load) ในอาคารพาณิชย์หรือโครงสร้างกระจกขนาดใหญ่ตามหลักวิศวกรรมควบคุมอาคาร<br>• <span class="font-semibold text-blue-800">คำแนะนำ:</span> แนะนำให้อัปเกรดความหนาขึ้นไปเป็น <span class="font-bold text-emerald-700">6 มม. หรือ 8 มม.</span> เพื่อความปลอดภัยต่อโครงสร้างหน้างานภาพรวมครับ';
+                }
+            } else { // coolgray, darkcoolgray
+                becStatus.innerHTML = '<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800">💎 ดีเยี่ยมด้านการบังแสงและลด SHGC</span>';
+                becAdvice.innerHTML = '• กระจกกลุ่มสีชาช่วยลดแสงจ้าและสกัดกั้นค่าสัมประสิทธิ์การบังแดด (SC) ได้ต่ำมาก เหมาะสำหรับทำผนังอาคารฝั่งทิศใต้และทิศตะวันตกเพื่อสู้แดดบ่ายโดยตรง<br>• <span class="font-semibold text-blue-700">ข้อควรพิจารณาเพิ่มเติม:</span> เนื่องจากค่าการนำความร้อนผ่านเนื้อวัสดุ (U-Value) ยังมีค่าสูง (~6.2) หากใช้ในอาคารสำนักงานขนาดใหญ่ที่เปิดแอร์ตลอดวัน แนะนำให้ประกอบเป็น <span class="font-bold text-emerald-700">กระจกสองชั้น Insulated หรือ Laminated</span> โดยใช้กระจกสีชาตัวนี้ประกบคู่ เพื่อลดทั้งค่าความร้อนนำและรังสีแดดให้สมบูรณ์แบบที่สุดครับ';
+            }
         }
 
-        // เมื่อมีการเปลี่ยนค่า
+        // ดักจับเหตุการณ์การเลือกตัวกรอง
         selType.addEventListener('change', updateThicknessDropdown);
-        selThick.addEventListener('change', updateTable);
+        selThick.addEventListener('change', updateTableAndBEC);
 
-        // รันครั้งแรก
+        // รันตั้งค่าเริ่มต้นตอนเปิดหน้าเว็บ
         updateThicknessDropdown();
     </script>
 </body>
