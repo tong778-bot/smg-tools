@@ -12,191 +12,372 @@
     <style>
         body { font-family: 'Kanit', sans-serif; }
         .font-montserrat { font-family: 'Montserrat', sans-serif; }
-        
-        /* ลูกเล่น FX 1: แสงวิบวับวิ่งพาดผ่านรูปภาพ */
-        .glass-fx {
-            position: relative;
-            overflow: hidden;
-        }
+
+        /* ── Slide shine FX ── */
+        .glass-fx { position: relative; overflow: hidden; }
         .glass-fx::after {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 50%;
-            height: 100%;
+            position: absolute; top: 0; left: -150%;
+            width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg);
             z-index: 20;
             transition: left 0.7s ease-in-out;
         }
-        .group:hover .glass-fx::after {
-            left: 150%;
-        }
+        .group:hover .glass-fx::after { left: 150%; }
 
-        /* ลูกเล่น FX 2: แสงวิบวับออโต้สำหรับปุ่ม ESG Center */
-        .esg-fx {
-            position: relative;
-            overflow: hidden;
-        }
+        /* ── ESG shine FX ── */
+        .esg-fx { position: relative; overflow: hidden; }
         .esg-fx::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 50%;
-            height: 100%;
+            position: absolute; top: 0; left: -150%;
+            width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg);
             z-index: 10;
             animation: esg-shine 3s infinite;
         }
         @keyframes esg-shine {
-            0% { left: -150%; }
-            20% { left: 150%; }
-            100% { left: 150%; }
+            0%   { left: -150%; }
+            20%  { left:  150%; }
+            100% { left:  150%; }
+        }
+
+        /* ── Hero Slideshow ── */
+        .slideshow-wrap {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,62,82,0.22);
+        }
+        .slide {
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        .slide.active { opacity: 1; }
+        .slide-dots {
+            position: absolute;
+            bottom: 14px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 8px; z-index: 30;
+        }
+        .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.45);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dot.active { background: #fff; transform: scale(1.35); }
+
+        /* ── Corner decorations ── */
+        .corner-tl {
+            position: absolute; top: -12px; left: -12px;
+            width: 52px; height: 52px;
+            border-top: 4px solid #6fa088;
+            border-left: 4px solid #6fa088;
+            border-radius: 10px 0 0 0;
+        }
+        .corner-br {
+            position: absolute; bottom: -12px; right: -12px;
+            width: 52px; height: 52px;
+            border-bottom: 4px solid #003e52;
+            border-right: 4px solid #003e52;
+            border-radius: 0 0 10px 0;
+        }
+
+        /* ── Noise texture overlay ── */
+        .noise::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── Nav underline hover ── */
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute; left: 0; bottom: -2px;
+            width: 0; height: 2px;
+            background: #6fa088;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ── Card hover lift ── */
+        .tool-card {
+            transition: transform 0.28s cubic-bezier(.22,.68,0,1.2), box-shadow 0.28s ease, border-color 0.2s;
+        }
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0,62,82,0.13);
+            border-color: #6fa088;
+        }
+
+        /* ── Section divider ── */
+        .wave-divider { line-height: 0; }
+        .wave-divider svg { display: block; width: 100%; }
+
+        /* ── Feature card shimmer bg ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .fade-in-up:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in-up:nth-child(2) { animation-delay: 0.25s; }
+        .fade-in-up:nth-child(3) { animation-delay: 0.4s; }
+
+        /* ── Stats bar ── */
+        .stat-item {
+            position: relative;
+            padding: 0 28px;
+        }
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute; right: 0; top: 10%;
+            height: 80%; width: 1px;
+            background: rgba(255,255,255,0.2);
         }
     </style>
 </head>
-<body class="bg-gray-50 text-[#231f20]">
+<body class="bg-gray-50 text-[#231f20] antialiased">
 
+    <!-- ══ NAV ══ -->
     <nav class="bg-[#003e52] sticky top-0 z-50 shadow-md">
         <div class="container mx-auto px-6 lg:px-16 py-3 flex items-center justify-between">
             <a href="#" class="flex items-center">
                 <img src="logo_3_deepblue.png" alt="SMG GLASS AND METALS" class="h-10 sm:h-12 w-auto object-contain">
             </a>
-            <div class="hidden md:flex space-x-6 text-sm font-medium text-white/90">
-                <a href="heat-glass.html" target="_blank" class="hover:text-[#6fa088] transition-colors">🔥 กระจกกันความร้อน</a>
-                <a href="acoustic-glass.html" target="_blank" class="hover:text-[#6fa088] transition-colors">🔊 กระจกซับเสียง</a>
-                <a href="curved-glass.html" target="_blank" class="hover:text-[#6fa088] transition-colors">📐 กระจกดัดโค้ง</a>
-                <a href="https://www.smg-con.co.th/esg_center.php" target="_blank" class="text-[#6fa088] font-semibold hover:text-white transition-colors">🌱 ESG Center</a>
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-white/90">
+                <a href="heat-glass.html"     target="_blank" class="nav-link hover:text-[#6fa088] transition-colors">🔥 กระจกกันความร้อน</a>
+                <a href="acoustic-glass.html" target="_blank" class="nav-link hover:text-[#6fa088] transition-colors">🔊 กระจกซับเสียง</a>
+                <a href="curved-glass.html"   target="_blank" class="nav-link hover:text-[#6fa088] transition-colors">📐 กระจกดัดโค้ง</a>
+                <a href="pool-glass.html"     target="_blank" class="nav-link hover:text-[#6fa088] transition-colors">🏊 กระจกสระว่ายน้ำ</a>
+                <a href="carbon-calculator.html" target="_blank"
+                   class="nav-link text-[#6fa088] font-semibold hover:text-white transition-colors">
+                   🌿 ESG Carbon Calculator
+                </a>
             </div>
+            <!-- Mobile hamburger placeholder -->
+            <button class="md:hidden text-white/80 hover:text-white text-2xl focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden')">☰</button>
+        </div>
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden bg-[#002b3a] px-6 pb-4 space-y-3 text-sm text-white/80">
+            <a href="heat-glass.html"            target="_blank" class="block py-2 border-b border-white/10">🔥 กระจกกันความร้อน</a>
+            <a href="acoustic-glass.html"         target="_blank" class="block py-2 border-b border-white/10">🔊 กระจกซับเสียง</a>
+            <a href="curved-glass.html"           target="_blank" class="block py-2 border-b border-white/10">📐 กระจกดัดโค้ง</a>
+            <a href="pool-glass.html"             target="_blank" class="block py-2 border-b border-white/10">🏊 กระจกสระว่ายน้ำ</a>
+            <a href="carbon-calculator.html"      target="_blank" class="block py-2 text-[#6fa088] font-semibold">🌿 ESG Carbon Calculator</a>
         </div>
     </nav>
 
-    <section class="relative py-16 lg:py-24 bg-white overflow-hidden border-b border-gray-100">
-        <div class="absolute inset-0 z-0 opacity-30">
-            <div class="absolute top-0 left-1/4 w-[1px] h-full bg-gray-200"></div>
-            <div class="absolute top-0 left-2/4 w-[1px] h-full bg-gray-200"></div>
-            <div class="absolute top-0 left-3/4 w-[1px] h-full bg-gray-200"></div>
+    <!-- ══ HERO ══ -->
+    <section class="relative py-16 lg:py-24 bg-white overflow-hidden border-b border-gray-100 noise">
+        <!-- Subtle grid lines -->
+        <div class="absolute inset-0 z-0 opacity-25 pointer-events-none">
+            <div class="absolute top-0 left-1/4  w-px h-full bg-gray-200"></div>
+            <div class="absolute top-0 left-2/4  w-px h-full bg-gray-200"></div>
+            <div class="absolute top-0 left-3/4  w-px h-full bg-gray-200"></div>
         </div>
 
         <div class="container mx-auto px-6 lg:px-16 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
+
+                <!-- Left content -->
                 <div class="lg:col-span-6 space-y-8">
                     <div class="inline-flex items-center space-x-2 bg-[#003e52]/10 text-[#003e52] px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase font-montserrat">
                         <span>✦ SMG GLASS CALCULATOR TOOLS</span>
                     </div>
-                    
+
                     <div class="space-y-4">
                         <h1 class="text-4xl sm:text-5xl font-bold text-[#003e52] tracking-wide font-montserrat uppercase leading-tight">
-                            ONLY THE <br>SIGNIFICANT
+                            ONLY THE<br>SIGNIFICANT
                         </h1>
                         <div class="h-1.5 w-24 bg-[#6fa088] rounded-full"></div>
                     </div>
-                    
+
                     <p class="text-gray-600 font-light leading-relaxed">
                         ยินดีต้อนรับสู่ระบบคำนวณและช่วยเลือกสเปกกระจกสถาปัตยกรรมโดย <strong class="font-semibold text-[#003e52]">SMG GLASS</strong> เครื่องมือช่วยสนับสนุนสถาปนิก ผู้รับเหมา และทีมงานหน้างานให้ทำงานได้แม่นยำและรวดเร็วยิ่งขึ้น
                     </p>
-                    
+
+                    <!-- Tool buttons -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <a href="heat-glass.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
+                        <a href="heat-glass.html"     target="_blank" class="tool-card flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm group">
                             <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">📊 ระบบกระจกกันความร้อน</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-                        <a href="acoustic-glass.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
+                        <a href="acoustic-glass.html" target="_blank" class="tool-card flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm group">
                             <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">🔊 ระบบกระจกซับเสียง</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-                        <a href="curved-glass.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
+                        <a href="curved-glass.html"   target="_blank" class="tool-card flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm group">
                             <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">📐 ระบบกระจกดัดโค้ง</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-                        <a href="basic-specs.html" target="_blank" class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-[#6fa088] hover:shadow-md transition-all duration-300 group">
-                            <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">📘 วิเคราะห์สเปกกระจก & เกณฑ์พลังงาน (BEC)</span>
+                        <a href="basic-specs.html"    target="_blank" class="tool-card flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm group">
+                            <span class="font-semibold text-[#003e52] group-hover:text-[#6fa088]">📘 วิเคราะห์สเปกกระจก & BEC</span>
                             <span class="text-gray-400 group-hover:translate-x-1 transition-transform">→</span>
                         </a>
-                        
-                        <a href="https://www.smg-con.co.th/esg_center.php" target="_blank" class="esg-fx sm:col-span-2 flex items-center justify-between p-4 bg-gradient-to-r from-emerald-600 to-[#6fa088] rounded-xl shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:shadow-emerald-600/40 transition-all duration-300 transform hover:-translate-y-1">
-                            <span class="font-semibold text-white relative z-20">🌱 SMG ESG Center: นวัตกรรมกระจกเพื่อความยั่งยืน</span>
-                            <span class="text-white relative z-20">↗</span>
+                        <a href="pool-glass.html"     target="_blank" class="tool-card sm:col-span-2 flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm group">
+                            <div>
+                                <span class="block font-semibold text-[#003e52] group-hover:text-[#6fa088]">🏊 ระบบกระจกสระว่ายน้ำ</span>
+                                <span class="block text-xs text-gray-400 mt-0.5 font-light">คำนวณโครงสร้าง · Wind Load · ความหนากระจก</span>
+                            </div>
+                            <span class="text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0">→</span>
                         </a>
 
-                        <a href="https://line.me/R/ti/p/@smg58" target="_blank" class="sm:col-span-2 flex items-center justify-between p-4 bg-white border-2 border-[#003e52] text-[#003e52] rounded-xl hover:bg-[#003e52] hover:text-white transition-all duration-300 text-center group">
+                        <!-- ESG Carbon Calculator — NEW -->
+                        <a href="carbon-calculator.html" target="_blank"
+                           class="esg-fx sm:col-span-2 flex items-center justify-between p-4
+                                  bg-gradient-to-r from-[#003e52] to-emerald-700
+                                  rounded-xl shadow-lg shadow-[#003e52]/30
+                                  hover:shadow-xl hover:shadow-emerald-600/40
+                                  transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="relative z-20">
+                                <span class="block font-bold text-white text-base">🌿 SMG ESG Carbon Calculator</span>
+                                <span class="block text-white/70 text-xs mt-0.5">คำนวณ Embodied Carbon · Carbon Payback Period</span>
+                            </div>
+                            <span class="text-white relative z-20 text-lg">↗</span>
+                        </a>
+
+                        <a href="https://line.me/R/ti/p/@smg58" target="_blank"
+                           class="sm:col-span-2 flex items-center justify-between p-4 bg-white border-2 border-[#003e52] text-[#003e52] rounded-xl hover:bg-[#003e52] hover:text-white transition-all duration-300 group">
                             <span class="font-semibold font-montserrat w-full text-center group-hover:text-white">💬 ปรึกษาผู้เชี่ยวชาญด้านกระจกและอลูมิเนียม (LINE: @smg58)</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="lg:col-span-6 relative">
-                    <div class="absolute -top-4 -left-4 w-16 h-16 border-t-4 border-l-4 border-[#6fa088] rounded-tl-xl hidden sm:block"></div>
-                    <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-4 border-r-4 border-[#003e52] rounded-br-xl hidden sm:block"></div>
-                    <div class="rounded-2xl overflow-hidden shadow-xl bg-gray-200">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="SMG Premium Glass" class="w-full h-[400px] object-cover">
+                <!-- Right — Slideshow -->
+                <div class="lg:col-span-6 relative hidden sm:block">
+                    <div class="corner-tl"></div>
+                    <div class="corner-br"></div>
+
+                    <div class="slideshow-wrap" id="heroSlide">
+                        <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80')"></div>
+                        <div class="slide"        style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80')"></div>
+                        <div class="slide"        style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80')"></div>
+                        <div class="slide"        style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80')"></div>
+                        <!-- overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#003e52]/20 to-transparent z-10 pointer-events-none"></div>
+                        <!-- dots -->
+                        <div class="slide-dots" id="slideDots"></div>
                     </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ STATS STRIP ══ -->
+    <section class="bg-[#003e52] py-8">
+        <div class="container mx-auto px-6 lg:px-16">
+            <div class="flex flex-wrap justify-center md:justify-around text-white text-center gap-y-6">
+                <div class="stat-item">
+                    <div class="text-3xl font-bold font-montserrat">35+</div>
+                    <div class="text-xs text-white/60 uppercase tracking-widest mt-1">Glass SKU</div>
+                </div>
+                <div class="stat-item">
+                    <div class="text-3xl font-bold font-montserrat">EPD</div>
+                    <div class="text-xs text-white/60 uppercase tracking-widest mt-1">Carbon Standard</div>
+                </div>
+                <div class="stat-item">
+                    <div class="text-3xl font-bold font-montserrat">0.418</div>
+                    <div class="text-xs text-white/60 uppercase tracking-widest mt-1">kgCO₂e/kWh TGO</div>
+                </div>
+                <div class="stat-item">
+                    <div class="text-3xl font-bold font-montserrat">5</div>
+                    <div class="text-xs text-white/60 uppercase tracking-widest mt-1">Calc Tools</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50">
+    <!-- ══ WAVE DIVIDER ══ -->
+    <div class="wave-divider bg-[#003e52]">
+        <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 48 C360 0 1080 0 1440 48 L1440 0 L0 0 Z" fill="#f9fafb"/>
+        </svg>
+    </div>
+
+    <!-- ══ FEATURED HIGHLIGHTS ══ -->
+    <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-6 lg:px-16">
-            <div class="text-center mb-10">
+            <div class="text-center mb-14">
+                <span class="inline-block px-4 py-1 bg-[#6fa088]/15 text-[#003e52] rounded-full text-xs font-semibold tracking-widest uppercase font-montserrat mb-4">Latest Articles</span>
                 <h2 class="text-3xl font-bold text-[#003e52] font-montserrat uppercase">Featured Highlights</h2>
                 <div class="h-1 w-16 bg-[#6fa088] mx-auto mt-4 rounded-full"></div>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <a href="https://www.smg-con.co.th/news_detail.php?id=62" target="_blank" class="group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white">
-                    <div class="glass-fx w-full h-64 rounded-t-2xl relative bg-gray-200">
-                        <img src="news1.jpg" alt="กระจกกันร้อน SMG" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
-                        <div class="absolute bottom-6 left-6 right-6 text-white z-30 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+
+                <!-- Card 1 -->
+                <a href="https://www.smg-con.co.th/news_detail.php?id=62" target="_blank"
+                   class="fade-in-up group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white overflow-hidden">
+                    <div class="glass-fx w-full h-56 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80"
+                             alt="กระจกกันร้อน"
+                             class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div class="absolute bottom-5 left-5 right-5 text-white z-20 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
                             <span class="inline-block px-3 py-1 bg-[#6fa088] rounded-full text-[10px] font-semibold mb-2 tracking-widest uppercase font-montserrat">PORTFOLIO</span>
-                            <h3 class="text-lg font-bold font-kanit mb-1 line-clamp-2">
-                                กระจกกันร้อน SMG — แก้ปัญหาห้องร้อนทุกวิธีทุกระดับงบ | SMG Glass
-                            </h3>
-                            <p class="text-sm text-white/80 font-light flex items-center justify-between group-hover:text-white transition-colors">
-                                อ่านรายละเอียด
-                                <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-10px] group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </p>
+                            <h3 class="text-base font-bold leading-snug line-clamp-2">กระจกกันร้อน SMG — แก้ปัญหาห้องร้อนทุกวิธีทุกระดับงบ</h3>
                         </div>
+                    </div>
+                    <div class="px-5 py-4 flex items-center justify-between text-sm text-[#003e52] font-medium">
+                        <span>อ่านรายละเอียด</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </div>
                 </a>
 
-                <a href="https://www.smg-con.co.th/news_detail.php?id=61" target="_blank" class="group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white">
-                    <div class="glass-fx w-full h-64 rounded-t-2xl relative bg-gray-200">
-                        <img src="news2.jpg" alt="กระจกกันเสียง SMG" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
-                        <div class="absolute bottom-6 left-6 right-6 text-white z-30 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                <!-- Card 2 -->
+                <a href="https://www.smg-con.co.th/news_detail.php?id=61" target="_blank"
+                   class="fade-in-up group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white overflow-hidden">
+                    <div class="glass-fx w-full h-56 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80"
+                             alt="กระจกกันเสียง"
+                             class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div class="absolute bottom-5 left-5 right-5 text-white z-20 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
                             <span class="inline-block px-3 py-1 bg-[#6fa088] rounded-full text-[10px] font-semibold mb-2 tracking-widest uppercase font-montserrat">KNOWLEDGE</span>
-                            <h3 class="text-lg font-bold font-kanit mb-1 line-clamp-2">
-                                กระจกกันเสียง SMG — แก้ปัญหาเสียงรบกวนครบทุกวิธี | SMG Glass
-                            </h3>
-                            <p class="text-sm text-white/80 font-light flex items-center justify-between group-hover:text-white transition-colors">
-                                อ่านรายละเอียด
-                                <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-10px] group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </p>
+                            <h3 class="text-base font-bold leading-snug line-clamp-2">กระจกกันเสียง SMG — แก้ปัญหาเสียงรบกวนครบทุกวิธี</h3>
                         </div>
+                    </div>
+                    <div class="px-5 py-4 flex items-center justify-between text-sm text-[#003e52] font-medium">
+                        <span>อ่านรายละเอียด</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </div>
                 </a>
 
-                <a href="https://www.smg-con.co.th/news_detail.php?id=59" target="_blank" class="group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white">
-                    <div class="glass-fx w-full h-64 rounded-t-2xl relative bg-gray-200">
-                        <img src="news3.jpg" alt="กระจกโค้ง SMG" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
-                        <div class="absolute bottom-6 left-6 right-6 text-white z-30 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                <!-- Card 3 -->
+                <a href="https://www.smg-con.co.th/news_detail.php?id=59" target="_blank"
+                   class="fade-in-up group block rounded-2xl shadow-lg transform transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-[#003e52]/30 bg-white overflow-hidden">
+                    <div class="glass-fx w-full h-56 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=700&q=80"
+                             alt="กระจกโค้ง"
+                             class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#003e52]/90 via-[#003e52]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div class="absolute bottom-5 left-5 right-5 text-white z-20 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0">
                             <span class="inline-block px-3 py-1 bg-[#6fa088] rounded-full text-[10px] font-semibold mb-2 tracking-widest uppercase font-montserrat">UPDATE</span>
-                            <h3 class="text-lg font-bold font-kanit mb-1 line-clamp-2">
-                                กระจกโค้ง — คำนวณ Sagitta และ Arc Length ได้เลย | SMG Glass
-                            </h3>
-                            <p class="text-sm text-white/80 font-light flex items-center justify-between group-hover:text-white transition-colors">
-                                อ่านรายละเอียด
-                                <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-10px] group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </p>
+                            <h3 class="text-base font-bold leading-snug line-clamp-2">กระจกโค้ง — คำนวณ Sagitta และ Arc Length ได้เลย</h3>
                         </div>
+                    </div>
+                    <div class="px-5 py-4 flex items-center justify-between text-sm text-[#003e52] font-medium">
+                        <span>อ่านรายละเอียด</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </div>
                 </a>
 
@@ -204,6 +385,38 @@
         </div>
     </section>
 
+    <!-- ══ ESG CTA BANNER ══ -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6 lg:px-16">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#003e52] via-[#005a6e] to-emerald-800 p-10 md:p-14 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
+                <!-- BG deco -->
+                <div class="absolute right-0 top-0 w-72 h-72 bg-[#6fa088]/10 rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+                <div class="absolute left-1/3 bottom-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 pointer-events-none"></div>
+
+                <div class="relative z-10 flex-1 text-white">
+                    <span class="inline-block px-3 py-1 bg-[#6fa088]/30 border border-[#6fa088]/50 rounded-full text-xs font-semibold tracking-widest uppercase font-montserrat mb-4">🌿 SMG GIVE GREEN</span>
+                    <h2 class="text-2xl md:text-3xl font-bold font-montserrat mb-3">ESG Carbon Calculator</h2>
+                    <p class="text-white/75 text-sm leading-relaxed max-w-lg">
+                        คำนวณ Embodied Carbon จากกระจกทุกรายการ — รองรับ PDF/BOQ, เลือกกระจกด้วยตนเอง และออกแบบสเปคพิเศษ ได้ Carbon Payback Period พร้อม ESG Report ทันที
+                    </p>
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <span class="px-3 py-1.5 bg-white/10 rounded-lg text-xs text-white/80 border border-white/20">📄 PDF/BOQ อัตโนมัติ</span>
+                        <span class="px-3 py-1.5 bg-white/10 rounded-lg text-xs text-white/80 border border-white/20">🪟 เลือกกระจก ≤10 รายการ</span>
+                        <span class="px-3 py-1.5 bg-white/10 rounded-lg text-xs text-white/80 border border-white/20">⚗️ Custom Stack LAM+IGU</span>
+                    </div>
+                </div>
+                <div class="relative z-10 flex-shrink-0">
+                    <a href="carbon-calculator.html" target="_blank"
+                       class="esg-fx inline-flex items-center gap-3 px-8 py-4 bg-[#6fa088] hover:bg-emerald-400 text-white font-bold rounded-2xl shadow-lg hover:shadow-emerald-400/40 transition-all duration-300 transform hover:-translate-y-1 font-montserrat text-sm uppercase tracking-wider">
+                        เริ่มคำนวณ Carbon
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
     <footer class="bg-[#002b3a] pt-12 pb-8 border-t-4 border-[#6fa088]">
         <div class="container mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-white/80">
             <div>
@@ -220,6 +433,54 @@
             &copy; 2026 SMG GLASS AND METALS. All Rights Reserved.
         </div>
     </footer>
+
+    <!-- ══ SCRIPTS ══ -->
+    <script>
+    // ── Slideshow ──
+    (function() {
+        const slides = document.querySelectorAll('#heroSlide .slide');
+        const dotsEl = document.getElementById('slideDots');
+        let cur = 0, timer;
+
+        // Build dots
+        slides.forEach((_, i) => {
+            const d = document.createElement('button');
+            d.className = 'dot' + (i === 0 ? ' active' : '');
+            d.setAttribute('aria-label', 'Slide ' + (i+1));
+            d.onclick = () => goTo(i);
+            dotsEl.appendChild(d);
+        });
+
+        function goTo(n) {
+            slides[cur].classList.remove('active');
+            dotsEl.children[cur].classList.remove('active');
+            cur = (n + slides.length) % slides.length;
+            slides[cur].classList.add('active');
+            dotsEl.children[cur].classList.add('active');
+            clearInterval(timer);
+            timer = setInterval(next, 4500);
+        }
+        function next() { goTo(cur + 1); }
+        timer = setInterval(next, 4500);
+
+        // Pause on hover
+        document.getElementById('heroSlide').addEventListener('mouseenter', () => clearInterval(timer));
+        document.getElementById('heroSlide').addEventListener('mouseleave', () => { timer = setInterval(next, 4500); });
+    })();
+
+    // ── Fade-in-up on scroll ──
+    (function() {
+        const els = document.querySelectorAll('.fade-in-up');
+        if (!('IntersectionObserver' in window)) {
+            els.forEach(el => el.style.opacity = '1');
+            return;
+        }
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; io.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        els.forEach(el => { el.style.animationPlayState = 'paused'; io.observe(el); });
+    })();
+    </script>
 
 </body>
 </html>
