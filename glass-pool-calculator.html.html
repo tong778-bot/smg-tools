@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMG Glass Pool Calculator V14</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f8fafc;--bg3:#f1f5f9;--tx:#0f172a;--tx2:#475569;--tx3:#94a3b8;--bd:#e2e8f0;--bd2:#cbd5e1;--blue:#1e40af;--blue2:#2563eb;--bluebg:#eff6ff;--bluebd:#bfdbfe;--cyan:#0891b2;--cyanbg:#ecfeff;--amber:#92400e;--amber2:#d97706;--amberbg:#fffbeb;--amberbd:#fde68a;--green:#166534;--green2:#16a34a;--greenbg:#f0fdf4;--greenbd:#bbf7d0;--red:#991b1b;--red2:#dc2626;--redbg:#fef2f2;--redbd:#fecaca;--r:10px;--rs:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:var(--bg2);color:var(--tx);font-size:15px;line-height:1.6}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]{-moz-appearance:textfield}
+
+.hdr{background:var(--bg);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:40}
+.hdr-in{max-width:1400px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{height:32px}
+.logo-fb{width:32px;height:32px;background:linear-gradient(135deg,#06b6d4,#1e40af);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.ver{font-size:10px;font-family:'IBM Plex Mono';font-weight:600;padding:3px 10px;border-radius:99px;background:var(--bluebg);color:var(--blue);border:1px solid var(--bluebd)}
+.btn-pdf{display:flex;align-items:center;gap:6px;padding:7px 16px;background:var(--blue2);color:#fff;border:none;border-radius:var(--rs);font-family:'Sarabun';font-size:13px;font-weight:600;cursor:pointer}
+.btn-pdf:hover{background:var(--blue)}
+
+.app{max-width:1400px;margin:0 auto;padding:20px;display:grid;grid-template-columns:370px 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.app{grid-template-columns:1fr}}
+.left,.right{display:flex;flex-direction:column;gap:12px}
+
+.P{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.Ph{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;background:var(--bg2)}
+.Pi{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.Pt{font-weight:600;font-size:13px}
+.Pb{padding:16px}
+
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.fg:last-child{margin-bottom:0}
+.fl{font-size:11px;color:var(--tx2);font-weight:500}
+.fh{font-size:9px;color:var(--tx3);font-style:italic;margin-top:1px}
+.fi{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);padding:8px 10px;font-size:14px;font-family:'IBM Plex Mono';font-weight:500;color:var(--tx);width:100%;outline:none;transition:border .15s}
+.fi:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.fi.cy{border-color:var(--cyan);background:var(--cyanbg)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+.gp-card{border:1px solid var(--bd);border-radius:var(--rs);padding:10px 12px;margin-bottom:8px;background:var(--bg);position:relative}
+.gp-card .gp-title{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:6px}
+.gp-rm{position:absolute;top:6px;right:8px;background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;line-height:1}
+.gp-rm:hover{color:var(--red2)}
+.btn-add{width:100%;padding:8px;border:1.5px dashed var(--bd2);border-radius:var(--rs);background:none;color:var(--tx2);font-family:'Sarabun';font-size:13px;cursor:pointer}
+.btn-add:hover{border-color:var(--blue2);color:var(--blue2);background:var(--bluebg)}
+
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cc{border:1.5px solid var(--bd);border-radius:var(--rs);padding:8px;background:var(--bg);cursor:pointer;text-align:center;transition:all .15s}
+.cc:hover{border-color:var(--bd2);background:var(--bg2)}
+.cc.on{border-color:var(--blue2);background:var(--bluebg);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.cc svg{width:100%;height:50px;margin-bottom:4px}
+.cn{font-size:11px;font-weight:600}
+.cs{font-size:9px;color:var(--tx3)}
+.cb{display:inline-block;font-size:8px;padding:1px 6px;border-radius:99px;margin-top:3px;font-weight:600}
+.bw{background:var(--amberbg);color:var(--amber);border:1px solid var(--amberbd)}
+.bg{background:var(--greenbg);color:var(--green);border:1px solid var(--greenbd)}
+.br{background:var(--redbg);color:var(--red);border:1px solid var(--redbd)}
+.cd{margin-top:8px;padding:8px 10px;background:var(--bluebg);border:1px solid var(--bluebd);border-radius:var(--rs);font-size:11px;color:var(--blue);line-height:1.6}
+
+.sfr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sfb{width:36px;height:36px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bg2);color:var(--tx);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sfb:hover{background:var(--bd)}
+.sfv{flex:1;text-align:center;font-size:22px;font-family:'IBM Plex Mono';font-weight:600;color:var(--blue2);background:var(--bluebg);border:2px solid var(--bluebd);border-radius:var(--rs);padding:6px;outline:none}
+.sfp{display:flex;gap:6px}
+.sp{flex:1;padding:5px;font-size:10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bg);color:var(--tx2);cursor:pointer;text-align:center}
+.sp:hover{border-color:var(--blue2);color:var(--blue2)}
+
+.btn-calc{width:100%;padding:14px;background:var(--blue2);color:#fff;border:none;border-radius:var(--r);font-family:'Sarabun';font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-calc:hover{background:var(--blue);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.25)}
+
+.mr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);padding:12px}
+.ml{font-size:9px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.mv{font-size:22px;font-weight:600;font-family:'IBM Plex Mono';line-height:1}
+.mu{font-size:10px;color:var(--tx3);margin-top:3px}
+
+.sh{background:var(--bluebg);border:1.5px solid var(--bluebd);border-radius:var(--r);padding:16px 20px}
+.shl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--blue2);margin-bottom:6px}
+.shv{font-size:20px;font-weight:700;font-family:'IBM Plex Mono';color:var(--blue);line-height:1.3}
+.shs{font-size:11px;color:var(--tx2);margin-top:4px}
+
+.ut{width:100%;border-collapse:collapse}
+.ut th{padding:7px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--tx3);text-align:left;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.ut td{padding:9px 10px;font-size:13px;font-family:'IBM Plex Mono';font-weight:500;color:var(--tx);border-bottom:1px solid var(--bd)}
+
+.warn-box{background:var(--redbg);border:1px solid var(--redbd);border-radius:var(--rs);padding:10px 14px;font-size:12px;color:var(--red);line-height:1.6;margin-bottom:8px}
+.disc{background:var(--amberbg);border:1px solid var(--amberbd);border-radius:var(--rs);padding:10px 14px;display:flex;gap:8px;font-size:11px;color:var(--amber);line-height:1.6}
+.ct{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:11px}
+.ct-i{color:var(--tx3)}
+.ct-i strong{color:var(--blue2)}
+.jc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);padding:12px 16px;margin-top:6px}
+.jc-t{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:6px}
+.jc-li{font-size:12px;color:var(--tx);line-height:1.7;margin-bottom:3px;padding-left:12px;text-indent:-12px}
+.jc-li::before{content:'• ';color:var(--blue2);font-weight:700}
+.rec{background:var(--greenbg);border:1px solid var(--greenbd);border-radius:var(--rs);padding:12px 16px}
+.alt{background:var(--amberbg);border:1px solid var(--amberbd);border-radius:var(--rs);padding:12px 16px;margin-top:6px}
+.shr{border:1px solid var(--bd);border-radius:var(--rs);padding:12px 16px;display:none}
+.shr.vis{display:block}
+.ve{border:1px solid var(--redbd);background:var(--redbg);border-radius:var(--r);padding:16px;display:none}
+.ve.vis{display:block}
+.empty{padding:40px;text-align:center;color:var(--tx3)}
+</style>
+</head>
+<body>
+
+<header class="hdr"><div class="hdr-in">
+  <div class="logo">
+    <img src="https://smg-con.co.th/images/logo-dark.png" alt="SMG" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="logo-fb" style="display:none">S</div>
+    <div><div style="font-weight:700;font-size:14px">SMG GLASS & METALS</div><div style="font-size:11px;color:var(--tx3)">Glass Pool Calculator</div></div>
+  </div>
+  <div class="hdr-r">
+    <span class="ver">V14</span>
+    <button class="btn-pdf" onclick="xPDF()">Print / Save PDF</button>
+  </div>
+</div></header>
+
+<main class="app">
+<div class="left">
+
+  <div class="P"><div class="Ph"><div class="Pi" style="background:var(--bluebg)">📐</div><span class="Pt">มิติสระน้ำ (Pool Dimensions)</span></div>
+  <div class="Pb">
+    <div class="fr3">
+      <div class="fg"><label class="fl">กว้างสระ W (ม.)</label><input class="fi" type="number" id="pW" value="3.0" step="0.1"></div>
+      <div class="fg"><label class="fl">ยาวสระ L (ม.)</label><input class="fi" type="number" id="pL" value="8.0" step="0.1"></div>
+      <div class="fg"><label class="fl">ลึกสระ D (ม.)</label><input class="fi" type="number" id="pD" value="1.2" step="0.05"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">ระดับน้ำจากขอบกระจกบน (ม.)</label><input class="fi cy" type="number" id="wH" value="1.0" step="0.05"><div class="fh">สระ Overflow วัดจากขอบบนลงมา</div></div>
+      <div class="fg"><label class="fl">ความสูงเคิร์บปูน (ม.)</label><input class="fi" type="number" id="cH" value="0.0" step="0.05"><div class="fh">ส่วนปูนรับแรงแทนกระจก (ถ้ามี)</div></div>
+    </div>
+  </div></div>
+
+  <div class="P"><div class="Ph" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:8px"><div class="Pi" style="background:var(--bluebg)">🔷</div><span class="Pt">แผ่นกระจก (Glass Panels)</span></div><span style="font-size:10px;color:var(--tx3)" id="gpCount">1 แผ่น</span></div>
+  <div class="Pb">
+    <div class="fh" style="margin-bottom:8px">กรอก "ขนาดช่องเปิด" (Opening Size) ระบบจะคำนวณขนาดจริง (+ค่าอม 50mm/ข้าง) ให้อัตโนมัติ</div>
+    <div id="gpList">
+      <div class="gp-card" id="gp0">
+        <div class="gp-title">แผ่นที่ 1</div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">กว้างช่องเปิด (มม.)</label><input class="fi" type="number" id="gW0" value="2200" step="100"></div>
+          <div class="fg"><label class="fl">สูงช่องเปิด (มม.)</label><input class="fi" type="number" id="gH0" value="1000" step="50"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-add" id="btnAdd" onclick="addPanel()">+ เพิ่มแผ่นกระจก (สูงสุด 4 แผ่น)</button>
+  </div></div>
+
+  <div class="P"><div class="Ph"><div class="Pi" style="background:var(--bluebg)">⚙️</div><span class="Pt">รูปแบบการยึดกระจก</span></div>
+  <div class="Pb">
+    <div class="cg">
+      <button class="cc on" onclick="setC(0)" id="c0"><svg viewBox="0 0 100 52" fill="none"><rect x="16" y="6" width="74" height="40" fill="#eff6ff" stroke="#bfdbfe" stroke-width=".8"/><rect x="10" y="4" width="7" height="44" fill="#93c5fd" stroke="#2563eb" stroke-width="1.3"/><rect x="9" y="2" width="9" height="3" fill="#d97706" rx=".5"/><line x1="9" y1="46" x2="18" y2="46" stroke="#94a3b8" stroke-width=".8" stroke-dasharray="2,1.5"/><text x="30" y="30" font-size="7" fill="#2563eb" font-family="sans-serif">Pool</text></svg><div class="cn">ด้านเดียว — ร่องบ่า</div><div class="cs">ยึด 3 ด้าน เปิดบน</div><span class="cb bw">SF +35%</span></button>
+      <button class="cc" onclick="setC(1)" id="c1"><svg viewBox="0 0 100 52" fill="none"><rect x="16" y="6" width="74" height="40" fill="#eff6ff" stroke="#bfdbfe" stroke-width=".8"/><rect x="10" y="4" width="7" height="44" fill="#93c5fd" stroke="#2563eb" stroke-width="1.3"/><rect x="9" y="2" width="9" height="3" fill="#d97706" rx=".5"/><rect x="9" y="46" width="9" height="3" fill="#d97706" rx=".5"/><rect x="8" y="3" width="3" height="46" fill="#16a34a" rx=".5"/><text x="30" y="30" font-size="7" fill="#2563eb" font-family="sans-serif">Pool</text></svg><div class="cn">ด้านเดียว — บ่ารับใน</div><div class="cs">ยึด 4 ด้าน + SS316</div><span class="cb bg">SF ต่ำสุด</span></button>
+      <button class="cc" onclick="setC(2)" id="c2"><svg viewBox="0 0 100 52" fill="none"><rect x="18" y="6" width="72" height="34" fill="#eff6ff" stroke="#bfdbfe" stroke-width=".8"/><rect x="10" y="4" width="7" height="36" fill="#93c5fd" stroke="#2563eb" stroke-width="1.3"/><rect x="10" y="38" width="80" height="6" fill="#93c5fd" stroke="#2563eb" stroke-width="1.3"/><circle cx="14" cy="40" r="3.5" fill="#fecaca" stroke="#dc2626" stroke-width=".8"/><text x="30" y="26" font-size="7" fill="#2563eb" font-family="sans-serif">Pool</text></svg><div class="cn">เข้ามุม — ร่องบ่า</div><div class="cs">L-Shape 3 ด้าน</div><span class="cb br">Corner stress สูง</span></button>
+      <button class="cc" onclick="setC(3)" id="c3"><svg viewBox="0 0 100 52" fill="none"><rect x="18" y="6" width="72" height="34" fill="#eff6ff" stroke="#bfdbfe" stroke-width=".8"/><rect x="10" y="4" width="7" height="36" fill="#93c5fd" stroke="#2563eb" stroke-width="1.3"/><rect x="10" y="38" width="80" height="6" fill="#93c5fd" stroke="#2563eb" stroke-width="1.3"/><rect x="9" y="2" width="9" height="3" fill="#d97706" rx=".5"/><rect x="9" y="43" width="82" height="3" fill="#d97706" rx=".5"/><rect x="8" y="3" width="3" height="38" fill="#16a34a" rx=".5"/><circle cx="14" cy="40" r="3.5" fill="#bbf7d0" stroke="#16a34a" stroke-width=".8"/><text x="30" y="26" font-size="7" fill="#2563eb" font-family="sans-serif">Pool</text></svg><div class="cn">เข้ามุม — บ่ารับใน</div><div class="cs">L-Shape 4 ด้าน</div><span class="cb bg">แนะนำสูงสุด</span></button>
+    </div>
+    <div class="cd" id="cdesc">กระจกด้านเดียว ขอบบนอิสระ — SF เพิ่ม 35% เพราะไม่มีแรงยึดด้านบน</div>
+  </div></div>
+
+  <div class="P"><div class="Ph"><div class="Pi" style="background:var(--amberbg)">🛡️</div><span class="Pt">Safety Factor</span></div>
+  <div class="Pb">
+    <div class="fh" style="margin-bottom:6px">ตัวคูณความปลอดภัย — ยิ่งสูง กระจกยิ่งหนา (มาตรฐาน ≥ 1.5)</div>
+    <div class="sfr">
+      <button class="sfb" onclick="stSF(-0.1)">−</button>
+      <input type="number" class="sfv" id="iSF" value="1.5" min="1.1" max="5" step="0.1">
+      <button class="sfb" onclick="stSF(0.1)">+</button>
+    </div>
+    <div class="sfp">
+      <button class="sp" onclick="sSF(1.5)">1.5 มาตรฐาน</button>
+      <button class="sp" onclick="sSF(2.0)">2.0 แนะนำ</button>
+      <button class="sp" onclick="sSF(2.5)">2.5 สูง</button>
+    </div>
+  </div></div>
+
+  <button class="btn-calc" onclick="calc()">🔍 คำนวณสเปคกระจก</button>
+</div>
+
+<!-- RIGHT -->
+<div class="right" id="report">
+  <div class="P" id="emptyState"><div class="empty"><div style="font-size:36px;opacity:.4;margin-bottom:8px">🪟</div><div style="font-size:14px">กรอกข้อมูลด้านซ้าย แล้วกด <b>"คำนวณสเปคกระจก"</b></div></div></div>
+  <div id="results" style="display:none;flex-direction:column;gap:12px">
+    <div id="warns"></div>
+    <div class="mr">
+      <div class="mc"><div class="ml">MAX PRESSURE</div><div class="mv" style="color:var(--red2)" id="rP">0</div><div class="mu">kgf/m²</div></div>
+      <div class="mc"><div class="ml">DEFLECTION LIMIT</div><div class="mv" style="color:var(--blue2)" id="rD">--</div><div class="mu">mm (L/175 ASTM E1300)</div></div>
+      <div class="mc"><div class="ml">SAFETY FACTOR</div><div class="mv" style="color:var(--green2)" id="rSF">--</div><div class="mu">Target</div></div>
+    </div>
+    <div class="sh"><div class="shl">RECOMMENDED SPEC — SMG STANDARD</div><div class="shv" id="rSpec">--</div><div class="shs" id="rSub">--</div></div>
+    <div class="P" style="border-radius:var(--rs)">
+      <div style="padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase">PERFORMANCE — Actual Load vs Glass Capacity</div>
+      <div style="overflow-x:auto"><table class="ut" id="perfTable" style="min-width:700px"><thead><tr><th style="width:50px">Panel</th><th style="width:100px">Opening<br><span style="font-weight:400">(W×H mm)</span></th><th style="width:100px">Actual Glass<br><span style="font-weight:400">(W×H mm)</span></th><th style="width:140px">Spec</th><th style="width:90px">Load<br><span style="font-weight:400">(kgf/m²)</span></th><th style="width:90px">Capacity<br><span style="font-weight:400">(kgf/m²)</span></th><th style="width:70px">Util.<br><span style="font-weight:400">(%)</span></th><th style="width:60px">Status</th></tr></thead><tbody id="perfBody"></tbody></table></div>
+      <div style="padding:8px 12px;font-size:10px;color:var(--tx3);border-top:1px solid var(--bd);line-height:1.6"><b>Utilization Ratio</b> = Actual Load / Glass Capacity x 100% | SMG recommends ≤ 85%</div>
+    </div>
+    <div class="rec" id="rRec"><div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:4px">RECOMMENDED</div><div id="rRecV" style="font-size:13px;line-height:1.7">--</div></div>
+    <div class="alt" id="rAlt" style="display:none"><div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;margin-bottom:4px">ALTERNATIVE</div><div id="rAltV" style="font-size:12px;color:var(--amber);line-height:1.7">--</div></div>
+    <div class="P" style="border-radius:var(--rs)">
+      <div style="padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase">U-CHANNEL & JOINT DESIGN</div>
+      <table class="ut"><tr><th>Groove W</th><th>Groove D</th><th>Edge Cover</th><th>SS Grade</th></tr><tr><td id="tW">--</td><td id="tD">--</td><td id="tC" style="color:var(--blue2)">--</td><td id="tS" style="color:var(--amber2)">--</td></tr></table>
+      <div style="padding:6px 12px;font-size:9px;color:var(--tx3)">Edge Cover = ระยะอมกระจก | ค่าอมมาตรฐาน SMG = 50mm/ข้าง (ฉาก SS 2 นิ้ว)</div>
+    </div>
+    <div class="jc">
+      <div class="jc-t">SMG CHECKPOINTS</div>
+      <div class="jc-li"><b>U-Channel:</b> เจาะ Weep Hole 5mm ทุก 400-500mm ก่อนเทคอนกรีต</div>
+      <div class="jc-li"><b>Sealant:</b> ใช้ Pool-Grade Neutral Cure เท่านั้น หนา ≥ 10mm ห้ามใช้ Acetoxy (กลิ่นส้ม)</div>
+      <div class="jc-li"><b>Backing Rod:</b> ใส่ Closed Cell PE ก้นร่องป้องกัน 3-Point Adhesion</div>
+      <div class="jc-li"><b>Cure Time:</b> รอ ≥ 14 วัน (1mm/วัน) ก่อนเติมน้ำ</div>
+    </div>
+    <div class="P" style="border-radius:var(--rs)">
+      <div style="padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase">ACCEPTANCE CRITERIA</div>
+      <table class="ut"><tr><th>Item</th><th>Criteria</th><th>Standard</th></tr><tr><td>Max Opening Width</td><td>≤ 3,500 mm</td><td>Thai glass ~3.6m</td></tr><tr><td>Max Opening Height</td><td>≤ 2,000 mm</td><td>SMG Standard</td></tr><tr><td>Deflection Limit</td><td>L / 175</td><td>ASTM E1300</td></tr><tr><td>Safety Factor</td><td>≥ 1.5</td><td>ASTM E1300</td></tr><tr><td>Utilization</td><td>≤ 85%</td><td>SMG Standard</td></tr><tr><td>Edge Cover</td><td>50 mm/side</td><td>SS 2" angle</td></tr><tr><td>Cure Time</td><td>≥ 14 days</td><td>Manufacturer TDS</td></tr></table>
+    </div>
+    <div class="shr" id="shr"><div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:6px">CORNER SHEAR</div><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px"><div style="font-size:24px;font-weight:700;font-family:'IBM Plex Mono'" id="rShV">0</div><div style="font-size:12px;color:var(--tx2);flex:1;min-width:180px" id="rShD">--</div></div></div>
+    <div class="ve" id="ve"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="font-size:13px;font-weight:700;color:var(--red)">⚠️ SMG Solution — OVERSIZED PANEL</div></div><div style="font-size:12px;color:var(--red);line-height:1.6">→ ลดความกว้างบานเดี่ยว ไม่เกิน <strong id="rVeW">--</strong> ม. | → เพิ่ม Concrete Mullion | → เสริม SS U-Channel ขอบบน</div></div>
+    <div class="disc"><span>⚠</span><span>เอกสารนี้เป็นการประมาณการเบื้องต้น ต้องผ่านการตรวจสอบจากวิศวกรโครงสร้างก่อนสั่งผลิต</span></div>
+    <div class="ct"><span style="font-weight:600;color:var(--tx2)">SMG Glass And Metal Co., Ltd.</span><div style="display:flex;gap:10px;flex-wrap:wrap"><span class="ct-i">📞 <strong>086-317-4966</strong></span><span class="ct-i">💬 <strong>@smg58</strong></span><span class="ct-i">📧 <strong>smg58.glass@gmail.com</strong></span><span class="ct-i">🌐 <strong>smg-con.co.th</strong></span></div></div>
+  </div>
+</div>
+</main>
+
+<script>
+// STATE
+var cur = 0;
+var panelCount = 1;
+var EDGE = 50;
+var MAX_W = 3500;
+var MAX_H = 2000;
+var MAX_PANELS = 4;
+var CFGS = [
+  {l:'ด้านเดียว — ร่องบ่า (ยึด 3 ด้าน เปิดบน)',ht:false,co:false,mM:1.35,cM:1.0,b:'3 ด้าน เปิดบน',d:'กระจกด้านเดียว ขอบบนอิสระ — SF เพิ่ม 35% แนะนำเสริม SS U-Channel ถ้าลึก > 1.2m'},
+  {l:'ด้านเดียว — บ่ารับใน (ยึด 4 ด้าน)',ht:true,co:false,mM:1.0,cM:1.0,b:'4 ด้าน บ่ารับใน',d:'มีบ่า SS316 รับทุกด้าน — SF ต่ำสุด เสถียรสูงสุด เหมาะสระลึก > 1.5m'},
+  {l:'เข้ามุม — ร่องบ่า L-Shape (ยึด 3 ด้าน)',ht:false,co:true,mM:1.35,cM:1.25,b:'Corner 3 ด้าน',d:'กระจก 2 แผ่นเข้ามุม ขอบบนอิสระ — Corner Shear สูงมาก เสี่ยงฉีกขาด'},
+  {l:'เข้ามุม — บ่ารับใน L-Shape (ยึด 4 ด้าน)',ht:true,co:true,mM:1.0,cM:1.25,b:'Corner 4 ด้าน',d:'มีบ่า SS316L ทุกด้าน — ลด Corner Shear > 70% ปลอดภัยสูงสุด'}
+];
+
+function widthFactor(w) {
+  if (w <= 1500) return 1.00;
+  if (w <= 2000) return 1.15;
+  if (w <= 2500) return 1.35;
+  if (w <= 3000) return 1.60;
+  if (w <= 3500) return 2.00;
+  return 2.50;
+}
+
+function glassCapacity(th) {
+  if (th <= 21) return 1200;
+  if (th <= 25) return 1800;
+  if (th <= 31) return 2800;
+  return 4500;
+}
+
+function specFromEff(eff) {
+  if (eff <= 1.5) return {s:'10 + SGP(0.89) + 10 mm', th:21};
+  if (eff <= 2.2) return {s:'12 + SGP(0.89) + 12 mm', th:25};
+  if (eff <= 3.0) return {s:'15 + SGP(0.89) + 15 mm', th:31};
+  return {s:'19 + SGP(0.89) + 19 mm', th:39};
+}
+
+// PANEL MANAGEMENT
+function addPanel() {
+  if (panelCount >= MAX_PANELS) return;
+  var i = panelCount;
+  var h = '<div class="gp-card" id="gp' + i + '">';
+  h += '<button class="gp-rm" onclick="rmPanel(' + i + ')" title="ลบ">✕</button>';
+  h += '<div class="gp-title">แผ่นที่ ' + (i+1) + '</div>';
+  h += '<div class="fr2"><div class="fg"><label class="fl">กว้างช่องเปิด (มม.)</label>';
+  h += '<input class="fi" type="number" id="gW' + i + '" value="2000" step="100"></div>';
+  h += '<div class="fg"><label class="fl">สูงช่องเปิด (มม.)</label>';
+  h += '<input class="fi" type="number" id="gH' + i + '" value="1000" step="50"></div></div></div>';
+  document.getElementById('gpList').insertAdjacentHTML('beforeend', h);
+  panelCount++;
+  updatePanelUI();
+}
+
+function rmPanel(idx) {
+  document.getElementById('gp' + idx).remove();
+  panelCount--;
+  var cards = document.getElementById('gpList').querySelectorAll('.gp-card');
+  for (var j = 0; j < cards.length; j++) {
+    cards[j].id = 'gp' + j;
+    cards[j].querySelector('.gp-title').textContent = 'แผ่นที่ ' + (j + 1);
+    var inputs = cards[j].querySelectorAll('input');
+    inputs[0].id = 'gW' + j;
+    inputs[1].id = 'gH' + j;
+    var rm = cards[j].querySelector('.gp-rm');
+    if (rm) rm.setAttribute('onclick', 'rmPanel(' + j + ')');
+  }
+  var first = document.getElementById('gp0');
+  if (first) { var rm2 = first.querySelector('.gp-rm'); if (rm2) rm2.remove(); }
+  updatePanelUI();
+}
+
+function updatePanelUI() {
+  document.getElementById('gpCount').textContent = panelCount + ' แผ่น';
+  document.getElementById('btnAdd').style.display = panelCount >= MAX_PANELS ? 'none' : 'block';
+}
+
+// CONFIG
+function setC(i) {
+  cur = i;
+  var cards = document.querySelectorAll('.cc');
+  for (var j = 0; j < cards.length; j++) {
+    cards[j].classList.toggle('on', i === j);
+  }
+  document.getElementById('cdesc').textContent = CFGS[i].d;
+}
+
+// SF
+function stSF(d) {
+  var el = document.getElementById('iSF');
+  var v = Math.round((parseFloat(el.value || 1.5) + d) * 10) / 10;
+  el.value = Math.min(5, Math.max(1.1, v)).toFixed(1);
+}
+function sSF(v) { document.getElementById('iSF').value = v.toFixed(1); }
+
+// MAIN CALC
+function calc() {
+  var pW = parseFloat(document.getElementById('pW').value) || 3;
+  var pL = parseFloat(document.getElementById('pL').value) || 8;
+  var wH = parseFloat(document.getElementById('wH').value) || 1;
+  var cH = parseFloat(document.getElementById('cH').value) || 0;
+  var sf = parseFloat(document.getElementById('iSF').value) || 1.5;
+  var cfg = CFGS[cur];
+  var act = Math.max(0, wH - cH);
+  var pKgf = act * 1000;
+  var poolWmm = pW * 1000;
+  var poolLmm = pL * 1000;
+
+  // Collect panels
+  var panels = [];
+  for (var i = 0; i < panelCount; i++) {
+    var wEl = document.getElementById('gW' + i);
+    var hEl = document.getElementById('gH' + i);
+    if (!wEl || !hEl) continue;
+    panels.push({w: parseFloat(wEl.value) || 2000, h: parseFloat(hEl.value) || 1000, idx: i});
+  }
+  if (panels.length === 0) return;
+
+  var warns = [];
+  var maxEff = 0;
+  var maxSpec = {s: '--', th: 0};
+  var results = [];
+
+  for (var pi = 0; pi < panels.length; pi++) {
+    var p = panels[pi];
+    var openW = p.w;
+    var openH = p.h;
+    var actW = openW + EDGE * 2;
+    var actH = cfg.ht ? openH + EDGE * 2 : openH + EDGE;
+
+    if (openW > poolWmm && openW > poolLmm) {
+      warns.push('แผ่นที่ ' + (pi+1) + ': กว้าง ' + openW + ' มม. > ขนาดสระทั้ง 2 ด้าน — กระจกกว้างกว่าด้านที่จะติด!');
+    }
+    if (openW > MAX_W) warns.push('แผ่นที่ ' + (pi+1) + ': กว้าง ' + openW + ' มม. เกินเกณฑ์ 3,500 มม.');
+    if (openH > MAX_H) warns.push('แผ่นที่ ' + (pi+1) + ': สูง ' + openH + ' มม. เกินเกณฑ์ 2,000 มม.');
+
+    var wF = widthFactor(openW);
+    var eff = act * sf * cfg.mM * cfg.cM * wF;
+    var sp = specFromEff(eff);
+    var cap = glassCapacity(sp.th);
+    var util = cap > 0 ? (pKgf / cap * 100) : 999;
+    var deflLim = openW / 175;
+
+    if (eff > maxEff) { maxEff = eff; maxSpec = sp; }
+    results.push({idx: pi+1, openW:openW, openH:openH, actW:actW, actH:actH, eff:eff, spec:sp, cap:cap, util:util, deflLim:deflLim, wF:wF});
+  }
+
+  // Show results
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('results').style.display = 'flex';
+
+  // Warnings
+  var warnHTML = '';
+  for (var wi = 0; wi < warns.length; wi++) {
+    warnHTML += '<div class="warn-box">⚠️ ' + warns[wi] + '</div>';
+  }
+  document.getElementById('warns').innerHTML = warnHTML;
+
+  // Find critical panel
+  var crit = results[0];
+  for (var ci = 1; ci < results.length; ci++) {
+    if (results[ci].eff > crit.eff) crit = results[ci];
+  }
+
+  // Metrics
+  document.getElementById('rP').textContent = Math.round(pKgf);
+  document.getElementById('rD').textContent = crit.deflLim.toFixed(1);
+  document.getElementById('rSF').textContent = sf.toFixed(1);
+  document.getElementById('rSpec').textContent = 'HS Lam — ' + maxSpec.s;
+  document.getElementById('rSub').textContent = '~' + maxSpec.th + ' mm | SGP 0.89mm | Mount x' + cfg.mM + ' Corner x' + cfg.cM + ' Width x' + crit.wF.toFixed(2) + ' | Eff.Load: ' + crit.eff.toFixed(2);
+
+  // Performance table
+  var tbody = document.getElementById('perfBody');
+  var ph = '';
+  for (var ri = 0; ri < results.length; ri++) {
+    var r = results[ri];
+    var stTxt = r.util <= 85 ? 'Pass' : (r.util <= 100 ? 'Marginal' : 'Fail!');
+    var stClr = r.util <= 85 ? 'color:var(--green2)' : (r.util <= 100 ? 'color:var(--amber2)' : 'color:var(--red2)');
+    var stIcon = r.util <= 85 ? '✅' : (r.util <= 100 ? '⚠️' : '❌');
+    ph += '<tr><td style="font-weight:600">' + r.idx + '</td>';
+    ph += '<td>' + r.openW + ' x ' + r.openH + '</td>';
+    ph += '<td>' + r.actW + ' x ' + r.actH + '</td>';
+    ph += '<td>' + r.spec.s + '</td>';
+    ph += '<td style="color:var(--red2);font-weight:600">' + Math.round(pKgf) + '</td>';
+    ph += '<td style="color:var(--green2)">' + r.cap + '</td>';
+    ph += '<td style="font-weight:600;' + stClr + '">' + r.util.toFixed(0) + '%</td>';
+    ph += '<td style="' + stClr + ';font-weight:600">' + stIcon + ' ' + stTxt + '</td></tr>';
+  }
+  tbody.innerHTML = ph;
+
+  // U-Channel
+  var th = maxSpec.th;
+  var uW = th + 8;
+  var uD = cfg.ht ? 1.5 * uW : (cfg.co ? 2 * uW : 1.5 * uW);
+  var uCov = uD - th;
+  document.getElementById('tW').textContent = Math.ceil(uW) + ' mm';
+  document.getElementById('tD').textContent = Math.ceil(uD) + ' mm';
+  document.getElementById('tC').textContent = Math.ceil(uCov) + ' mm';
+  document.getElementById('tS').textContent = cfg.ht ? (cfg.co ? 'SS316L' : 'SS316/304') : 'SS316';
+
+  // Recommended
+  var cwm = (crit.openW / 1000).toFixed(2);
+  var chm = (crit.openH / 1000).toFixed(2);
+  document.getElementById('rRecV').innerHTML =
+    'Critical: <b>' + cwm + ' x ' + chm + ' m</b> | ' + cfg.l + '<br>' +
+    'Spec: <b>HS Lam — ' + maxSpec.s + '</b> (~' + th + 'mm)<br>' +
+    'Width Factor = ' + crit.wF.toFixed(2) + ' | Utilization = ' + crit.util.toFixed(0) + '%';
+
+  // Alternative
+  var altEl = document.getElementById('rAlt');
+  if (!cfg.ht && maxSpec.th > 21) {
+    altEl.style.display = 'block';
+    var prevSpec = specFromEff(crit.eff / cfg.mM);
+    document.getElementById('rAltV').innerHTML =
+      'หากเสริม SS U-Channel ครอบสันกระจกด้านบน เปลี่ยนเป็นยึด 4 ด้าน สามารถลดสเปคเป็น <b>' + prevSpec.s + '</b> (ลด Deflection 25-35%)';
+  } else {
+    altEl.style.display = 'none';
+  }
+
+  // Corner shear
+  var sc = document.getElementById('shr');
+  if (cfg.co) {
+    sc.classList.add('vis');
+    var maxWm = 0;
+    for (var si = 0; si < panels.length; si++) { if (panels[si].w > maxWm) maxWm = panels[si].w; }
+    maxWm = maxWm / 1000;
+    var bs = pKgf * maxWm * 0.45;
+    var sv = document.getElementById('rShV');
+    var sd = document.getElementById('rShD');
+    if (!cfg.ht) {
+      sv.style.color = 'var(--red2)';
+      sv.textContent = Math.round(bs) + ' kgf/m';
+      sd.textContent = '⚠️ Silicone รับ 100% — เสี่ยงฉีกขาด แนะนำเสริม SS U-Channel';
+    } else {
+      sv.style.color = 'var(--green2)';
+      sv.textContent = Math.round(bs * 0.3) + ' kgf/m';
+      sd.textContent = '✅ SS U-Channel ลดแรงเฉือน > 70%';
+    }
+  } else {
+    sc.classList.remove('vis');
+  }
+
+  // VE
+  var veEl = document.getElementById('ve');
+  var anyOver = false;
+  for (var vi = 0; vi < results.length; vi++) {
+    if (results[vi].eff > 3 || results[vi].openW > MAX_W) anyOver = true;
+  }
+  if (anyOver) {
+    veEl.classList.add('vis');
+    document.getElementById('rVeW').textContent = (crit.openW / 1000 * 0.65).toFixed(2);
+  } else {
+    veEl.classList.remove('vis');
+  }
+
+  // Scroll
+  document.getElementById('results').scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+// PDF - open print window
+function xPDF() {
+  var rP = document.getElementById('rP').textContent;
+  var rD = document.getElementById('rD').textContent;
+  var rSF = document.getElementById('rSF').textContent;
+  var rSpec = document.getElementById('rSpec').textContent;
+  var rSub = document.getElementById('rSub').textContent;
+  var perfHTML = document.getElementById('perfBody').innerHTML;
+  var recV = document.getElementById('rRecV').innerHTML;
+  var altV = document.getElementById('rAltV').innerHTML;
+  var altShow = document.getElementById('rAlt').style.display !== 'none';
+  var tW = document.getElementById('tW').textContent;
+  var tD = document.getElementById('tD').textContent;
+  var tC = document.getElementById('tC').textContent;
+  var tS = document.getElementById('tS').textContent;
+  var cfgLabel = CFGS[cur].l;
+  var cfgDesc = CFGS[cur].d;
+  var cfgBadge = CFGS[cur].b;
+  var now = new Date();
+  var docNo = 'SMG-' + now.getFullYear().toString().slice(2) + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-001';
+  var docDate = now.toLocaleDateString('th-TH');
+
+  var s = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
+  s += '<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">';
+  s += '<style>';
+  s += '@page{size:A4;margin:8mm 10mm}';
+  s += '*{box-sizing:border-box;margin:0;padding:0}';
+  s += 'body{font-family:Sarabun,sans-serif;color:#0f172a;font-size:9px;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact}';
+  s += '.hdr{background:#0f172a;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #2563eb}';
+  s += '.hdr-l{display:flex;align-items:center;gap:7px}.hdr-icon{width:20px;height:20px;background:#0891b2;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:9px}';
+  s += '.hdr-name{color:#fff;font-weight:700;font-size:8px}.hdr-sub{color:#93c5fd;font-size:6px}.hdr-r{color:#fff;font-size:6px;text-align:right}';
+  s += '.title{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #2563eb;margin-bottom:5px}';
+  s += '.title h1{font-size:11px;font-weight:700}.title span{font-size:7px;color:#2563eb;font-weight:600}';
+  s += '.desc{padding:4px 7px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:3px;font-size:7px;color:#1e40af;line-height:1.5;margin-bottom:4px}';
+  s += '.disc{padding:3px 7px;background:#fffbeb;border:1px solid #fde68a;border-radius:3px;font-size:6px;color:#92400e;margin-bottom:4px}';
+  s += '.met{display:flex;gap:5px;margin-bottom:4px}';
+  s += '.met-c{flex:1;background:#f8fafc;border:1px solid #e2e8f0;border-radius:3px;padding:5px 7px}';
+  s += '.met-l{font-size:6.5px;color:#64748b;font-weight:600;text-transform:uppercase}.met-v{font-size:16px;font-weight:700;font-family:"IBM Plex Mono",monospace;margin:1px 0}.met-u{font-size:6px;color:#94a3b8}';
+  s += '.spec{background:#eff6ff;border:1px solid #bfdbfe;border-radius:4px;padding:6px 9px;margin-bottom:4px}';
+  s += '.spec-l{font-size:7px;font-weight:700;color:#2563eb;text-transform:uppercase}.spec-v{font-size:14px;font-weight:700;font-family:"IBM Plex Mono",monospace;color:#1e40af;margin:2px 0}.spec-s{font-size:6.5px;color:#475569}';
+  s += '.tbl{border:1px solid #e2e8f0;border-radius:3px;overflow:hidden;margin-bottom:4px}';
+  s += '.tbl-h{background:#f1f5f9;padding:3px 6px;font-size:6.5px;font-weight:700;color:#64748b;text-transform:uppercase;border-bottom:1px solid #e2e8f0}';
+  s += '.tbl table{width:100%;border-collapse:collapse}.tbl th{padding:2px 4px;background:#0f172a;color:#fff;font-size:6px;font-weight:600;text-align:left}.tbl td{padding:3px 4px;font-size:7.5px;font-family:"IBM Plex Mono",monospace;border-bottom:1px solid #f1f5f9}';
+  s += '.tbl-n{padding:2px 6px;font-size:5.5px;color:#94a3b8;border-top:1px solid #e2e8f0}';
+  s += '.rec{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:3px;padding:4px 7px;margin-bottom:3px}.rec b.h{font-size:6.5px;color:#166534;text-transform:uppercase;display:block;margin-bottom:2px}.rec .v{font-size:7.5px;line-height:1.5}';
+  s += '.alt{background:#fffbeb;border:1px solid #fde68a;border-radius:3px;padding:4px 7px;margin-bottom:3px}.alt b.h{font-size:6.5px;color:#92400e;text-transform:uppercase;display:block;margin-bottom:2px}.alt .v{font-size:7px;color:#92400e;line-height:1.5}';
+  s += '.ck{padding:4px 7px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:3px;margin-bottom:4px}.ck-h{font-size:6.5px;font-weight:700;color:#1e40af;text-transform:uppercase;margin-bottom:2px}.ck-li{font-size:6.5px;line-height:1.5}';
+  s += '.sig{display:flex;border:1px solid #e2e8f0;margin-bottom:3px}.sig>div{flex:1;padding:4px 7px;font-size:6.5px;color:#64748b}.sig>div:first-child{background:#f8fafc}.sig>div+div{border-left:1px solid #e2e8f0}';
+  s += '.contact{padding:3px 7px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:3px;font-size:6px;color:#64748b;display:flex;justify-content:space-between}.contact strong{color:#2563eb}';
+  s += '</style></head><body>';
+  s += '<div class="hdr"><div class="hdr-l"><div class="hdr-icon">S</div><div><div class="hdr-name">SMG GLASS & METALS</div><div class="hdr-sub">Glass Pool Calculator V14</div></div></div><div class="hdr-r"><div>' + docNo + '</div><div>' + docDate + '</div></div></div>';
+  s += '<div style="padding:6px 10px">';
+  s += '<div class="title"><h1>GLASS POOL SPECIFICATION REPORT</h1><span>' + cfgLabel + '</span></div>';
+  s += '<div class="desc">' + cfgDesc + '</div>';
+  s += '<div class="disc">This is a preliminary estimate. Must be verified by a licensed structural engineer.</div>';
+  s += '<div class="met"><div class="met-c"><div class="met-l">MAX PRESSURE</div><div class="met-v" style="color:#dc2626">' + rP + '</div><div class="met-u">kgf/m2</div></div>';
+  s += '<div class="met-c"><div class="met-l">DEFLECTION LIMIT</div><div class="met-v" style="color:#2563eb">' + rD + '</div><div class="met-u">mm (L/175)</div></div>';
+  s += '<div class="met-c"><div class="met-l">SAFETY FACTOR</div><div class="met-v" style="color:#16a34a">' + rSF + '</div><div class="met-u">Target</div></div></div>';
+  s += '<div class="spec"><div class="spec-l">RECOMMENDED SPEC — SMG STANDARD</div><div class="spec-v">' + rSpec + '</div><div class="spec-s">' + rSub + '</div></div>';
+  s += '<div class="tbl"><div class="tbl-h">PERFORMANCE — Actual Load vs Glass Capacity</div><table><tr><th>Panel</th><th>Opening</th><th>Actual Glass</th><th>Spec</th><th>Load</th><th>Capacity</th><th>Util.</th><th>Status</th></tr>' + perfHTML + '</table><div class="tbl-n">Utilization = Load / Capacity x 100% | SMG ≤ 85%</div></div>';
+  s += '<div class="rec"><b class="h">RECOMMENDED</b><div class="v">' + recV + '</div></div>';
+  if (altShow) {
+    s += '<div class="alt"><b class="h">ALTERNATIVE</b><div class="v">' + altV + '</div></div>';
+  }
+  s += '<div class="tbl"><div class="tbl-h">U-CHANNEL & JOINT DESIGN</div><table><tr><th>Groove W</th><th>Groove D</th><th>Edge Cover</th><th>SS Grade</th><th>SMG Std</th></tr>';
+  s += '<tr><td>' + tW + '</td><td>' + tD + '</td><td style="color:#2563eb">' + tC + '</td><td style="color:#d97706">' + tS + '</td><td>50mm/side</td></tr></table></div>';
+  s += '<div class="ck"><div class="ck-h">SMG CHECKPOINTS</div>';
+  s += '<div class="ck-li">U-Channel: Weep Hole 5mm every 400-500mm | Sealant: Pool-Grade Neutral Cure ≥10mm, no Acetoxy</div>';
+  s += '<div class="ck-li">Backing Rod: Closed Cell PE for 3-Point Adhesion prevention | Cure Time: ≥14 days before filling</div></div>';
+  s += '<div class="sig"><div>Prepared by<br><b>SMG Glass And Metal Co., Ltd.</b></div><div>Reviewed by<br><br>_________________________</div><div>Engineer<br><br>_________________________</div></div>';
+  s += '<div class="contact"><span>SMG Glass And Metal Co., Ltd.</span><span>Tel: <strong>086-317-4966</strong> | LINE: <strong>@smg58</strong> | Email: <strong>smg58.glass@gmail.com</strong> | Web: <strong>smg-con.co.th</strong></span></div>';
+  s += '</div></body></html>';
+
+  var w = window.open('', '_blank', 'width=800,height=1000');
+  if (!w) { alert('Popup blocked! Please allow popups.'); return; }
+  w.document.write(s);
+  w.document.close();
+  setTimeout(function() { w.print(); }, 600);
+}
+
+// INIT
+window.addEventListener('load', function() {
+  setC(0);
+  updatePanelUI();
+});
+</script>
+</body>
+</html>
