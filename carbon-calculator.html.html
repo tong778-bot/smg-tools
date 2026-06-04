@@ -3,37 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMG GIVE GREEN — Carbon Payback Calculator</title>
+<title>SMG GIVE GREEN — Carbon Payback Calculator v2.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root {
-  --green-dark: #0a3d2e;
-  --green-mid: #1a6b4a;
+  --green-dark:   #0a3d2e;
+  --green-mid:    #1a6b4a;
   --green-bright: #2db87a;
-  --green-light: #e8f7f0;
+  --green-light:  #e8f7f0;
   --green-xlight: #f2fbf7;
-  --amber: #e8a020;
-  --amber-light: #fff8e8;
-  --red: #d94040;
-  --red-light: #fdf0f0;
-  --ink: #111c17;
-  --ink-mid: #3d5247;
-  --ink-muted: #7a9089;
-  --surface: #ffffff;
-  --surface-2: #f5f9f7;
-  --border: #d0e6da;
-  --border-strong: #9fc8b6;
-  --radius: 10px;
-  --radius-lg: 16px;
-  --shadow: 0 2px 16px rgba(10,61,46,0.10);
-  --shadow-lg: 0 8px 40px rgba(10,61,46,0.15);
+  --amber:        #e8a020;
+  --amber-light:  #fff8e8;
+  --red:          #d94040;
+  --red-light:    #fdf0f0;
+  --ink:          #111c17;
+  --ink-mid:      #3d5247;
+  --ink-muted:    #7a9089;
+  --surface:      #ffffff;
+  --surface-2:    #f5f9f7;
+  --border:       #d0e6da;
+  --border-strong:#9fc8b6;
+  --radius:       10px;
+  --radius-lg:    16px;
+  --shadow:       0 2px 16px rgba(10,61,46,0.10);
+  --shadow-lg:    0 8px 40px rgba(10,61,46,0.15);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: 'IBM Plex Sans Thai', sans-serif;
   background: var(--surface-2);
@@ -50,76 +47,73 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 64px;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
 }
 .logo { display: flex; align-items: center; gap: 12px; }
 .logo-icon {
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   background: var(--green-bright);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
+  font-size: 18px;
 }
 .logo-text { color: #fff; font-weight: 600; font-size: 15px; letter-spacing: 0.02em; }
 .logo-sub { color: var(--green-bright); font-size: 11px; font-weight: 400; display: block; line-height: 1.2; }
+.header-right { display: flex; align-items: center; gap: 10px; }
 .header-badge {
-  background: rgba(45,184,122,0.2);
+  background: rgba(45,184,122,0.15);
   border: 1px solid rgba(45,184,122,0.4);
   color: var(--green-bright);
   font-size: 11px;
-  padding: 4px 10px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.04em;
+}
+.back-btn {
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  text-decoration: none;
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+.back-btn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+/* ── Layout ── */
+.container { max-width: 1060px; margin: 0 auto; padding: 36px 24px 80px; }
+
+/* ── Intro strip ── */
+.intro-strip {
+  background: linear-gradient(135deg, var(--green-dark) 0%, #1a5c40 100%);
+  border-radius: var(--radius-lg);
+  padding: 20px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--shadow-lg);
+}
+.intro-strip-icon { font-size: 36px; flex-shrink: 0; }
+.intro-strip-text h2 { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+.intro-strip-text p  { color: rgba(255,255,255,0.65); font-size: 12px; line-height: 1.5; }
+.intro-tags { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.intro-tag {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+  font-size: 10px;
+  padding: 3px 10px;
   border-radius: 20px;
   font-family: 'IBM Plex Mono', monospace;
 }
 
-/* ── Layout ── */
-.container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
-
-/* ── Tabs ── */
-.tabs {
-  display: flex;
-  gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 6px;
-  margin-bottom: 28px;
-  box-shadow: var(--shadow);
-}
-.tab-btn {
-  flex: 1;
-  padding: 10px 8px;
-  border: none;
-  background: transparent;
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-muted);
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-}
-.tab-btn.active {
-  background: var(--green-dark);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(10,61,46,0.25);
-}
-.tab-btn:hover:not(.active) { background: var(--green-light); color: var(--green-dark); }
-.tab-icon { font-size: 16px; }
-
-/* ── Panel ── */
-.panel { display: none; }
-.panel.active { display: block; }
-
-/* ── Card ── */
+/* ── Project Info ── */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -129,7 +123,7 @@ body {
   box-shadow: var(--shadow);
 }
 .card-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--green-dark);
   margin-bottom: 16px;
@@ -137,7 +131,7 @@ body {
   align-items: center;
   gap: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
 }
 .card-title-icon {
   width: 28px; height: 28px;
@@ -147,58 +141,58 @@ body {
   font-size: 14px;
 }
 
-/* ── Upload Zone ── */
-.upload-zone {
-  border: 2px dashed var(--border-strong);
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 40px 24px;
-  text-align: center;
+  padding: 6px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s;
-  background: var(--green-xlight);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  transition: all 0.22s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.upload-zone:hover, .upload-zone.drag-over {
-  border-color: var(--green-bright);
-  background: var(--green-light);
-}
-.upload-icon { font-size: 40px; margin-bottom: 12px; display: block; }
-.upload-title { font-size: 16px; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
-.upload-sub { font-size: 13px; color: var(--ink-muted); }
-.upload-btn {
-  margin-top: 16px;
-  display: inline-block;
+.tab-btn.active {
   background: var(--green-dark);
   color: #fff;
-  padding: 9px 20px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
+  box-shadow: 0 3px 12px rgba(10,61,46,0.28);
 }
-.upload-btn:hover { background: var(--green-mid); }
+.tab-btn:hover:not(.active) { background: var(--green-light); color: var(--green-dark); }
+.tab-icon { font-size: 18px; }
 
-/* ── Status ── */
-.status-box {
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  font-size: 13px;
-  margin-top: 14px;
-  display: none;
-}
-.status-box.show { display: flex; align-items: flex-start; gap: 10px; }
-.status-box.processing { background: var(--amber-light); border: 1px solid #f5d580; color: #7a5a00; }
-.status-box.success { background: var(--green-light); border: 1px solid var(--border-strong); color: var(--green-dark); }
-.status-box.error { background: var(--red-light); border: 1px solid #f5b0b0; color: var(--red); }
+/* ── Panel ── */
+.panel { display: none; animation: panelIn 0.25s ease; }
+.panel.active { display: block; }
+@keyframes panelIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 
-/* ── Form Grid ── */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+/* ── Form ── */
+.form-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-@media(max-width: 600px) { .form-grid, .form-grid-3 { grid-template-columns: 1fr; } }
+.form-grid-4 { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 14px; }
+@media(max-width:640px) { .form-grid, .form-grid-3, .form-grid-4 { grid-template-columns: 1fr; } }
 
 .form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 12px; font-weight: 600; color: var(--ink-mid); text-transform: uppercase; letter-spacing: 0.05em; }
+.form-label {
+  font-size: 11px; font-weight: 600; color: var(--ink-mid);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
 .form-control {
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -207,48 +201,52 @@ body {
   font-size: 14px;
   color: var(--ink);
   background: var(--surface);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
   width: 100%;
 }
-.form-control:focus { outline: none; border-color: var(--green-bright); box-shadow: 0 0 0 3px rgba(45,184,122,0.15); }
+.form-control:focus {
+  outline: none;
+  border-color: var(--green-bright);
+  box-shadow: 0 0 0 3px rgba(45,184,122,0.15);
+}
 
-/* ── Glass List (Manual) ── */
-.glass-list { display: flex; flex-direction: column; gap: 12px; }
+/* ── Glass row (manual) ── */
+.glass-list { display: flex; flex-direction: column; gap: 14px; }
 .glass-row {
-  background: var(--surface-2);
+  background: var(--green-xlight);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 16px 16px 14px;
   position: relative;
+  transition: border-color 0.2s;
 }
+.glass-row:hover { border-color: var(--border-strong); }
 .glass-row-num {
   position: absolute;
-  top: -10px; left: 14px;
+  top: -11px; left: 14px;
   background: var(--green-dark);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 2px 10px;
   border-radius: 10px;
   font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.04em;
 }
 .remove-btn {
-  position: absolute;
-  top: 10px; right: 12px;
-  background: none;
-  border: none;
-  color: var(--ink-muted);
-  cursor: pointer;
-  font-size: 18px;
-  line-height: 1;
-  padding: 0;
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none;
+  color: var(--ink-muted); cursor: pointer;
+  font-size: 20px; line-height: 1; padding: 0;
+  transition: color 0.15s;
 }
 .remove-btn:hover { color: var(--red); }
+
 .add-row-btn {
   border: 2px dashed var(--border-strong);
   background: transparent;
   border-radius: var(--radius);
-  padding: 12px;
+  padding: 13px;
   width: 100%;
   font-family: inherit;
   font-size: 14px;
@@ -256,190 +254,253 @@ body {
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 12px;
 }
-.add-row-btn:hover { background: var(--green-light); border-color: var(--green-bright); }
+.add-row-btn:hover { background: var(--green-light); border-color: var(--green-bright); color: var(--green-dark); }
 
-/* ── Special Glass Builder ── */
+/* ── SKU Info pill ── */
+.sku-info {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+}
+.sku-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--ink-mid);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.sku-pill.highlight { background: var(--green-light); border-color: var(--border-strong); color: var(--green-dark); font-weight: 600; }
+
+/* ── Special Glass ── */
 .layer-builder { display: flex; flex-direction: column; gap: 10px; }
 .layer-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex; align-items: center; gap: 10px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px 14px;
 }
 .layer-badge {
-  min-width: 80px;
-  font-size: 11px;
-  font-weight: 600;
+  min-width: 76px;
+  font-size: 11px; font-weight: 600;
   font-family: 'IBM Plex Mono', monospace;
   color: var(--green-dark);
   background: var(--green-light);
   border-radius: 6px;
-  padding: 3px 8px;
-  text-align: center;
+  padding: 4px 8px; text-align: center; line-height: 1.4;
 }
 .layer-badge.spacer { background: #fff8e8; color: #7a5a00; }
-.layer-connector {
-  text-align: center;
-  color: var(--border-strong);
-  font-size: 18px;
-  margin: -4px 0;
+.layer-connector { text-align: center; color: var(--border-strong); font-size: 20px; margin: -3px 0; }
+
+/* ── Preset chips ── */
+.preset-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.preset-chip {
+  padding: 7px 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  border-radius: 8px;
+  font-family: inherit; font-size: 12.5px; font-weight: 500;
+  color: var(--green-dark); cursor: pointer;
+  transition: all 0.18s;
 }
+.preset-chip:hover { background: var(--green-light); border-color: var(--green-bright); }
 
 /* ── Calc Button ── */
 .calc-btn {
-  background: var(--green-dark);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  padding: 14px 28px;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+  color: #fff; border: none; border-radius: var(--radius);
+  padding: 15px 28px;
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  cursor: pointer; width: 100%;
+  transition: all 0.22s;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 16px rgba(10,61,46,0.25);
+  margin-top: 4px;
 }
-.calc-btn:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(10,61,46,0.35); }
 .calc-btn:active { transform: translateY(0); }
 
 /* ── Results ── */
 .results-section { display: none; }
-.results-section.show { display: block; }
+.results-section.show { display: block; animation: panelIn 0.3s ease; }
 
-.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-@media(max-width: 700px) { .metrics-grid { grid-template-columns: 1fr 1fr; } }
+.metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+@media(max-width:700px) { .metrics-grid { grid-template-columns: 1fr 1fr; } }
 
 .metric-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 18px;
+  padding: 20px 16px;
   text-align: center;
   box-shadow: var(--shadow);
+  transition: transform 0.2s;
 }
+.metric-card:hover { transform: translateY(-2px); }
 .metric-card.highlight { border-color: var(--green-bright); background: var(--green-xlight); }
-.metric-card.warning { border-color: #f5d580; background: var(--amber-light); }
-.metric-card.danger { border-color: #f5b0b0; background: var(--red-light); }
-.metric-label { font-size: 11px; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
-.metric-value { font-size: 26px; font-weight: 600; color: var(--green-dark); font-family: 'IBM Plex Mono', monospace; line-height: 1.1; }
+.metric-card.warning   { border-color: #f5d580; background: var(--amber-light); }
+.metric-card.danger    { border-color: #f5b0b0; background: var(--red-light); }
+.metric-label { font-size: 10.5px; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.metric-value { font-size: 28px; font-weight: 600; color: var(--green-dark); font-family: 'IBM Plex Mono', monospace; line-height: 1.1; }
 .metric-value.amber { color: #a06010; }
-.metric-value.red { color: var(--red); }
+.metric-value.red   { color: var(--red); }
 .metric-unit { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
-
-/* ── Results Table ── */
-.results-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.results-table th {
-  background: var(--green-dark);
-  color: #fff;
-  padding: 10px 12px;
-  text-align: left;
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.results-table th:first-child { border-radius: 8px 0 0 0; }
-.results-table th:last-child { border-radius: 0 8px 0 0; }
-.results-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-.results-table tr:hover td { background: var(--green-xlight); }
-.results-table tr:last-child td { border-bottom: none; }
-.results-table .mono { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-mid); }
-.results-table .carbon-val { font-weight: 600; color: var(--green-dark); font-family: 'IBM Plex Mono', monospace; }
-.results-table .carbon-val.hi { color: #a06010; }
-.results-table .carbon-val.danger { color: var(--red); }
-
-/* ── Payback Bar ── */
-.payback-visual {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px 24px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-.payback-title { font-size: 13px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-.chart-wrap { position: relative; height: 280px; }
 
 /* ── ESG Stamp ── */
 .esg-stamp {
   background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 28px 32px;
   color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 24px;
+  display: flex; align-items: center; gap: 24px;
   margin-bottom: 20px;
+  box-shadow: var(--shadow-lg);
 }
-.esg-icon { font-size: 48px; flex-shrink: 0; }
-.esg-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-.esg-sub { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+.esg-icon { font-size: 52px; flex-shrink: 0; }
+.esg-title { font-size: 19px; font-weight: 600; margin-bottom: 4px; }
+.esg-sub   { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.55; }
 .esg-badge {
-  margin-left: auto;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  padding: 10px 16px;
-  text-align: center;
-  min-width: 100px;
-  flex-shrink: 0;
+  margin-left: auto; flex-shrink: 0;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 12px; padding: 12px 18px; text-align: center; min-width: 110px;
 }
-.esg-badge-val { font-size: 22px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; display: block; }
-.esg-badge-lbl { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em; }
+.esg-badge-val { font-size: 24px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; display: block; }
+.esg-badge-lbl { font-size: 10px; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.07em; }
+
+/* ── Chart ── */
+.payback-visual {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 26px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.payback-title { font-size: 12.5px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.chart-wrap { position: relative; height: 270px; }
+
+/* ── Results Table ── */
+.results-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.results-table th {
+  background: var(--green-dark); color: #fff;
+  padding: 10px 12px; text-align: left;
+  font-weight: 500; font-size: 11.5px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.results-table th:first-child { border-radius: 8px 0 0 0; }
+.results-table th:last-child  { border-radius: 0 8px 0 0; }
+.results-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.results-table tr:hover td { background: var(--green-xlight); }
+.results-table tr:last-child td { border-bottom: none; }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-mid); }
+.carbon-val { font-weight: 600; color: var(--green-dark); font-family: 'IBM Plex Mono', monospace; }
+.carbon-val.hi     { color: #a06010; }
+.carbon-val.danger { color: var(--red); }
 
 /* ── Export ── */
-.export-bar { display: flex; gap: 10px; margin-top: 12px; }
+.export-bar { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 .export-btn {
-  flex: 1;
-  padding: 10px;
+  flex: 1; min-width: 120px;
+  padding: 11px 14px;
   border: 1px solid var(--border-strong);
   background: var(--surface);
   border-radius: var(--radius);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--green-dark);
-  cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--green-dark); cursor: pointer;
   transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
 }
 .export-btn:hover { background: var(--green-light); border-color: var(--green-bright); }
 
-/* ── Spinner ── */
-.spinner {
-  display: inline-block;
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  flex-shrink: 0;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Footer note ── */
+/* ── Footnote ── */
 .footnote { font-size: 11px; color: var(--ink-muted); margin-top: 6px; line-height: 1.6; }
-.tag { display: inline-block; background: var(--green-light); color: var(--green-dark); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; }
+.tag {
+  display: inline-block;
+  background: var(--green-light); color: var(--green-dark);
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 10px;
+  font-family: 'IBM Plex Mono', monospace; text-transform: uppercase;
+}
+
+/* ── Tree Dashboard ── */
+.tree-dashboard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.tree-dashboard-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.tree-big-num {
+  font-size: 52px; font-weight: 600; color: var(--green-bright);
+  font-family: 'IBM Plex Mono', monospace; line-height: 1;
+}
+.tree-big-label { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+.tree-ref {
+  font-size: 11px; color: var(--ink-muted);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; line-height: 1.6; max-width: 260px;
+}
+.forest-zone {
+  background: var(--green-xlight);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px 14px;
+  margin-bottom: 16px;
+  min-height: 90px;
+}
+.forest-sublabel { font-size: 11px; color: var(--ink-muted); margin-bottom: 12px; font-family: 'IBM Plex Mono', monospace; }
+.trees-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; min-height: 68px; }
+.tree-net-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-net-card {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 12px; text-align: center;
+}
+.tree-net-label { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.tree-net-val { font-size: 20px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; color: var(--ink); }
+.tree-net-val.pos { color: var(--green-mid); }
+.tree-net-val.neg { color: var(--red); }
+.tree-net-unit { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+.payback-bar-wrap { margin-top: 4px; }
+.payback-bar-label { font-size: 12px; color: var(--ink-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+.payback-bar-track {
+  height: 10px; border-radius: 99px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  overflow: hidden;
+}
+.payback-bar-fill {
+  height: 100%; border-radius: 99px;
+  background: var(--green-bright);
+  transition: width 0.6s cubic-bezier(.22,.68,0,1.2);
+}
+.payback-bar-fill.amber { background: var(--amber); }
+.payback-bar-fill.red   { background: var(--red); }
+.payback-bar-ticks { display: flex; justify-content: space-between; margin-top: 4px; }
+.payback-bar-ticks span { font-size: 10px; color: var(--ink-muted); font-family: 'IBM Plex Mono', monospace; }
+
+/* ── Divider ── */
+.section-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 18px 0 14px; color: var(--ink-muted); font-size: 11.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
 </style>
 </head>
 <body>
 
+<!-- ══ HEADER ══ -->
 <header class="header">
   <div class="logo">
     <div class="logo-icon">🌿</div>
@@ -448,13 +509,31 @@ body {
       <span class="logo-sub">Carbon Payback Calculator</span>
     </div>
   </div>
-  <span class="header-badge">v1.0 · EPD / ICE DB</span>
+  <div class="header-right">
+    <a href="index.html" class="back-btn">← กลับหน้าหลัก</a>
+    <span class="header-badge">v2.1 · EPD / ICE DB · 🌳 TGO</span>
+  </div>
 </header>
 
 <div class="container">
 
+  <!-- Intro strip -->
+  <div class="intro-strip">
+    <div class="intro-strip-icon">🌍</div>
+    <div class="intro-strip-text">
+      <h2>คำนวณ Embodied Carbon & Carbon Payback Period ของกระจกอาคาร</h2>
+      <p>ใช้ข้อมูล EPD มาตรฐานสากล · คำนวณ Cradle-to-Gate · รองรับกระจกทุกประเภทในฐานข้อมูล SMG</p>
+      <div class="intro-tags">
+        <span class="intro-tag">EPD / Saint-Gobain / AGC</span>
+        <span class="intro-tag">ICE Database</span>
+        <span class="intro-tag">TGO Grid 0.418 kgCO₂e/kWh</span>
+        <span class="intro-tag">35 SKU</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Project Info -->
-  <div class="card" style="margin-bottom:20px;">
+  <div class="card">
     <div class="card-title"><div class="card-title-icon">📋</div>ข้อมูลโครงการ</div>
     <div class="form-grid">
       <div class="form-group">
@@ -462,123 +541,99 @@ body {
         <input class="form-control" id="projectName" placeholder="เช่น อาคาร ABC Tower">
       </div>
       <div class="form-group">
-        <label class="form-label">พื้นที่อาคารโดยรวม (ตร.ม.) — ใช้คำนวณ OTTV</label>
-        <input class="form-control" type="number" id="buildingArea" placeholder="เช่น 5000">
+        <label class="form-label">พื้นที่กระจกรวม (ตร.ม.) — สำหรับ OTTV</label>
+        <input class="form-control" type="number" id="buildingArea" placeholder="เช่น 500">
       </div>
       <div class="form-group">
         <label class="form-label">SHGC Baseline (กระจกใส 6mm)</label>
         <input class="form-control" type="number" id="baselineSHGC" value="0.82" step="0.01">
       </div>
       <div class="form-group">
-        <label class="form-label">Grid Emission Factor ไทย (kgCO₂e/kWh)</label>
+        <label class="form-label">Grid Emission Factor (kgCO₂e/kWh)</label>
         <input class="form-control" type="number" id="gridFactor" value="0.418" step="0.001">
       </div>
     </div>
   </div>
 
-  <!-- Tabs -->
+  <!-- Tabs — 2 tabs only -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('pdf',this)">
-      <span class="tab-icon">📄</span> PDF / BOQ อัตโนมัติ
-    </button>
-    <button class="tab-btn" onclick="switchTab('manual',this)">
-      <span class="tab-icon">🪟</span> เลือกกระจก (≤10 รายการ)
+    <button class="tab-btn active" onclick="switchTab('manual',this)">
+      <span class="tab-icon">🪟</span> เลือกกระจก (สูงสุด 10 รายการ)
     </button>
     <button class="tab-btn" onclick="switchTab('special',this)">
-      <span class="tab-icon">⚗️</span> กระจกสเปคพิเศษ
+      <span class="tab-icon">⚗️</span> กระจกสเปคพิเศษ / Custom Stack
     </button>
   </div>
 
-  <!-- ── PANEL 1: PDF ── -->
-  <div class="panel active" id="panel-pdf">
+  <!-- ══ PANEL 1: MANUAL ══ -->
+  <div class="panel active" id="panel-manual">
     <div class="card">
-      <div class="card-title"><div class="card-title-icon">📄</div>อัปโหลด PDF งานก่อสร้าง / BOQ</div>
-      <div class="upload-zone" id="dropZone" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-        <span class="upload-icon">📑</span>
-        <div class="upload-title">ลากไฟล์ PDF มาวางที่นี่</div>
-        <div class="upload-sub">ระบบจะอ่าน BOQ / รายการกระจก แล้วคำนวณ Embodied Carbon อัตโนมัติ</div>
-        <button class="upload-btn" onclick="document.getElementById('pdfInput').click()">เลือกไฟล์ PDF</button>
-        <input type="file" id="pdfInput" accept=".pdf" style="display:none" onchange="handlePDFUpload(event)">
-      </div>
-      <div class="status-box" id="pdfStatus"></div>
-    </div>
-
-    <!-- PDF Extracted Items -->
-    <div id="pdfExtracted" style="display:none">
-      <div class="card">
-        <div class="card-title"><div class="card-title-icon">🔍</div>รายการที่ถอดได้จาก PDF</div>
-        <p class="footnote" style="margin-bottom:14px;">ระบบอ่านข้อความจาก PDF และจับคู่กับฐานข้อมูลกระจก SMG โดยอัตโนมัติ กรุณาตรวจสอบและแก้ไขก่อนคำนวณ</p>
-        <div id="pdfItemList"></div>
-      </div>
-      <button class="calc-btn" onclick="calcFromPDF()">🌿 คำนวณ Carbon Payback จาก BOQ</button>
-    </div>
-  </div>
-
-  <!-- ── PANEL 2: MANUAL ── -->
-  <div class="panel" id="panel-manual">
-    <div class="card">
-      <div class="card-title"><div class="card-title-icon">🪟</div>รายการกระจก (สูงสุด 10 รายการ)</div>
+      <div class="card-title"><div class="card-title-icon">🪟</div>รายการกระจก</div>
+      <p class="footnote" style="margin-bottom:16px">เลือกชนิดกระจกจากฐานข้อมูล SMG 35 SKU · ระบุขนาดและจำนวน · ระบบคำนวณ Embodied Carbon และ Carbon Savings ต่อปีให้อัตโนมัติ</p>
       <div class="glass-list" id="manualList"></div>
-      <button class="add-row-btn" id="addRowBtn" onclick="addManualRow()" style="margin-top:12px">
+      <button class="add-row-btn" id="addRowBtn" onclick="addManualRow()">
         ＋ เพิ่มรายการกระจก
       </button>
     </div>
     <button class="calc-btn" onclick="calcManual()">🌿 คำนวณ Carbon Payback</button>
   </div>
 
-  <!-- ── PANEL 3: SPECIAL ── -->
+  <!-- ══ PANEL 2: SPECIAL ══ -->
   <div class="panel" id="panel-special">
     <div class="card">
-      <div class="card-title"><div class="card-title-icon">⚗️</div>ออกแบบกระจกสเปคพิเศษ (Custom Stack)</div>
-      <p class="footnote" style="margin-bottom:16px;">สำหรับกระจกประกอบซับซ้อน เช่น LAM + IGU + LAM, LAM + IGU + TP, Triple IGU ฯลฯ</p>
+      <div class="card-title"><div class="card-title-icon">⚗️</div>ออกแบบกระจกสเปคพิเศษ — Custom Stack</div>
+      <p class="footnote" style="margin-bottom:14px">สำหรับกระจกประกอบซับซ้อน เช่น LAM + IGU + LAM · LAM + IGU + TP · Triple IGU คำนวณแบบ BOM แยกทีละชั้น</p>
 
       <div id="layerBuilder" class="layer-builder"></div>
 
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
-        <button class="add-row-btn" style="flex:1;min-width:140px" onclick="addLayer('glass')">＋ เพิ่มชั้นกระจก</button>
-        <button class="add-row-btn" style="flex:1;min-width:140px" onclick="addLayer('spacer')">＋ เพิ่ม Air Spacer</button>
-        <button class="add-row-btn" style="flex:1;min-width:140px;color:var(--red);border-color:#f5b0b0" onclick="clearLayers()">✕ ล้างทั้งหมด</button>
+        <button class="add-row-btn" style="flex:1;min-width:140px;margin-top:0" onclick="addLayer('glass')">＋ เพิ่มชั้นกระจก</button>
+        <button class="add-row-btn" style="flex:1;min-width:140px;margin-top:0" onclick="addLayer('spacer')">＋ เพิ่ม Air Spacer</button>
+        <button class="add-row-btn" style="flex:1;min-width:120px;margin-top:0;color:var(--red);border-color:#f5b0b0" onclick="clearLayers()">✕ ล้างทั้งหมด</button>
       </div>
 
-      <!-- Quick presets -->
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-        <div class="form-label" style="margin-bottom:10px">Quick Preset</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="export-btn" onclick="applyPreset('lam+igu+lam')">LAM + IGU + LAM</button>
-          <button class="export-btn" onclick="applyPreset('lam+igu+tp')">LAM + IGU + TP</button>
-          <button class="export-btn" onclick="applyPreset('triple')">Triple IGU</button>
-          <button class="export-btn" onclick="applyPreset('lam+lam')">LAM Double</button>
+      <div class="section-divider">Quick Preset</div>
+      <div class="preset-wrap">
+        <button class="preset-chip" onclick="applyPreset('lam+igu+lam')">🔲 LAM + IGU + LAM</button>
+        <button class="preset-chip" onclick="applyPreset('lam+igu+tp')">🔲 LAM + IGU + TP</button>
+        <button class="preset-chip" onclick="applyPreset('triple')">🔲 Triple IGU</button>
+        <button class="preset-chip" onclick="applyPreset('lam+lam')">🔲 LAM Double</button>
+        <button class="preset-chip" onclick="applyPreset('lam+igu+lam+igu+lam')">🔲 LAM+IGU+LAM+IGU+LAM</button>
+      </div>
+
+      <div class="section-divider">ขนาดและจำนวน</div>
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label">กว้าง (mm)</label>
+          <input class="form-control" type="number" id="specW" placeholder="1200">
+        </div>
+        <div class="form-group">
+          <label class="form-label">สูง (mm)</label>
+          <input class="form-control" type="number" id="specH" placeholder="2400">
+        </div>
+        <div class="form-group">
+          <label class="form-label">จำนวน (แผ่น)</label>
+          <input class="form-control" type="number" id="specQty" value="1" min="1">
         </div>
       </div>
 
-      <!-- Size & Qty for special -->
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-        <div class="form-grid-3">
-          <div class="form-group">
-            <label class="form-label">กว้าง (mm)</label>
-            <input class="form-control" type="number" id="specW" placeholder="1200">
-          </div>
-          <div class="form-group">
-            <label class="form-label">สูง (mm)</label>
-            <input class="form-control" type="number" id="specH" placeholder="2400">
-          </div>
-          <div class="form-group">
-            <label class="form-label">จำนวน (แผ่น)</label>
-            <input class="form-control" type="number" id="specQty" value="1" min="1">
-          </div>
-        </div>
+      <!-- Live EC preview -->
+      <div id="specPreview" style="display:none;margin-top:16px;padding:14px;background:var(--green-xlight);border:1px solid var(--border-strong);border-radius:var(--radius);">
+        <div style="font-size:12px;font-weight:600;color:var(--green-dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em">🔍 Preview โครงสร้าง</div>
+        <div id="specPreviewText" class="mono" style="font-size:12px;color:var(--ink-mid);line-height:1.8"></div>
       </div>
     </div>
     <button class="calc-btn" onclick="calcSpecial()">🌿 คำนวณ Carbon ของสเปคพิเศษ</button>
   </div>
 
-  <!-- ── RESULTS ── -->
+  <!-- ══ RESULTS ══ -->
   <div class="results-section" id="resultsSection">
+
     <div class="esg-stamp" id="esgStamp">
       <div class="esg-icon">🌿</div>
       <div>
         <div class="esg-title" id="esgTitle">—</div>
-        <div class="esg-sub" id="esgSub">—</div>
+        <div class="esg-sub"   id="esgSub">—</div>
       </div>
       <div class="esg-badge">
         <span class="esg-badge-val" id="esgBadgeVal">—</span>
@@ -595,7 +650,7 @@ body {
       <div class="metric-card">
         <div class="metric-label">ประหยัด Carbon / ปี</div>
         <div class="metric-value" id="metSaving">—</div>
-        <div class="metric-unit">kgCO₂e/yr</div>
+        <div class="metric-unit">kgCO₂e / yr</div>
       </div>
       <div class="metric-card" id="paybackCard">
         <div class="metric-label">จุดคุ้มทุนคาร์บอน</div>
@@ -609,36 +664,86 @@ body {
       </div>
     </div>
 
-    <!-- Chart -->
-    <div class="payback-visual">
-      <div class="payback-title">📊 Embodied Carbon ต่อรายการ (kgCO₂e)</div>
-      <div class="chart-wrap"><canvas id="carbonChart" role="img" aria-label="Carbon breakdown by glass item">Carbon breakdown chart</canvas></div>
+    <!-- 🌳 TREE DASHBOARD -->
+    <div class="tree-dashboard" id="treeDashboard">
+      <div class="tree-dashboard-header">
+        <div>
+          <div class="tree-big-num" id="treeCount">—</div>
+          <div class="tree-big-label">🌳 ต้นไม้ใหญ่เทียบเท่า (ตลอดอายุอาคาร 30 ปี)</div>
+        </div>
+        <div class="tree-ref">
+          <strong style="color:var(--green-dark)">ค่าอ้างอิงต้นไม้ไทย (TGO)</strong><br>
+          1 ต้น = ดูดซับ CO₂ ≈ 9.5 kg/ปี<br>
+          ตลอด 30 ปี = <strong>285 kgCO₂/ต้น</strong><br>
+          <span style="font-size:10px;opacity:0.7">มก. / องค์การบริหารจัดการก๊าซเรือนกระจก</span>
+        </div>
+      </div>
+
+      <!-- Forest visual -->
+      <div class="forest-zone">
+        <div class="forest-sublabel">1 ไอคอน = 1 ต้น · ต้นจาง = เศษของต้น</div>
+        <div class="trees-row" id="treesRow">
+          <span style="font-size:13px;color:var(--ink-muted)">รอผลการคำนวณ...</span>
+        </div>
+      </div>
+
+      <!-- Net stats -->
+      <div class="tree-net-grid">
+        <div class="tree-net-card">
+          <div class="tree-net-label">Carbon Savings 30 ปี</div>
+          <div class="tree-net-val pos" id="tSav30">—</div>
+          <div class="tree-net-unit">kgCO₂e</div>
+        </div>
+        <div class="tree-net-card">
+          <div class="tree-net-label">Embodied Carbon</div>
+          <div class="tree-net-val" id="tEC">—</div>
+          <div class="tree-net-unit">kgCO₂e</div>
+        </div>
+        <div class="tree-net-card">
+          <div class="tree-net-label">Net Carbon Balance</div>
+          <div class="tree-net-val" id="tNet">—</div>
+          <div class="tree-net-unit">kgCO₂e</div>
+        </div>
+      </div>
+
+      <!-- Payback progress bar -->
+      <div class="payback-bar-wrap">
+        <div class="payback-bar-label">
+          <span>Carbon Payback Progress (30 ปี)</span>
+          <strong id="paybackBarLabel">—</strong>
+        </div>
+        <div class="payback-bar-track">
+          <div class="payback-bar-fill" id="paybackBarFill" style="width:0%"></div>
+        </div>
+        <div class="payback-bar-ticks">
+          <span>0</span><span>10 ปี</span><span>20 ปี</span><span>30 ปี ✓</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Detail Table -->
+    <div class="payback-visual">
+      <div class="payback-title">📊 Embodied Carbon vs. Carbon Savings ต่อรายการ (kgCO₂e)</div>
+      <div class="chart-wrap"><canvas id="carbonChart"></canvas></div>
+    </div>
+
     <div class="card">
       <div class="card-title"><div class="card-title-icon">📋</div>รายละเอียดการคำนวณ</div>
       <div style="overflow-x:auto">
-        <table class="results-table" id="resultsTable">
+        <table class="results-table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>รายการ / SKU</th>
-              <th>โครงสร้าง</th>
-              <th>ขนาด (m²)</th>
-              <th>จำนวน</th>
-              <th>น้ำหนัก (kg)</th>
-              <th>EC/m² (kgCO₂e)</th>
-              <th>EC รวม (kgCO₂e)</th>
-              <th>SHGC</th>
-              <th>ประหยัด CO₂/ปี</th>
+              <th>#</th><th>ชนิดกระจก</th><th>SKU / โครงสร้าง</th>
+              <th>ขนาด (m)</th><th>จำนวน</th><th>น้ำหนัก (kg)</th>
+              <th>EC/m² (kgCO₂e)</th><th>EC รวม (kgCO₂e)</th>
+              <th>SHGC</th><th>CO₂ ประหยัด/ปี</th>
             </tr>
           </thead>
           <tbody id="resultsBody"></tbody>
         </table>
       </div>
       <p class="footnote" style="margin-top:12px">
-        <span class="tag">Cradle-to-Gate</span> ค่า EC อ้างอิง EPD Average (Saint-Gobain / AGC) · ICE Database (Circular Ecology) · Cardinal Glass EPD · TGO Thailand Grid Factor 0.418 kgCO₂e/kWh (2025–2026)
+        <span class="tag">Cradle-to-Gate</span>&nbsp;
+        EC อ้างอิง EPD Average (Saint-Gobain / AGC) · ICE Database (Circular Ecology) · Cardinal Glass EPD · TGO Thailand Grid Factor 0.418 kgCO₂e/kWh (2025–2026)
       </p>
     </div>
 
@@ -647,69 +752,91 @@ body {
       <button class="export-btn" onclick="exportJSON()">📦 Export JSON</button>
       <button class="export-btn" onclick="window.print()">🖨️ Print / PDF</button>
     </div>
-  </div>
 
+  </div><!-- /results -->
 </div><!-- /container -->
 
 <script>
-// ─────────────────────────────────────────────
-// DATA: Carbon Factors & Glass Database
-// ─────────────────────────────────────────────
-const CF = { AN: 1.24, HS: 1.46, TP: 1.67, LAM: 2.15 };
-const PVB_W = 0.42; // kg/m² per layer 0.38mm
-const SPACER = { 10: 4.00, 12: 5.50, 14: 6.50, 16: 6.50 };
-const BASELINE_SHGC = () => parseFloat(document.getElementById('baselineSHGC').value) || 0.82;
-const GRID = () => parseFloat(document.getElementById('gridFactor').value) || 0.418;
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const CF     = { AN:1.24, HS:1.46, TP:1.67, LAM:2.15 };
+const PVB_W  = 0.42;
+const SPACER = { 10:4.00, 12:5.50, 14:6.50, 16:6.50 };
+const ACF    = 876; // kWh/m²/yr effective solar load in TH
 
-// Glass SKU Database
+const BASELINE_SHGC = () => parseFloat(document.getElementById('baselineSHGC').value) || 0.82;
+const GRID          = () => parseFloat(document.getElementById('gridFactor').value)    || 0.418;
+
+// ═══════════════════════════════════════════
+// GLASS DATABASE — SMG SKU v4
+// ═══════════════════════════════════════════
 const GLASS_DB = [
-  // Float
-  { sku:'FLT-5-CLR-AN',  label:'Float 5mm ใส',         type:'FLT', t1:5,  t2:0,  gap:0,  process:'AN', shgc:0.96, ecPerM2:15.50, wPerM2:12.50 },
-  { sku:'FLT-6-CLR-AN',  label:'Float 6mm ใส',         type:'FLT', t1:6,  t2:0,  gap:0,  process:'AN', shgc:0.95, ecPerM2:18.60, wPerM2:15.00 },
-  { sku:'FLT-5-OGR-AN',  label:'Float 5mm Ocean Green', type:'FLT', t1:5,  t2:0,  gap:0,  process:'AN', shgc:0.73, ecPerM2:15.50, wPerM2:12.50 },
-  { sku:'FLT-6-OGR-AN',  label:'Float 6mm Ocean Green', type:'FLT', t1:6,  t2:0,  gap:0,  process:'AN', shgc:0.69, ecPerM2:18.60, wPerM2:15.00 },
-  { sku:'FLT-5-EGR-AN',  label:'Float 5mm Euro Grey',   type:'FLT', t1:5,  t2:0,  gap:0,  process:'AN', shgc:0.75, ecPerM2:15.50, wPerM2:12.50 },
-  { sku:'FLT-6-EGR-AN',  label:'Float 6mm Euro Grey',   type:'FLT', t1:6,  t2:0,  gap:0,  process:'AN', shgc:0.70, ecPerM2:18.60, wPerM2:15.00 },
-  { sku:'FLT-6-EBR-AN',  label:'Float 6mm Euro Bronze', type:'FLT', t1:6,  t2:0,  gap:0,  process:'AN', shgc:0.75, ecPerM2:18.60, wPerM2:15.00 },
-  { sku:'FLT-6-SBL-AN',  label:'Float 6mm Sky Blue',    type:'FLT', t1:6,  t2:0,  gap:0,  process:'AN', shgc:0.69, ecPerM2:18.60, wPerM2:15.00 },
-  // LAM Clear
-  { sku:'LAM-44.2-CLR-AN', label:'LAM 4+4 Clear',       type:'LAM', t1:4,  t2:4,  gap:0,  process:'LAM', shgc:0.89, ecPerM2:43.90, wPerM2:20.42 },
-  { sku:'LAM-55.2-CLR-AN', label:'LAM 5+5 Clear',       type:'LAM', t1:5,  t2:5,  gap:0,  process:'LAM', shgc:0.87, ecPerM2:54.65, wPerM2:25.42 },
-  { sku:'LAM-64.2-CLR-AN', label:'LAM 6+4 Clear',       type:'LAM', t1:6,  t2:4,  gap:0,  process:'LAM', shgc:0.87, ecPerM2:54.65, wPerM2:25.42 },
-  { sku:'LAM-66.2-CLR-AN', label:'LAM 6+6 Clear',       type:'LAM', t1:6,  t2:6,  gap:0,  process:'LAM', shgc:0.84, ecPerM2:65.40, wPerM2:30.42 },
-  // LAM Color
-  { sku:'LAM-44.2-OGR-AN', label:'LAM 4+4 Ocean Green', type:'LAM', t1:4, t2:4, gap:0, process:'LAM', shgc:0.74, ecPerM2:43.90, wPerM2:20.42 },
-  { sku:'LAM-66.2-OGR-AN', label:'LAM 6+6 Ocean Green', type:'LAM', t1:6, t2:6, gap:0, process:'LAM', shgc:0.65, ecPerM2:65.40, wPerM2:30.42 },
-  { sku:'LAM-66.2-EGR-AN', label:'LAM 6+6 Euro Grey',   type:'LAM', t1:6, t2:6, gap:0, process:'LAM', shgc:0.64, ecPerM2:65.40, wPerM2:30.42 },
-  { sku:'LAM-66.2-SUN-AN', label:'LAM 6+6 Sunergy',     type:'LAM', t1:6, t2:6, gap:0, process:'LAM', shgc:0.67, ecPerM2:65.40, wPerM2:30.42 },
-  { sku:'LAM-66.2-CS130-AN',label:'LAM 6+6 SolarTAG CS130',type:'LAM',t1:6,t2:6,gap:0,process:'LAM',shgc:0.51, ecPerM2:65.40, wPerM2:30.42 },
-  { sku:'LAM-66.2-CS214-HS',label:'LAM 6+6 SolarTAG CS214',type:'LAM',t1:6,t2:6,gap:0,process:'LAM',shgc:0.38, ecPerM2:65.40, wPerM2:30.42 },
-  { sku:'LAM-66.2-CS514-HS',label:'LAM 6+6 SolarTAG CS514',type:'LAM',t1:6,t2:6,gap:0,process:'LAM',shgc:0.38, ecPerM2:65.40, wPerM2:30.42 },
-  // IGU
-  { sku:'IGU-CS120-6A12+6', label:'IGU CS120 (6+A12+6)',  type:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.26, ecPerM2:42.70, wPerM2:30.00 },
-  { sku:'IGU-CS130-6A12+6', label:'IGU CS130 (6+A12+6)',  type:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.36, ecPerM2:42.70, wPerM2:30.00 },
-  { sku:'IGU-CS135-6A12+6', label:'IGU CS135 (6+A12+6)',  type:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.35, ecPerM2:42.70, wPerM2:30.00 },
-  { sku:'IGU-CS214-6A12+6', label:'IGU CS214 (6+A12+6)',  type:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.19, ecPerM2:42.70, wPerM2:30.00 },
-  { sku:'IGU-CS220-6A12+8', label:'IGU CS220 (6+A12+8)',  type:'IGU', t1:6, t2:8, gap:12, process:'AN', shgc:0.22, ecPerM2:48.90, wPerM2:35.00 },
-  { sku:'IGU-CS514-6A12+8', label:'IGU CS514 (6+A12+8)',  type:'IGU', t1:6, t2:8, gap:12, process:'AN', shgc:0.18, ecPerM2:48.90, wPerM2:35.00 },
-  { sku:'IGU-CS520-6A12+8', label:'IGU CS520 (6+A12+8)',  type:'IGU', t1:6, t2:8, gap:12, process:'AN', shgc:0.20, ecPerM2:48.90, wPerM2:35.00 },
-  { sku:'IGU-LOWE-6A10+6-TP',label:'IGU Low-E (6+A10+6)', type:'IGU', t1:6, t2:6, gap:10, process:'TP', shgc:0.42, ecPerM2:41.20, wPerM2:30.00 },
+  // ── Float / Annealed ──
+  { sku:'FLT-5-CLR-AN',    label:'Float 5mm ใส (Clear)',         group:'Float', t1:5,  t2:0, gap:0,  process:'AN',  shgc:0.96, vlt:88.8, uv:5.28, ecPerM2:15.50, wPerM2:12.50 },
+  { sku:'FLT-6-CLR-AN',    label:'Float 6mm ใส (Clear)',         group:'Float', t1:6,  t2:0, gap:0,  process:'AN',  shgc:0.95, vlt:88.2, uv:5.25, ecPerM2:18.60, wPerM2:15.00 },
+  { sku:'FLT-5-OGR-AN',    label:'Float 5mm Ocean Green',        group:'Float', t1:5,  t2:0, gap:0,  process:'AN',  shgc:0.73, vlt:76.0, uv:5.28, ecPerM2:15.50, wPerM2:12.50 },
+  { sku:'FLT-6-OGR-AN',    label:'Float 6mm Ocean Green',        group:'Float', t1:6,  t2:0, gap:0,  process:'AN',  shgc:0.69, vlt:73.1, uv:5.25, ecPerM2:18.60, wPerM2:15.00 },
+  { sku:'FLT-5-EGR-AN',    label:'Float 5mm Euro Grey',          group:'Float', t1:5,  t2:0, gap:0,  process:'AN',  shgc:0.75, vlt:50.8, uv:5.28, ecPerM2:15.50, wPerM2:12.50 },
+  { sku:'FLT-6-EGR-AN',    label:'Float 6mm Euro Grey',          group:'Float', t1:6,  t2:0, gap:0,  process:'AN',  shgc:0.70, vlt:45.0, uv:5.25, ecPerM2:18.60, wPerM2:15.00 },
+  { sku:'FLT-6-EBR-AN',    label:'Float 6mm Euro Bronze',        group:'Float', t1:6,  t2:0, gap:0,  process:'AN',  shgc:0.75, vlt:51.2, uv:5.25, ecPerM2:18.60, wPerM2:15.00 },
+  { sku:'FLT-6-SBL-AN',    label:'Float 6mm Sky Blue',           group:'Float', t1:6,  t2:0, gap:0,  process:'AN',  shgc:0.69, vlt:57.6, uv:5.25, ecPerM2:18.60, wPerM2:15.00 },
+  // ── Laminated Clear ──
+  { sku:'LAM-44.2-CLR-AN', label:'LAM 4+4mm Clear (Lamitag)',    group:'Laminated', t1:4, t2:4, gap:0, process:'LAM', shgc:0.89, vlt:87.4, uv:5.14, ecPerM2:43.90, wPerM2:20.42 },
+  { sku:'LAM-55.2-CLR-AN', label:'LAM 5+5mm Clear (Lamitag)',    group:'Laminated', t1:5, t2:5, gap:0, process:'LAM', shgc:0.87, vlt:86.4, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-64.2-CLR-AN', label:'LAM 6+4mm Clear (Lamitag)',    group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.87, vlt:86.4, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-CLR-AN', label:'LAM 6+6mm Clear (Lamitag)',    group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.84, vlt:85.3, uv:5.04, ecPerM2:65.40, wPerM2:30.42 },
+  // ── Laminated Color ──
+  { sku:'LAM-44.2-OGR-AN', label:'LAM 4+4mm Ocean Green',        group:'Laminated', t1:4, t2:4, gap:0, process:'LAM', shgc:0.74, vlt:78.7, uv:5.14, ecPerM2:43.90, wPerM2:20.42 },
+  { sku:'LAM-55.2-OGR-AN', label:'LAM 5+5mm Ocean Green',        group:'Laminated', t1:5, t2:5, gap:0, process:'LAM', shgc:0.68, vlt:74.0, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-64.2-OGR-AN', label:'LAM 6+4mm Ocean Green',        group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.66, vlt:71.7, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-OGR-AN', label:'LAM 6+6mm Ocean Green',        group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.65, vlt:70.8, uv:5.04, ecPerM2:65.40, wPerM2:30.42 },
+  { sku:'LAM-64.2-EGR-AN', label:'LAM 6+4mm Euro Grey',          group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.66, vlt:44.0, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-EGR-AN', label:'LAM 6+6mm Euro Grey',          group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.64, vlt:43.5, uv:5.04, ecPerM2:65.40, wPerM2:30.42 },
+  { sku:'LAM-44.2-SUN-AN', label:'LAM 4+4mm Sunergy',            group:'Laminated', t1:4, t2:4, gap:0, process:'LAM', shgc:0.70, vlt:69.5, uv:5.14, ecPerM2:43.90, wPerM2:20.42 },
+  { sku:'LAM-64.2-SUN-AN', label:'LAM 6+4mm Sunergy',            group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.69, vlt:68.8, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-SUN-AN', label:'LAM 6+6mm Sunergy',            group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.67, vlt:68.0, uv:5.04, ecPerM2:65.40, wPerM2:30.42 },
+  // ── Laminated SolarTAG ──
+  { sku:'LAM-64.2-CS130-AN',label:'LAM 6+4mm SolarTAG CS130',    group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.51, vlt:33.4, uv:5.09, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-CS130-AN',label:'LAM 6+6mm SolarTAG CS130',    group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.51, vlt:33.0, uv:5.04, ecPerM2:65.40, wPerM2:30.42 },
+  { sku:'LAM-64.2-CS214-HS',label:'LAM 6+4mm SolarTAG CS214 HS', group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.38, vlt:12.3, uv:4.94, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-CS214-HS',label:'LAM 6+6mm SolarTAG CS214 HS', group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.38, vlt:12.1, uv:4.90, ecPerM2:65.40, wPerM2:30.42 },
+  { sku:'LAM-64.2-CS514-HS',label:'LAM 6+4mm SolarTAG CS514 HS', group:'Laminated', t1:6, t2:4, gap:0, process:'LAM', shgc:0.38, vlt:9.6,  uv:4.94, ecPerM2:54.65, wPerM2:25.42 },
+  { sku:'LAM-66.2-CS514-HS',label:'LAM 6+6mm SolarTAG CS514 HS', group:'Laminated', t1:6, t2:6, gap:0, process:'LAM', shgc:0.38, vlt:9.5,  uv:4.90, ecPerM2:65.40, wPerM2:30.42 },
+  // ── IGU ──
+  { sku:'IGU-CS120-6A12+6', label:'IGU CS120 (6+Air12+6)',        group:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.26, vlt:20, uv:2.43, ecPerM2:42.70, wPerM2:30.00 },
+  { sku:'IGU-CS130-6A12+6', label:'IGU CS130 (6+Air12+6)',        group:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.36, vlt:30, uv:2.53, ecPerM2:42.70, wPerM2:30.00 },
+  { sku:'IGU-CS135-6A12+6', label:'IGU CS135 (6+Air12+6)',        group:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.35, vlt:34, uv:2.58, ecPerM2:42.70, wPerM2:30.00 },
+  { sku:'IGU-CS214-6A12+6', label:'IGU CS214 (6+Air12+6)',        group:'IGU', t1:6, t2:6, gap:12, process:'AN', shgc:0.19, vlt:12, uv:2.32, ecPerM2:42.70, wPerM2:30.00 },
+  { sku:'IGU-CS220-6A12+8', label:'IGU CS220 (6+Air12+8)',        group:'IGU', t1:6, t2:8, gap:12, process:'AN', shgc:0.22, vlt:16, uv:2.40, ecPerM2:48.90, wPerM2:35.00 },
+  { sku:'IGU-CS514-6A12+8', label:'IGU CS514 (6+Air12+8)',        group:'IGU', t1:6, t2:8, gap:12, process:'AN', shgc:0.18, vlt:9,  uv:2.30, ecPerM2:48.90, wPerM2:35.00 },
+  { sku:'IGU-CS520-6A12+8', label:'IGU CS520 (6+Air12+8)',        group:'IGU', t1:6, t2:8, gap:12, process:'AN', shgc:0.20, vlt:11, uv:2.38, ecPerM2:48.90, wPerM2:35.00 },
+  { sku:'IGU-LOWE-6A10+6',  label:'IGU Low-E (6+Air10+6 TP)',     group:'IGU', t1:6, t2:6, gap:10, process:'TP', shgc:0.42, vlt:null,uv:1.91, ecPerM2:41.20, wPerM2:30.00 },
 ];
 
-// Shading cost calculation
-// AC load savings (kWh/m²/yr) ≈ (SHGC_baseline - SHGC_selected) × 876 (avg sun hours in TH)
-// 876 = annual solar radiation hours effective for cooling (≈ 2920 × 0.3 efficiency factor)
-const ACF = 876; // kWh/m²/yr per unit SHGC diff
-
-function calcSavings(shgc, areaSqm) {
-  const delta = Math.max(0, BASELINE_SHGC() - shgc);
-  const kwhSaved = delta * ACF * areaSqm;
-  return kwhSaved * GRID();
+// ═══════════════════════════════════════════
+// BUILD DROPDOWN — grouped by type
+// ═══════════════════════════════════════════
+function buildSkuOptions(selectedSku) {
+  const groups = {};
+  GLASS_DB.forEach(g => {
+    if (!groups[g.group]) groups[g.group] = [];
+    groups[g.group].push(g);
+  });
+  return Object.entries(groups).map(([grp, items]) =>
+    `<optgroup label="── ${grp} ──">` +
+    items.map(g => `<option value="${g.sku}" ${g.sku===selectedSku?'selected':''}>${g.label}</option>`).join('') +
+    `</optgroup>`
+  ).join('');
 }
 
-// ─────────────────────────────────────────────
+function getSkuInfo(sku) {
+  return GLASS_DB.find(g => g.sku === sku);
+}
+
+// ═══════════════════════════════════════════
 // TAB SWITCH
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -718,163 +845,34 @@ function switchTab(id, btn) {
   document.getElementById('resultsSection').classList.remove('show');
 }
 
-// ─────────────────────────────────────────────
-// PANEL 1: PDF
-// ─────────────────────────────────────────────
-function handleDrag(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
-function handleDragLeave(e) { document.getElementById('dropZone').classList.remove('drag-over'); }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('dropZone').classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type === 'application/pdf') processPDF(file);
-}
-function handlePDFUpload(e) {
-  const file = e.target.files[0];
-  if (file) processPDF(file);
+// ═══════════════════════════════════════════
+// CARBON SAVINGS
+// ═══════════════════════════════════════════
+function calcSavings(shgc, areaSqm) {
+  const delta = Math.max(0, BASELINE_SHGC() - shgc);
+  return delta * ACF * areaSqm * GRID();
 }
 
-async function processPDF(file) {
-  const statusBox = document.getElementById('pdfStatus');
-  showStatus(statusBox, 'processing', '⏳ กำลังอ่านไฟล์ PDF และถอด BOQ...');
-
-  try {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    const arrayBuf = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuf }).promise;
-    let fullText = '';
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const tc = await page.getTextContent();
-      fullText += tc.items.map(it => it.str).join(' ') + '\n';
-    }
-
-    const items = parseBOQText(fullText);
-    if (items.length === 0) {
-      showStatus(statusBox, 'error', '❌ ไม่พบรายการกระจกใน PDF นี้ กรุณาตรวจสอบว่าไฟล์มีข้อความ BOQ ที่อ่านได้');
-      return;
-    }
-
-    showStatus(statusBox, 'success', `✅ พบรายการกระจก ${items.length} รายการ — กรุณาตรวจสอบและกดคำนวณ`);
-    renderPDFItems(items);
-  } catch(err) {
-    showStatus(statusBox, 'error', '❌ เกิดข้อผิดพลาดในการอ่าน PDF: ' + err.message);
-  }
-}
-
-function parseBOQText(text) {
-  const items = [];
-  // Patterns: look for glass keywords with dimensions
-  const patterns = [
-    // Thai patterns: กระจก + spec + ขนาด
-    /กระจก[^\n]*?(\d+(?:\.\d+)?)\s*[xXxX×]\s*(\d+(?:\.\d+)?)\s*(?:mm|มม\.?)?\s*(?:จำนวน|x|×|\*)?\s*(\d+)\s*(?:แผ่น|ชิ้น|pcs?)?/gi,
-    // English BOQ: Glass + dimensions
-    /glass[^\n]*?(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)\s*(?:mm)?\s*(?:qty|x|×|\*)?\s*(\d+)/gi,
-    // Dimension patterns: WxH qty
-    /(\d{3,4})\s*[xX×]\s*(\d{3,4})\s+(\d+)\s*(?:pcs?|แผ่น|ชิ้น)/gi,
-  ];
-
-  // Try to detect glass type from surrounding text
-  const typeKeywords = {
-    'IGU|insulated|ฉนวน|อินซูเลต': 'IGU-CS130-6A12+6',
-    'lam|laminated|ลามิเนต': 'LAM-66.2-CLR-AN',
-    'temper|เทมเปอร์': 'FLT-6-CLR-AN',
-    'low-e|lowe|โลว์อี': 'IGU-LOWE-6A10+6-TP',
-    'float|โฟลต|ใส|clear': 'FLT-6-CLR-AN',
-  };
-
-  const lines = text.split('\n');
-  lines.forEach((line, idx) => {
-    // Match sizes WxH qty pattern
-    const m = line.match(/(\d{3,5})\s*[xX×]\s*(\d{3,5})/);
-    if (!m) return;
-    const w = parseInt(m[1]);
-    const h = parseInt(m[2]);
-    if (w < 100 || w > 6000 || h < 100 || h > 6000) return;
-
-    // Look for qty
-    const qtyM = line.match(/(\d+)\s*(?:pcs?|แผ่น|ชิ้น|ea\.?)/i) ||
-                  line.match(/(?:qty|จำนวน|x)\s*[=:.]?\s*(\d+)/i);
-    const qty = qtyM ? parseInt(qtyM[1]) : 1;
-
-    // Guess glass type
-    let sku = 'FLT-6-CLR-AN';
-    const ctx = (lines[idx-1]||'')+' '+line+' '+(lines[idx+1]||'');
-    for (const [kw, s] of Object.entries(typeKeywords)) {
-      if (new RegExp(kw,'i').test(ctx)) { sku = s; break; }
-    }
-
-    items.push({ sku, w, h, qty, raw: line.trim().substring(0,80) });
-  });
-
-  return items.slice(0, 20); // max 20 from PDF
-}
-
-let pdfItems = [];
-function renderPDFItems(items) {
-  pdfItems = items;
-  const el = document.getElementById('pdfItemList');
-  el.innerHTML = items.map((it, i) => {
-    const skuOpts = GLASS_DB.map(g => `<option value="${g.sku}" ${g.sku===it.sku?'selected':''}>${g.label}</option>`).join('');
-    return `
-    <div class="glass-row" style="margin-bottom:10px">
-      <span class="glass-row-num">BOQ #${i+1}</span>
-      <div class="form-grid" style="margin-top:8px">
-        <div class="form-group" style="grid-column:span 2">
-          <label class="form-label">ชนิดกระจก</label>
-          <select class="form-control" id="pdf_sku_${i}">${skuOpts}</select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">กว้าง (mm)</label>
-          <input class="form-control" type="number" id="pdf_w_${i}" value="${it.w}">
-        </div>
-        <div class="form-group">
-          <label class="form-label">สูง (mm)</label>
-          <input class="form-control" type="number" id="pdf_h_${i}" value="${it.h}">
-        </div>
-        <div class="form-group">
-          <label class="form-label">จำนวน (แผ่น)</label>
-          <input class="form-control" type="number" id="pdf_qty_${i}" value="${it.qty}" min="1">
-        </div>
-      </div>
-      <p class="footnote" style="margin-top:6px">📄 ข้อความต้นฉบับ: <em>${it.raw}</em></p>
-    </div>`;
-  }).join('');
-  document.getElementById('pdfExtracted').style.display = 'block';
-}
-
-function calcFromPDF() {
-  const rows = [];
-  pdfItems.forEach((_, i) => {
-    const sku = document.getElementById(`pdf_sku_${i}`).value;
-    const w = parseFloat(document.getElementById(`pdf_w_${i}`).value) || 0;
-    const h = parseFloat(document.getElementById(`pdf_h_${i}`).value) || 0;
-    const qty = parseInt(document.getElementById(`pdf_qty_${i}`).value) || 1;
-    rows.push({ sku, w, h, qty });
-  });
-  runCalc(rows);
-}
-
-// ─────────────────────────────────────────────
-// PANEL 2: MANUAL
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
+// PANEL 1: MANUAL
+// ═══════════════════════════════════════════
 let manualRows = 0;
 
 function addManualRow() {
   if (manualRows >= 10) { alert('สูงสุด 10 รายการ'); return; }
   manualRows++;
   const idx = manualRows;
-  const skuOpts = GLASS_DB.map(g => `<option value="${g.sku}">${g.label}</option>`).join('');
+  const defaultSku = 'FLT-6-CLR-AN';
   const div = document.createElement('div');
   div.className = 'glass-row';
   div.id = `mrow_${idx}`;
   div.innerHTML = `
     <span class="glass-row-num">รายการ #${idx}</span>
     <button class="remove-btn" onclick="removeRow(${idx})">×</button>
-    <div class="form-grid" style="margin-top:8px">
-      <div class="form-group" style="grid-column:span 2">
+    <div class="form-grid-4" style="margin-top:8px;align-items:end">
+      <div class="form-group">
         <label class="form-label">ชนิดกระจก</label>
-        <select class="form-control" id="m_sku_${idx}">${skuOpts}</select>
+        <select class="form-control" id="m_sku_${idx}" onchange="updateSkuInfo(${idx})">${buildSkuOptions(defaultSku)}</select>
       </div>
       <div class="form-group">
         <label class="form-label">กว้าง (mm)</label>
@@ -888,14 +886,27 @@ function addManualRow() {
         <label class="form-label">จำนวน (แผ่น)</label>
         <input class="form-control" type="number" id="m_qty_${idx}" value="1" min="1">
       </div>
-    </div>`;
+    </div>
+    <div class="sku-info" id="skuinfo_${idx}"></div>`;
   document.getElementById('manualList').appendChild(div);
+  updateSkuInfo(idx);
   if (manualRows >= 10) document.getElementById('addRowBtn').style.display = 'none';
 }
 
+function updateSkuInfo(idx) {
+  const sku = document.getElementById(`m_sku_${idx}`)?.value;
+  const g = getSkuInfo(sku);
+  if (!g) return;
+  document.getElementById(`skuinfo_${idx}`).innerHTML = `
+    <span class="sku-pill highlight">EC ${g.ecPerM2} kgCO₂e/m²</span>
+    <span class="sku-pill">น้ำหนัก ${g.wPerM2} kg/m²</span>
+    <span class="sku-pill">SHGC ${g.shgc}</span>
+    ${g.vlt !== null ? `<span class="sku-pill">VLT ${g.vlt}%</span>` : ''}
+    <span class="sku-pill">U-Value ${g.uv} W/m²K</span>`;
+}
+
 function removeRow(idx) {
-  const el = document.getElementById(`mrow_${idx}`);
-  if (el) el.remove();
+  document.getElementById(`mrow_${idx}`)?.remove();
   document.getElementById('addRowBtn').style.display = '';
   manualRows = Math.max(0, manualRows - 1);
 }
@@ -906,27 +917,24 @@ function calcManual() {
     const skuEl = document.getElementById(`m_sku_${i}`);
     if (!skuEl) continue;
     const sku = skuEl.value;
-    const w = parseFloat(document.getElementById(`m_w_${i}`)?.value) || 0;
-    const h = parseFloat(document.getElementById(`m_h_${i}`)?.value) || 0;
-    const qty = parseInt(document.getElementById(`m_qty_${i}`)?.value) || 1;
+    const w   = parseFloat(document.getElementById(`m_w_${i}`)?.value)   || 0;
+    const h   = parseFloat(document.getElementById(`m_h_${i}`)?.value)   || 0;
+    const qty = parseInt(document.getElementById(`m_qty_${i}`)?.value)   || 1;
     if (w > 0 && h > 0) rows.push({ sku, w, h, qty });
   }
-  if (rows.length === 0) { alert('กรุณาเพิ่มรายการกระจกก่อน'); return; }
+  if (!rows.length) { alert('กรุณาเพิ่มรายการกระจกก่อน'); return; }
   runCalc(rows);
 }
 
-// ─────────────────────────────────────────────
-// PANEL 3: SPECIAL
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
+// PANEL 2: SPECIAL
+// ═══════════════════════════════════════════
 let layers = [];
 
 function addLayer(type) {
-  if (type === 'glass') {
-    const idx = layers.length;
-    layers.push({ type: 'glass', process: 'AN', thickness: 6 });
-  } else {
-    layers.push({ type: 'spacer', gap: 12 });
-  }
+  layers.push(type === 'glass'
+    ? { type:'glass', process:'AN', thickness:6, shgc:null }
+    : { type:'spacer', gap:12 });
   renderLayers();
 }
 
@@ -934,41 +942,45 @@ function clearLayers() { layers = []; renderLayers(); }
 
 function renderLayers() {
   const el = document.getElementById('layerBuilder');
-  if (layers.length === 0) {
-    el.innerHTML = '<p class="footnote" style="text-align:center;padding:20px">กด "เพิ่มชั้นกระจก" หรือ "เพิ่ม Air Spacer" เพื่อเริ่มออกแบบ</p>';
+  const prev = document.getElementById('specPreview');
+
+  if (!layers.length) {
+    el.innerHTML = '<p class="footnote" style="text-align:center;padding:20px;color:var(--ink-muted)">กด "เพิ่มชั้นกระจก" หรือ "เพิ่ม Air Spacer" เพื่อเริ่มออกแบบ</p>';
+    prev.style.display = 'none';
     return;
   }
+
   el.innerHTML = layers.map((l, i) => {
-    if (l.type === 'glass') {
-      return `
+    if (l.type === 'glass') return `
       <div class="layer-item">
-        <span class="layer-badge">ชั้นที่ ${i+1}<br>กระจก</span>
-        <div class="form-group" style="flex:1">
-          <label class="form-label">กระบวนการ</label>
-          <select class="form-control" onchange="layers[${i}].process=this.value">
-            <option value="AN" ${l.process==='AN'?'selected':''}>Annealed (AN) — 1.24</option>
-            <option value="HS" ${l.process==='HS'?'selected':''}>Heat-Strengthened (HS) — 1.46</option>
-            <option value="TP" ${l.process==='TP'?'selected':''}>Tempered (TP) — 1.67</option>
+        <span class="layer-badge">ชั้น ${i+1}<br>กระจก</span>
+        <div class="form-group" style="flex:1.4">
+          <label class="form-label">กระบวนการ / CF</label>
+          <select class="form-control" onchange="layers[${i}].process=this.value;renderLayers()">
+            <option value="AN"  ${l.process==='AN' ?'selected':''}>Annealed (AN) — 1.24</option>
+            <option value="HS"  ${l.process==='HS' ?'selected':''}>Heat-Strengthened (HS) — 1.46</option>
+            <option value="TP"  ${l.process==='TP' ?'selected':''}>Tempered (TP) — 1.67</option>
             <option value="LAM" ${l.process==='LAM'?'selected':''}>Laminated (LAM) — 2.15</option>
           </select>
         </div>
-        <div class="form-group" style="width:110px">
+        <div class="form-group" style="width:105px">
           <label class="form-label">หนา (mm)</label>
-          <input class="form-control" type="number" value="${l.thickness}" onchange="layers[${i}].thickness=+this.value" min="3" max="25">
+          <input class="form-control" type="number" value="${l.thickness}" min="3" max="25"
+            onchange="layers[${i}].thickness=+this.value;renderLayers()">
         </div>
         <div class="form-group" style="width:90px">
           <label class="form-label">SHGC</label>
-          <input class="form-control" type="number" value="${l.shgc||''}" placeholder="0.80" step="0.01" onchange="layers[${i}].shgc=+this.value">
+          <input class="form-control" type="number" value="${l.shgc||''}" placeholder="0.80" step="0.01"
+            onchange="layers[${i}].shgc=this.value?+this.value:null">
         </div>
         <button class="remove-btn" style="position:static;margin-left:4px" onclick="layers.splice(${i},1);renderLayers()">×</button>
       </div>`;
-    } else {
-      return `
+    return `
       <div class="layer-item">
         <span class="layer-badge spacer">Air<br>Spacer</span>
         <div class="form-group" style="flex:1">
-          <label class="form-label">ช่องอากาศ (mm)</label>
-          <select class="form-control" onchange="layers[${i}].gap=+this.value">
+          <label class="form-label">ช่องอากาศ (mm) — Carbon Factor</label>
+          <select class="form-control" onchange="layers[${i}].gap=+this.value;renderLayers()">
             <option value="10" ${l.gap==10?'selected':''}>A10 — 10mm (4.00 kgCO₂e/m²)</option>
             <option value="12" ${l.gap==12?'selected':''}>A12 — 12mm (5.50 kgCO₂e/m²)</option>
             <option value="14" ${l.gap==14?'selected':''}>A14 — 14mm (6.50 kgCO₂e/m²)</option>
@@ -977,175 +989,127 @@ function renderLayers() {
         </div>
         <button class="remove-btn" style="position:static;margin-left:4px" onclick="layers.splice(${i},1);renderLayers()">×</button>
       </div>`;
-    }
   }).join('<div class="layer-connector">↓</div>');
+
+  // Live preview
+  let ecTotal = 0, wTotal = 0, desc = [];
+  layers.forEach(l => {
+    if (l.type === 'glass') {
+      const cf = CF[l.process]||1.24;
+      const gW = l.thickness*2.5 + (l.process==='LAM'?PVB_W:0);
+      ecTotal += gW*cf; wTotal += gW;
+      desc.push(`${l.thickness}mm(${l.process})`);
+    } else {
+      ecTotal += SPACER[l.gap]||5.5;
+      desc.push(`Air${l.gap}`);
+    }
+  });
+  prev.style.display = 'block';
+  document.getElementById('specPreviewText').innerHTML =
+    `โครงสร้าง: <b>${desc.join(' + ')}</b><br>` +
+    `EC รวม: <b>${ecTotal.toFixed(2)} kgCO₂e/m²</b> &nbsp;|&nbsp; น้ำหนัก: <b>${wTotal.toFixed(2)} kg/m²</b>`;
 }
 
 function applyPreset(id) {
-  const presets = {
-    'lam+igu+lam': [
-      {type:'glass', process:'LAM', thickness:12, shgc:0.65},
-      {type:'spacer', gap:12},
-      {type:'glass', process:'LAM', thickness:12, shgc:0.65},
-    ],
-    'lam+igu+tp': [
-      {type:'glass', process:'LAM', thickness:12, shgc:0.65},
-      {type:'spacer', gap:12},
-      {type:'glass', process:'TP', thickness:6, shgc:0.80},
-    ],
-    'triple': [
-      {type:'glass', process:'AN', thickness:6, shgc:0.90},
-      {type:'spacer', gap:12},
-      {type:'glass', process:'AN', thickness:6, shgc:0.90},
-      {type:'spacer', gap:12},
-      {type:'glass', process:'AN', thickness:6, shgc:0.90},
-    ],
-    'lam+lam': [
-      {type:'glass', process:'LAM', thickness:8, shgc:0.89},
-      {type:'spacer', gap:12},
-      {type:'glass', process:'LAM', thickness:12, shgc:0.84},
-    ],
+  const P = {
+    'lam+igu+lam':       [{type:'glass',process:'LAM',thickness:12,shgc:0.65},{type:'spacer',gap:12},{type:'glass',process:'LAM',thickness:12,shgc:0.65}],
+    'lam+igu+tp':        [{type:'glass',process:'LAM',thickness:12,shgc:0.65},{type:'spacer',gap:12},{type:'glass',process:'TP',thickness:6,shgc:0.80}],
+    'triple':            [{type:'glass',process:'AN',thickness:6,shgc:0.90},{type:'spacer',gap:12},{type:'glass',process:'AN',thickness:6,shgc:0.90},{type:'spacer',gap:12},{type:'glass',process:'AN',thickness:6,shgc:0.90}],
+    'lam+lam':           [{type:'glass',process:'LAM',thickness:8,shgc:0.89},{type:'spacer',gap:12},{type:'glass',process:'LAM',thickness:12,shgc:0.84}],
+    'lam+igu+lam+igu+lam':[{type:'glass',process:'LAM',thickness:10,shgc:0.70},{type:'spacer',gap:12},{type:'glass',process:'LAM',thickness:10,shgc:0.70},{type:'spacer',gap:12},{type:'glass',process:'LAM',thickness:10,shgc:0.70}],
   };
-  layers = JSON.parse(JSON.stringify(presets[id]));
+  layers = JSON.parse(JSON.stringify(P[id]));
   renderLayers();
 }
 
 function calcSpecial() {
-  if (layers.length === 0) { alert('กรุณาเพิ่มชั้นกระจกก่อน'); return; }
-  const w = parseFloat(document.getElementById('specW').value) || 0;
-  const h = parseFloat(document.getElementById('specH').value) || 0;
-  const qty = parseInt(document.getElementById('specQty').value) || 1;
-  if (w <= 0 || h <= 0) { alert('กรุณาระบุขนาดกระจก'); return; }
+  if (!layers.length) { alert('กรุณาเพิ่มชั้นกระจกก่อน'); return; }
+  const w   = parseFloat(document.getElementById('specW').value)   || 0;
+  const h   = parseFloat(document.getElementById('specH').value)   || 0;
+  const qty = parseInt(document.getElementById('specQty').value)   || 1;
+  if (!w || !h) { alert('กรุณาระบุขนาดกระจก'); return; }
 
-  // BOM calculation
-  let ecPerM2 = 0;
-  let wPerM2 = 0;
-  let shgcMin = 1;
-  let structDesc = '';
-
-  layers.forEach((l, i) => {
-    if (l.type === 'glass') {
-      const cf = CF[l.process] || 1.24;
-      const isPVB = l.process === 'LAM';
-      const gW = l.thickness * 2.5 + (isPVB ? PVB_W : 0);
-      const gEC = gW * cf;
-      ecPerM2 += gEC;
-      wPerM2 += gW;
-      const shgc = l.shgc || 0.80;
+  let ecPerM2=0, wPerM2=0, shgcMin=1, structDesc=[];
+  layers.forEach(l => {
+    if (l.type==='glass') {
+      const cf  = CF[l.process]||1.24;
+      const gW  = l.thickness*2.5 + (l.process==='LAM'?PVB_W:0);
+      ecPerM2  += gW*cf; wPerM2 += gW;
+      const shgc= l.shgc||0.80;
       if (shgc < shgcMin) shgcMin = shgc;
-      structDesc += (i>0?'+':'') + l.thickness + 'mm(' + l.process + ')';
+      structDesc.push(`${l.thickness}mm(${l.process})`);
     } else {
-      const sp = SPACER[l.gap] || 5.50;
-      ecPerM2 += sp;
-      structDesc += '+A' + l.gap;
+      ecPerM2 += SPACER[l.gap]||5.5;
+      structDesc.push(`Air${l.gap}`);
     }
   });
 
-  const areaSqm = (w / 1000) * (h / 1000);
-  const totalArea = areaSqm * qty;
-  const totalEC = ecPerM2 * totalArea;
-  const totalW = wPerM2 * totalArea;
-  const savings = calcSavings(shgcMin, totalArea);
+  const areaSqm  = (w/1000)*(h/1000);
+  const totalArea= areaSqm*qty;
+  const totalEC  = ecPerM2*totalArea;
+  const totalW   = wPerM2*totalArea;
+  const savings  = calcSavings(shgcMin, totalArea);
 
-  const items = [{
-    label: 'Custom: ' + structDesc,
-    sku: 'CUSTOM',
-    w, h, qty,
-    areaSqm, totalArea,
-    ecPerM2,
-    totalEC,
-    wPerM2,
-    totalW,
-    shgc: shgcMin,
-    savings,
-  }];
-
-  renderResults(items, `Custom Stack: ${structDesc}`);
+  renderResults([{
+    label:'Custom: '+structDesc.join('+'), sku:'CUSTOM',
+    w, h, qty, areaSqm, totalArea,
+    ecPerM2, totalEC, wPerM2, totalW, shgc:shgcMin, savings,
+  }], `Custom Stack: ${structDesc.join(' + ')}`);
 }
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
 // CORE CALC
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
 let lastResults = [];
 
 function runCalc(rows) {
-  const items = [];
-  rows.forEach(r => {
-    const glass = GLASS_DB.find(g => g.sku === r.sku) || GLASS_DB[0];
-    const areaSqm = (r.w / 1000) * (r.h / 1000);
-    const totalArea = areaSqm * r.qty;
-    const totalEC = glass.ecPerM2 * totalArea;
-    const totalW = glass.wPerM2 * totalArea;
-    const savings = calcSavings(glass.shgc, totalArea);
-    items.push({
-      label: glass.label,
-      sku: glass.sku,
-      w: r.w, h: r.h, qty: r.qty,
+  renderResults(rows.map(r => {
+    const g        = GLASS_DB.find(x=>x.sku===r.sku) || GLASS_DB[0];
+    const areaSqm  = (r.w/1000)*(r.h/1000);
+    const totalArea= areaSqm*r.qty;
+    return {
+      label:g.label, sku:g.sku, w:r.w, h:r.h, qty:r.qty,
       areaSqm, totalArea,
-      ecPerM2: glass.ecPerM2,
-      totalEC, wPerM2: glass.wPerM2, totalW,
-      shgc: glass.shgc, savings,
-    });
-  });
-  renderResults(items, document.getElementById('projectName').value || 'โครงการ SMG');
+      ecPerM2:g.ecPerM2, totalEC:g.ecPerM2*totalArea,
+      wPerM2:g.wPerM2,   totalW:g.wPerM2*totalArea,
+      shgc:g.shgc, savings:calcSavings(g.shgc, totalArea),
+    };
+  }), document.getElementById('projectName').value || 'โครงการ SMG');
 }
 
 function renderResults(items, title) {
   lastResults = items;
+  const totalEC      = items.reduce((s,r)=>s+r.totalEC,0);
+  const totalSavings = items.reduce((s,r)=>s+r.savings,0);
+  const totalW       = items.reduce((s,r)=>s+r.totalW,0);
+  const payback      = totalSavings > 0 ? totalEC/totalSavings : null;
 
-  const totalEC = items.reduce((s, r) => s + r.totalEC, 0);
-  const totalSavings = items.reduce((s, r) => s + r.savings, 0);
-  const totalW = items.reduce((s, r) => s + r.totalW, 0);
-  const payback = totalSavings > 0 ? totalEC / totalSavings : null;
-
-  // Metrics
-  document.getElementById('metEC').textContent = totalEC.toFixed(0);
-  document.getElementById('metSaving').textContent = totalSavings.toFixed(1);
-  document.getElementById('metWeight').textContent = totalW.toFixed(0);
+  document.getElementById('metEC').textContent      = totalEC.toFixed(1);
+  document.getElementById('metSaving').textContent  = totalSavings.toFixed(1);
+  document.getElementById('metWeight').textContent  = totalW.toFixed(0);
 
   const payEl = document.getElementById('metPayback');
   const pCard = document.getElementById('paybackCard');
-  if (payback === null) {
-    payEl.textContent = '∞';
-    payEl.className = 'metric-value red';
-    pCard.className = 'metric-card danger';
-  } else if (payback < 5) {
-    payEl.textContent = payback.toFixed(1);
-    payEl.className = 'metric-value';
-    pCard.className = 'metric-card highlight';
-  } else if (payback < 15) {
-    payEl.textContent = payback.toFixed(1);
-    payEl.className = 'metric-value amber';
-    pCard.className = 'metric-card warning';
-  } else {
-    payEl.textContent = payback.toFixed(1);
-    payEl.className = 'metric-value red';
-    pCard.className = 'metric-card danger';
-  }
+  if (!payback)         { payEl.textContent='∞';               payEl.className='metric-value red';   pCard.className='metric-card danger'; }
+  else if (payback<5)   { payEl.textContent=payback.toFixed(1); payEl.className='metric-value';      pCard.className='metric-card highlight'; }
+  else if (payback<15)  { payEl.textContent=payback.toFixed(1); payEl.className='metric-value amber';pCard.className='metric-card warning'; }
+  else                  { payEl.textContent=payback.toFixed(1); payEl.className='metric-value red';  pCard.className='metric-card danger'; }
 
-  // ESG Stamp
-  const esgTitle = document.getElementById('esgTitle');
-  const esgSub = document.getElementById('esgSub');
-  const esgBadge = document.getElementById('esgBadgeVal');
-  if (payback === null) {
-    esgTitle.textContent = '⚠️ ' + title + ' — สร้างภาระคาร์บอนสะสม';
-    esgSub.textContent = 'กระจกที่เลือกไม่มีประสิทธิภาพกันความร้อน ไม่สามารถชดเชยคาร์บอนได้ แนะนำเปลี่ยนเป็นกระจก Low-E หรือ IGU';
-    esgBadge.textContent = '—';
-  } else if (payback < 10) {
-    esgTitle.textContent = '✅ ' + title + ' — ผ่านเกณฑ์ Carbon Payback';
-    esgSub.textContent = `กระจกโครงการนี้จะชดเชยคาร์บอนคืนสู่โลกภายใน ${payback.toFixed(1)} ปี ถือว่าอยู่ในเกณฑ์ดีสำหรับอาคารในประเทศไทย`;
-    esgBadge.textContent = payback.toFixed(1) + ' ปี';
-  } else {
-    esgTitle.textContent = '🔶 ' + title + ' — Carbon Payback ระยะยาว';
-    esgSub.textContent = `จุดคุ้มทุน ${payback.toFixed(1)} ปี ควรพิจารณาอัปเกรดกระจกบางส่วนเป็น Low-E หรือ IGU เพื่อลดระยะเวลาคืนทุนคาร์บอน`;
-    esgBadge.textContent = payback.toFixed(1) + ' ปี';
-  }
+  const esgMap = {
+    null:  { icon:'⚠️', t:'สร้างภาระคาร์บอนสะสม',      s:'กระจกที่เลือกไม่มีประสิทธิภาพกันความร้อน แนะนำเปลี่ยนเป็นกระจก Low-E หรือ IGU', b:'—' },
+    good:  { icon:'✅', t:'ผ่านเกณฑ์ Carbon Payback',   s:`ชดเชยคาร์บอนคืนสู่โลกภายใน ${payback?.toFixed(1)} ปี อยู่ในเกณฑ์ดีสำหรับอาคารในประเทศไทย`, b:payback?.toFixed(1)+' ปี' },
+    medium:{ icon:'🔶', t:'Carbon Payback ระยะยาว',     s:`จุดคุ้มทุน ${payback?.toFixed(1)} ปี ควรพิจารณาอัปเกรดกระจกบางส่วนเป็น Low-E หรือ IGU`, b:payback?.toFixed(1)+' ปี' },
+    bad:   { icon:'🔴', t:'Carbon Payback สูงมาก',      s:`จุดคุ้มทุน ${payback?.toFixed(1)} ปี เกินอายุการใช้งานอาคารโดยทั่วไป ควรทบทวนสเปกกระจก`, b:payback?.toFixed(1)+' ปี' },
+  };
+  const eKey = !payback ? null : payback<5 ? 'good' : payback<15 ? 'medium' : 'bad';
+  const ev   = esgMap[eKey] || esgMap[null];
+  document.getElementById('esgTitle').textContent    = `${ev.icon} ${title} — ${ev.t}`;
+  document.getElementById('esgSub').textContent      = ev.s;
+  document.getElementById('esgBadgeVal').textContent = ev.b;
 
   // Table
-  const tbody = document.getElementById('resultsBody');
-  tbody.innerHTML = items.map((r, i) => {
-    const ecClass = r.totalEC > 500 ? 'danger' : r.totalEC > 100 ? 'hi' : '';
-    return `<tr>
+  document.getElementById('resultsBody').innerHTML =
+    items.map((r,i) => `<tr>
       <td>${i+1}</td>
       <td>${r.label}</td>
       <td class="mono">${r.sku}</td>
@@ -1153,101 +1117,156 @@ function renderResults(items, title) {
       <td>${r.qty}</td>
       <td class="mono">${r.totalW.toFixed(1)}</td>
       <td class="mono">${r.ecPerM2.toFixed(2)}</td>
-      <td class="carbon-val ${ecClass}">${r.totalEC.toFixed(2)}</td>
+      <td class="carbon-val ${r.totalEC>500?'danger':r.totalEC>100?'hi':''}">${r.totalEC.toFixed(2)}</td>
       <td class="mono">${r.shgc}</td>
       <td class="mono">${r.savings.toFixed(2)}</td>
+    </tr>`).join('') +
+    `<tr style="font-weight:600;background:var(--green-xlight)">
+      <td colspan="5">รวมทั้งโครงการ</td>
+      <td class="mono">${totalW.toFixed(1)}</td>
+      <td>—</td>
+      <td class="carbon-val">${totalEC.toFixed(2)}</td>
+      <td>—</td>
+      <td class="mono">${totalSavings.toFixed(2)}</td>
     </tr>`;
-  }).join('') +
-  `<tr style="font-weight:600;background:var(--green-xlight)">
-    <td colspan="5">รวมทั้งโครงการ</td>
-    <td class="mono">${totalW.toFixed(1)}</td>
-    <td>—</td>
-    <td class="carbon-val">${totalEC.toFixed(2)}</td>
-    <td>—</td>
-    <td class="mono">${totalSavings.toFixed(2)}</td>
-  </tr>`;
 
-  // Chart
   renderChart(items);
-
+  updateTreeDashboard(totalEC, totalSavings, payback);
   document.getElementById('resultsSection').classList.add('show');
-  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => document.getElementById('resultsSection').scrollIntoView({ behavior:'smooth', block:'start' }), 50);
 }
 
+// ═══════════════════════════════════════════
+// TREE DASHBOARD
+// ═══════════════════════════════════════════
+const TREE_LIFE = 285; // kgCO₂ per tree over 30 years (TGO / มก.)
+
+function makeTreeSVG(opacity) {
+  const id = 'tc' + Math.random().toString(36).slice(2,8);
+  const clipW = Math.round(52 * Math.min(opacity, 1));
+  const full = opacity >= 1;
+  return `<svg width="52" height="68" viewBox="0 0 52 68" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+    ${!full ? `<defs><clipPath id="${id}"><rect x="0" y="0" width="${clipW}" height="68"/></clipPath></defs>` : ''}
+    <rect x="22" y="49" width="8" height="18" rx="2" fill="#8B6914" ${!full?`opacity="0.2"`:''}/>
+    <ellipse cx="26" cy="37" rx="13" ry="14" fill="#2d7a3a" ${!full?`opacity="0.2"`:''}/>
+    <ellipse cx="26" cy="25" rx="11" ry="12" fill="#3a9e4a" ${!full?`opacity="0.2"`:''}/>
+    <ellipse cx="26" cy="15" rx="9" ry="10" fill="#4cbf5e" ${!full?`opacity="0.2"`:''}/>
+    ${!full ? `
+    <g clip-path="url(#${id})">
+      <rect x="22" y="49" width="8" height="18" rx="2" fill="#8B6914"/>
+      <ellipse cx="26" cy="37" rx="13" ry="14" fill="#2d7a3a"/>
+      <ellipse cx="26" cy="25" rx="11" ry="12" fill="#3a9e4a"/>
+      <ellipse cx="26" cy="15" rx="9" ry="10" fill="#4cbf5e"/>
+    </g>` : ''}
+  </svg>`;
+}
+
+function renderTrees(n) {
+  const row = document.getElementById('treesRow');
+  if (n <= 0) {
+    row.innerHTML = '<span style="font-size:13px;color:var(--ink-muted);align-self:center">ยังไม่มี carbon savings — กระจกไม่ได้ช่วยประหยัดพลังงาน</span>';
+    return;
+  }
+  const full = Math.floor(n);
+  const frac = n - full;
+  const maxShow = 25;
+  let html = '';
+  for (let i = 0; i < Math.min(full, maxShow); i++) html += makeTreeSVG(1);
+  if (frac > 0.05 && full < maxShow) html += makeTreeSVG(frac);
+  if (full >= maxShow) {
+    html += `<div style="align-self:center;margin-left:6px;background:var(--green-light);border:1px solid var(--border-strong);border-radius:8px;padding:6px 12px;font-size:13px;color:var(--green-dark);font-weight:600">
+      +${(n - maxShow).toFixed(1)} ต้นอีก
+    </div>`;
+  }
+  row.innerHTML = html;
+}
+
+function updateTreeDashboard(totalEC, totalSavings, payback) {
+  const sav30  = totalSavings * 30;
+  const net    = sav30 - totalEC;
+  const trees  = sav30 > 0 ? sav30 / TREE_LIFE : 0;
+
+  document.getElementById('treeCount').textContent = trees.toFixed(1);
+  document.getElementById('tSav30').textContent    = sav30.toLocaleString('th-TH', {maximumFractionDigits:0});
+  document.getElementById('tEC').textContent       = totalEC.toLocaleString('th-TH', {maximumFractionDigits:0});
+
+  const netEl = document.getElementById('tNet');
+  netEl.textContent = (net >= 0 ? '+' : '') + net.toLocaleString('th-TH', {maximumFractionDigits:0});
+  netEl.className = 'tree-net-val ' + (net >= 0 ? 'pos' : 'neg');
+
+  // Payback bar
+  const pb = payback !== null ? Math.min(payback, 30) : 30;
+  const pct = Math.round((pb / 30) * 100);
+  const fill = document.getElementById('paybackBarFill');
+  fill.style.width = pct + '%';
+  fill.className = 'payback-bar-fill' + (payback === null || payback > 15 ? ' red' : payback > 5 ? ' amber' : '');
+  document.getElementById('paybackBarLabel').textContent =
+    payback === null ? 'ไม่สามารถคำนวณได้' :
+    payback > 30 ? `${payback.toFixed(1)} ปี — เกิน 30 ปี` :
+    `${payback.toFixed(1)} ปี — คุ้มทุนภายในอายุอาคาร ✓`;
+
+  renderTrees(trees);
+}
+
+// ═══════════════════════════════════════════
+// CHART
+// ═══════════════════════════════════════════
 let chartInst = null;
 function renderChart(items) {
   const ctx = document.getElementById('carbonChart').getContext('2d');
   if (chartInst) chartInst.destroy();
-  const greens = ['#1a6b4a','#2db87a','#0a3d2e','#9fc8b6','#3d5247','#5bb890','#6ec99f','#4a9e72','#1d8059','#8ac4a8'];
   chartInst = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: items.map((r, i) => `#${i+1} ${r.label.length > 18 ? r.label.substring(0,18)+'…' : r.label}`),
-      datasets: [{
-        label: 'Embodied Carbon (kgCO₂e)',
-        data: items.map(r => parseFloat(r.totalEC.toFixed(2))),
-        backgroundColor: items.map((_, i) => greens[i % greens.length]),
-        borderRadius: 6,
-      }, {
-        label: 'Carbon ประหยัดได้/ปี (kgCO₂e)',
-        data: items.map(r => parseFloat(r.savings.toFixed(2))),
-        backgroundColor: items.map(() => 'rgba(45,184,122,0.25)'),
-        borderRadius: 6,
-      }]
+      labels: items.map((r,i) => `#${i+1} ${r.label.length>20?r.label.slice(0,20)+'…':r.label}`),
+      datasets: [
+        { label:'Embodied Carbon (kgCO₂e)', data:items.map(r=>+r.totalEC.toFixed(2)),
+          backgroundColor:'rgba(10,61,46,0.8)', borderRadius:6 },
+        { label:'CO₂ ประหยัด/ปี (kgCO₂e)',  data:items.map(r=>+r.savings.toFixed(2)),
+          backgroundColor:'rgba(45,184,122,0.4)', borderRadius:6 },
+      ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: true, position: 'top', labels: { font: { family: 'IBM Plex Mono', size: 11 }, color: '#3d5247' } } },
-      scales: {
-        x: { ticks: { font: { family: 'IBM Plex Mono', size: 11 }, color: '#3d5247' } },
-        y: { ticks: { font: { family: 'IBM Plex Mono', size: 11 }, color: '#3d5247' }, grid: { color: '#d0e6da' } }
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:true, position:'top', labels:{ font:{family:'IBM Plex Mono',size:11}, color:'#3d5247' }}},
+      scales:{
+        x:{ ticks:{ font:{family:'IBM Plex Mono',size:10}, color:'#3d5247' }},
+        y:{ ticks:{ font:{family:'IBM Plex Mono',size:10}, color:'#3d5247' }, grid:{ color:'#d0e6da' }},
       }
     }
   });
 }
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
 // EXPORT
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════
 function exportCSV() {
-  const headers = ['#','SKU','Label','Width(mm)','Height(mm)','Qty','Area(m2)','TotalArea(m2)','Weight(kg)','EC/m2','TotalEC(kgCO2e)','SHGC','Savings/yr'];
-  const rows = lastResults.map((r, i) => [i+1, r.sku, r.label, r.w, r.h, r.qty, r.areaSqm.toFixed(3), r.totalArea.toFixed(3), r.totalW.toFixed(2), r.ecPerM2.toFixed(2), r.totalEC.toFixed(2), r.shgc, r.savings.toFixed(2)]);
-  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-  download('SMG_Carbon_Payback.csv', 'text/csv', csv);
+  const h = ['#','SKU','Label','W(mm)','H(mm)','Qty','Area(m2)','TotalArea(m2)','Weight(kg)','EC/m2','TotalEC(kgCO2e)','SHGC','Savings/yr(kgCO2e)'];
+  const r = lastResults.map((r,i) => [i+1,r.sku,r.label,r.w,r.h,r.qty,r.areaSqm.toFixed(3),r.totalArea.toFixed(3),r.totalW.toFixed(2),r.ecPerM2.toFixed(2),r.totalEC.toFixed(2),r.shgc,r.savings.toFixed(2)]);
+  dl('SMG_Carbon_Payback_v2.1.csv','text/csv',[h,...r].map(x=>x.join(',')).join('\n'));
 }
-
 function exportJSON() {
-  const proj = {
-    project: document.getElementById('projectName').value || 'SMG Project',
-    gridFactor: GRID(),
-    baselineSHGC: BASELINE_SHGC(),
-    date: new Date().toISOString().split('T')[0],
-    items: lastResults,
-    summary: {
-      totalEC: lastResults.reduce((s,r)=>s+r.totalEC,0).toFixed(2),
-      totalSavings: lastResults.reduce((s,r)=>s+r.savings,0).toFixed(2),
-      paybackYears: (lastResults.reduce((s,r)=>s+r.totalEC,0)/Math.max(0.001,lastResults.reduce((s,r)=>s+r.savings,0))).toFixed(1),
+  dl('SMG_Carbon_Payback_v2.json','application/json', JSON.stringify({
+    project: document.getElementById('projectName').value||'SMG Project',
+    version:'2.1', date:new Date().toISOString().split('T')[0],
+    gridFactor:GRID(), baselineSHGC:BASELINE_SHGC(),
+    items:lastResults,
+    summary:{
+      totalEC:   lastResults.reduce((s,r)=>s+r.totalEC,0).toFixed(2),
+      totalSavings:lastResults.reduce((s,r)=>s+r.savings,0).toFixed(2),
+      paybackYrs:(lastResults.reduce((s,r)=>s+r.totalEC,0)/Math.max(.001,lastResults.reduce((s,r)=>s+r.savings,0))).toFixed(1),
     }
-  };
-  download('SMG_Carbon_Payback.json', 'application/json', JSON.stringify(proj, null, 2));
+  },null,2));
+}
+function dl(name,type,content) {
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type}));
+  a.download=name; a.click();
 }
 
-function download(name, type, content) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type }));
-  a.download = name;
-  a.click();
-}
-
-// ─────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────
-function showStatus(el, cls, msg) {
-  el.className = 'status-box show ' + cls;
-  el.innerHTML = (cls==='processing' ? '<div class="spinner"></div>' : '') + `<span>${msg}</span>`;
-}
-
-// Init
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
 addManualRow();
 renderLayers();
 </script>
