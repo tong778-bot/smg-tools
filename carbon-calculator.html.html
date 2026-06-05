@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMG GIVE GREEN — Carbon Payback Calculator v2.1</title>
+<title>SMG GIVE GREEN — Carbon Payback Calculator v3.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -511,7 +511,7 @@ body {
   </div>
   <div class="header-right">
     <a href="index.html" class="back-btn">← กลับหน้าหลัก</a>
-    <span class="header-badge">v2.1 · EPD / ICE DB · 🌳 TGO</span>
+    <span class="header-badge">v3.0 · EPD / ICE DB · 🌳 TGO</span>
   </div>
 </header>
 
@@ -666,47 +666,49 @@ body {
 
     <!-- 🌳 TREE DASHBOARD -->
     <div class="tree-dashboard" id="treeDashboard">
+
+      <!-- Header row -->
       <div class="tree-dashboard-header">
         <div>
           <div class="tree-big-num" id="treeCount">—</div>
-          <div class="tree-big-label">🌳 ต้นไม้ใหญ่เทียบเท่า (ตลอดอายุอาคาร 30 ปี)</div>
+          <div class="tree-big-label">🏭 ต้นไม้ที่สูญเสียจากการผลิตกระจกทั้งหมด</div>
         </div>
         <div class="tree-ref">
           <strong style="color:var(--green-dark)">ค่าอ้างอิงต้นไม้ไทย (TGO)</strong><br>
           1 ต้น = ดูดซับ CO₂ ≈ 9.5 kg/ปี<br>
           ตลอด 30 ปี = <strong>285 kgCO₂/ต้น</strong><br>
-          <span style="font-size:10px;opacity:0.7">มก. / องค์การบริหารจัดการก๊าซเรือนกระจก</span>
+          <span style="font-size:10px;opacity:0.7">Tree = Embodied Carbon ÷ 285</span>
         </div>
       </div>
 
       <!-- Forest visual -->
       <div class="forest-zone">
-        <div class="forest-sublabel">1 ไอคอน = 1 ต้น · ต้นจาง = เศษของต้น</div>
+        <div class="forest-sublabel">1 ไอคอน = 1 ต้น · ต้นจาง = เศษของต้น · แสดงสูงสุด 25 ต้น</div>
         <div class="trees-row" id="treesRow">
           <span style="font-size:13px;color:var(--ink-muted)">รอผลการคำนวณ...</span>
         </div>
       </div>
 
-      <!-- Net stats -->
+      <!-- Tree Story: 3 ช่อง -->
       <div class="tree-net-grid">
-        <div class="tree-net-card">
-          <div class="tree-net-label">Carbon Savings 30 ปี</div>
-          <div class="tree-net-val pos" id="tSav30">—</div>
-          <div class="tree-net-unit">kgCO₂e</div>
+        <div class="tree-net-card" style="border-top:3px solid var(--red,#d94040);">
+          <div class="tree-net-label">🏭 ต้นไม้ที่สูญเสียจากการผลิต</div>
+          <div class="tree-net-val" id="treeDebt" style="color:var(--red,#d94040);">—</div>
+          <div class="tree-net-unit">ต้น (EC ÷ 285)</div>
         </div>
-        <div class="tree-net-card">
-          <div class="tree-net-label">Embodied Carbon</div>
-          <div class="tree-net-val" id="tEC">—</div>
-          <div class="tree-net-unit">kgCO₂e</div>
+        <div class="tree-net-card" style="border-top:3px solid var(--amber,#e8a020);">
+          <div class="tree-net-label">🔄 คืนครบภายใน</div>
+          <div class="tree-net-val" id="paybackYr" style="color:var(--amber,#e8a020);">—</div>
+          <div class="tree-net-unit">ปี — ชดเชย <span id="treeDebt2">—</span> ต้นคืนโลก</div>
         </div>
-        <div class="tree-net-card">
-          <div class="tree-net-label">Net Carbon Balance</div>
-          <div class="tree-net-val" id="tNet">—</div>
-          <div class="tree-net-unit">kgCO₂e</div>
+        <div class="tree-net-card" style="border-top:3px solid var(--green-bright,#2db87a);">
+          <div class="tree-net-label">🌱 ปลูกเพิ่มหลังจากนั้น</div>
+          <div class="tree-net-val pos" id="treePlusPerYr">—</div>
+          <div class="tree-net-unit">ต้น/ปี (Savings ÷ 285)</div>
         </div>
       </div>
 
-      <!-- Payback progress bar -->
+      <!-- Payback bar -->
       <div class="payback-bar-wrap">
         <div class="payback-bar-label">
           <span>Carbon Payback Progress (30 ปี)</span>
@@ -1182,30 +1184,43 @@ function renderTrees(n) {
 }
 
 function updateTreeDashboard(totalEC, totalSavings, payback) {
-  const sav30  = totalSavings * 30;
-  const net    = sav30 - totalEC;
-  const trees  = sav30 > 0 ? sav30 / TREE_LIFE : 0;
+  // ── Tree Story v3.0 ──
+  // Card 1: Tree Debt    = EC ÷ 285          (ต้นที่สูญเสียจากการผลิต)
+  // Card 2: Payback      = EC ÷ Savings/ปี   (ปีที่คืนครบ)
+  // Card 3: Trees/ปี     = Savings/ปี ÷ 285  (ต้น/ปี หลังจากนั้น)
+  // อ้างอิง: 285 kgCO₂/ต้น/30ปี (TGO + มก.)
+  const treeDebt   = totalEC > 0       ? totalEC      / TREE_LIFE : 0;
+  const treePlusYr = totalSavings > 0  ? totalSavings / TREE_LIFE : 0;
 
-  document.getElementById('treeCount').textContent = trees.toFixed(1);
-  document.getElementById('tSav30').textContent    = sav30.toLocaleString('th-TH', {maximumFractionDigits:0});
-  document.getElementById('tEC').textContent       = totalEC.toLocaleString('th-TH', {maximumFractionDigits:0});
+  // Big number header = Tree Debt
+  document.getElementById('treeCount').textContent = treeDebt.toFixed(1);
 
-  const netEl = document.getElementById('tNet');
-  netEl.textContent = (net >= 0 ? '+' : '') + net.toLocaleString('th-TH', {maximumFractionDigits:0});
-  netEl.className = 'tree-net-val ' + (net >= 0 ? 'pos' : 'neg');
+  // Card 1
+  document.getElementById('treeDebt').textContent  = treeDebt.toFixed(1);
+  document.getElementById('treeDebt2').textContent = treeDebt.toFixed(1);
+
+  // Card 2: Payback
+  const payEl = document.getElementById('paybackYr');
+  payEl.textContent = payback !== null ? payback.toFixed(1) : '∞';
+
+  // Card 3: ต้น/ปี = Savings/ปี ÷ 285
+  document.getElementById('treePlusPerYr').textContent = treePlusYr.toFixed(2);
 
   // Payback bar
-  const pb = payback !== null ? Math.min(payback, 30) : 30;
+  const pb  = payback !== null ? Math.min(payback, 30) : 30;
   const pct = Math.round((pb / 30) * 100);
   const fill = document.getElementById('paybackBarFill');
   fill.style.width = pct + '%';
-  fill.className = 'payback-bar-fill' + (payback === null || payback > 15 ? ' red' : payback > 5 ? ' amber' : '');
+  fill.className = 'payback-bar-fill' +
+    (payback === null || payback > 15 ? ' red' : payback > 5 ? ' amber' : '');
   document.getElementById('paybackBarLabel').textContent =
-    payback === null ? 'ไม่สามารถคำนวณได้' :
-    payback > 30 ? `${payback.toFixed(1)} ปี — เกิน 30 ปี` :
-    `${payback.toFixed(1)} ปี — คุ้มทุนภายในอายุอาคาร ✓`;
+    payback === null
+      ? 'ไม่สามารถคำนวณได้ — กระจกไม่ช่วยประหยัดพลังงาน'
+      : payback > 30
+        ? `${payback.toFixed(1)} ปี — เกินอายุอาคาร 30 ปี`
+        : `${payback.toFixed(1)} ปี — คุ้มทุนภายในอายุอาคาร ✓`;
 
-  renderTrees(trees);
+  renderTrees(treeDebt);
 }
 
 // ═══════════════════════════════════════════
