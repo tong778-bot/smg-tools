@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMG Curtain Wall Studio — เครื่องมือคำนวณผนังกระจกโครงอลูมิเนียม</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Righteous&family=Kanit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    /* ===== SMG Corporate Identity tokens ===== */
+    --deep-blue:#003e52;
+    --deep-blue-2:#002a38;
+    --green:#6fa088;
+    --green-2:#4f8069;
+    --black:#231f20;
+    --white:#ffffff;
+    --gradient: linear-gradient(135deg, var(--deep-blue) 0%, var(--green) 100%);
+
+    /* derived surface / text tones */
+    --paper:#f7f9f8;
+    --paper-2:#eef3f1;
+    --line:#d7e2df;
+    --line-strong:#003e52;
+    --ink:#1c2b2e;
+    --ink-soft:#56676a;
+    --card:#ffffff;
+
+    /* status */
+    --amber:#b8632c;
+    --amber-bg:#f7e9dc;
+    --ok:#3f7a5c;
+    --ok-bg:#e8f3ee;
+    --fail:#a13c3c;
+    --fail-bg:#f8e8e6;
+
+    --radius:3px;
+    --font-th-head:'Kanit',sans-serif;
+    --font-th-body:'Prompt',sans-serif;
+    --font-en:'Montserrat',sans-serif;
+    --font-data:'IBM Plex Mono',monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-th-body);
+    line-height:1.55;
+    padding:0 0 80px 0;
+  }
+
+  .blueprint-bg{
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: -1px -1px;
+    opacity:1;
+  }
+
+  /* ================= HEADER / BRAND BAR ================= */
+  header.top{
+    background:var(--gradient);
+    color:var(--white);
+    padding:0;
+    position:sticky; top:0; z-index:30;
+    box-shadow:0 2px 10px rgba(0,20,25,.18);
+  }
+  .brandbar{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:16px 32px;
+    max-width:1320px;
+    margin:0 auto;
+  }
+  .brand-symbol{flex:0 0 auto; display:block;}
+  .brand-word{
+    font-family:var(--font-en);
+    font-weight:800;
+    font-size:22px;
+    letter-spacing:.02em;
+    line-height:1;
+  }
+  .brand-tag{
+    font-family:'Righteous',sans-serif;
+    font-size:10.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#dfeeea;
+    margin-top:3px;
+  }
+  .brand-divider{width:1px; align-self:stretch; background:rgba(255,255,255,.28); margin:2px 4px;}
+  .brand-title-block h1{
+    font-family:var(--font-th-head);
+    font-size:18.5px;
+    font-weight:600;
+    margin:0;
+    color:var(--white);
+  }
+  .brand-title-block .sub{
+    font-family:var(--font-th-body);
+    font-size:12px;
+    color:#d6ebe4;
+    margin-top:3px;
+    max-width:640px;
+  }
+  .brand-meta{
+    margin-left:auto;
+    text-align:right;
+    font-family:var(--font-data);
+    font-size:10px;
+    color:#cfe6de;
+    line-height:1.6;
+    display:none;
+  }
+  @media (min-width:1080px){ .brand-meta{display:block;} }
+
+  .wrap{
+    max-width:1320px;
+    margin:0 auto;
+    padding:28px 32px 0 32px;
+    display:grid;
+    grid-template-columns: 400px 1fr;
+    gap:24px;
+  }
+  @media (max-width: 1000px){
+    .wrap{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+  }
+
+  .step{
+    padding:20px;
+    border-bottom:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:none;}
+  .step-num{
+    font-family:var(--font-data);
+    font-size:11px;
+    color:var(--green-2);
+    letter-spacing:.1em;
+    font-weight:600;
+  }
+  .step h2{
+    font-family:var(--font-th-head);
+    font-size:15.5px;
+    margin:2px 0 14px 0;
+    font-weight:600;
+    color:var(--deep-blue);
+  }
+  .step-note{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin:-8px 0 14px 0;
+    line-height:1.5;
+  }
+
+  .type-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+  }
+  .type-card{
+    border:1px solid var(--line);
+    padding:10px 8px;
+    cursor:pointer;
+    text-align:center;
+    background:var(--paper);
+    transition:.12s;
+    user-select:none;
+    border-radius:var(--radius);
+  }
+  .type-card svg{display:block; margin:0 auto 6px auto;}
+  .type-card .name{font-family:var(--font-th-body); font-size:12px; font-weight:600;}
+  .type-card .desc{font-size:10.5px; color:var(--ink-soft); margin-top:2px; line-height:1.3;}
+  .type-card.active{
+    border-color:var(--deep-blue);
+    background:var(--paper-2);
+    box-shadow:inset 0 0 0 1px var(--deep-blue);
+  }
+
+  .field{margin-bottom:14px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:5px;
+  }
+  .field .hint{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    margin-top:4px;
+    line-height:1.4;
+  }
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  input[type=number], input[type=text], select{
+    width:100%;
+    padding:8px 9px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    font-family:var(--font-data);
+    font-size:13px;
+    color:var(--ink);
+    border-radius:var(--radius);
+  }
+  input[type=number]:focus, input[type=text]:focus, select:focus{
+    outline:none;
+    border-color:var(--deep-blue);
+    box-shadow:0 0 0 3px rgba(0,62,82,.12);
+  }
+  input[type=range]{width:100%; accent-color:var(--deep-blue);}
+
+  .wind-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .wind-opt{
+    border:1px solid var(--line);
+    padding:8px;
+    cursor:pointer;
+    text-align:center;
+    font-family:var(--font-data);
+    font-size:12.5px;
+    background:var(--paper);
+    border-radius:var(--radius);
+  }
+  .wind-opt .kg{font-weight:700; font-size:14px;}
+  .wind-opt .lbl{font-size:9.5px; color:var(--ink-soft); font-family:var(--font-th-body);}
+  .wind-opt.active{
+    border-color:var(--deep-blue);
+    background:var(--paper-2);
+    box-shadow:inset 0 0 0 1px var(--deep-blue);
+  }
+
+  .glass-opt-row{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .glass-opt{
+    border:1px solid var(--line);
+    padding:8px 6px;
+    cursor:pointer;
+    text-align:center;
+    font-size:11.5px;
+    line-height:1.3;
+    background:var(--paper);
+    border-radius:var(--radius);
+    font-family:var(--font-th-body);
+  }
+  .glass-opt.active{border-color:var(--deep-blue); background:var(--paper-2); box-shadow:inset 0 0 0 1px var(--deep-blue);}
+  .glass-opt.disabled{opacity:.4; cursor:not-allowed;}
+
+  .energy-card{
+    border:1px solid var(--line);
+    padding:12px;
+    cursor:pointer;
+    background:var(--paper);
+    border-radius:var(--radius);
+    margin-bottom:8px;
+  }
+  .energy-card:last-child{margin-bottom:0;}
+  .energy-card.active{border-color:var(--deep-blue); background:var(--paper-2); box-shadow:inset 0 0 0 1px var(--deep-blue);}
+  .energy-card .en-name{font-weight:600; font-size:12.5px; color:var(--deep-blue);}
+  .energy-card .en-desc{font-size:10.5px; color:var(--ink-soft); margin-top:2px;}
+  .energy-card .en-figs{display:flex; gap:22px; margin-top:8px; font-family:var(--font-data); font-size:11px;}
+  .energy-card .en-figs b{display:block; font-size:16px;}
+  .energy-card .en-figs span{color:var(--ink-soft); font-size:9.5px;}
+
+  .compass{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+    max-width:230px;
+    margin:0 auto;
+  }
+  .compass .dir{
+    border:1px solid var(--line);
+    padding:9px 4px;
+    text-align:center;
+    cursor:pointer;
+    font-family:var(--font-data);
+    font-size:11px;
+    font-weight:600;
+    background:var(--paper);
+    border-radius:var(--radius);
+  }
+  .compass .dir.active{border-color:var(--deep-blue); background:var(--gradient); color:#fff;}
+  .compass .center{
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .advanced-toggle{
+    font-family:var(--font-data);
+    font-size:11px;
+    color:var(--deep-blue);
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    margin-top:4px;
+    display:inline-block;
+    font-weight:600;
+  }
+  .advanced-body{display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line);}
+  .advanced-body.open{display:block;}
+
+  /* RIGHT SIDE */
+  .right-col{display:flex; flex-direction:column; gap:20px;}
+
+  .diagram-card{padding:22px;}
+  .diagram-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; flex-wrap:wrap; gap:8px;}
+  .diagram-title{font-family:var(--font-th-head); font-size:14px; font-weight:600; color:var(--deep-blue);}
+  .diagram-meta{font-family:var(--font-data); font-size:11px; color:var(--ink-soft);}
+
+  .svg-frame{
+    border:1px solid var(--line);
+    background:
+      linear-gradient(var(--paper-2) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-2) 1px, transparent 1px);
+    background-size:20px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px;
+    overflow:auto;
+  }
+
+  .flag{
+    font-size:11.5px;
+    padding:9px 11px;
+    margin-top:12px;
+    border-left:3px solid var(--amber);
+    background:var(--amber-bg);
+    color:#6b3d18;
+    display:none;
+    border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .flag.show{display:block;}
+  .flag.ok{border-left-color:var(--ok); background:var(--ok-bg); color:#204634;}
+  .flag.fail{border-left-color:var(--fail); background:var(--fail-bg); color:#5c2323;}
+  .pass-tag{
+    display:inline-block; font-family:var(--font-data); font-size:10.5px; font-weight:700;
+    color:var(--ok); background:var(--ok-bg); padding:2px 8px; border-radius:10px; margin-left:6px;
+  }
+  .pass-tag.fail{ color:#5c2323; background:var(--fail-bg); }
+
+  .results-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:760px){ .results-grid{grid-template-columns:repeat(2,1fr);} }
+  .stat{
+    background:var(--card);
+    padding:16px 14px;
+  }
+  .stat .k{font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;}
+  .stat .v{font-family:var(--font-data); font-size:19px; font-weight:600; color:var(--ink);}
+  .stat .v small{font-size:11px; font-weight:400; color:var(--ink-soft);}
+  .stat.accent .v{color:var(--deep-blue);}
+
+  .table-card{padding:20px;}
+  .table-card h3{font-family:var(--font-th-head); font-size:13.5px; margin:0 0 12px 0; font-weight:600; color:var(--deep-blue);}
+  table.data{width:100%; border-collapse:collapse; font-size:12px;}
+  table.data th, table.data td{
+    padding:8px 10px;
+    border-bottom:1px solid var(--line);
+    text-align:left;
+  }
+  table.data th{
+    font-family:var(--font-data);
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  table.data td.num, table.data th.num{text-align:right; font-family:var(--font-data);}
+  table.data tr.hl td{background:var(--paper-2); font-weight:600;}
+
+  .weight-inputs{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:10px;}
+  .weight-inputs .field label{font-size:10.5px;}
+  .two-col-adv{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .two-col-adv .field label{font-size:10.5px;}
+
+  /* OTTV hero block */
+  .ottv-hero{display:flex; gap:20px; flex-wrap:wrap; align-items:center;}
+  .ottv-number{font-family:var(--font-data); font-size:38px; font-weight:600; color:var(--deep-blue); line-height:1;}
+  .ottv-number small{font-size:14px; font-weight:400; color:var(--ink-soft); margin-left:4px;}
+  .ottv-breakdown{flex:1; min-width:220px;}
+  .ottv-bar-row{display:flex; align-items:center; gap:8px; font-size:11px; margin-bottom:6px;}
+  .ottv-bar-track{flex:1; height:8px; background:var(--paper-2); border-radius:4px; overflow:hidden;}
+  .ottv-bar-fill{height:100%; border-radius:4px;}
+  .ottv-bar-label{width:150px; color:var(--ink-soft); font-family:var(--font-data); font-size:10.5px;}
+  .ottv-bar-val{width:60px; text-align:right; font-family:var(--font-data); font-size:11px;}
+
+  .footer-note{
+    font-size:11px;
+    color:var(--ink-soft);
+    padding:18px 20px;
+    border-top:1px solid var(--line);
+    background:var(--paper-2);
+    line-height:1.7;
+  }
+  .footer-note b{color:var(--ink);}
+  .footer-note a{color:var(--deep-blue);}
+
+  .source-tag{
+    display:inline-block;
+    font-family:var(--font-data);
+    font-size:9.5px;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    padding:1px 6px;
+    border-radius:10px;
+    margin-left:6px;
+  }
+
+  .contact-strip{
+    display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+    padding:14px 20px;
+    background:var(--deep-blue);
+    color:#dcece6;
+    font-family:var(--font-data);
+    font-size:11px;
+    border-radius:var(--radius);
+  }
+  .contact-strip b{color:#fff;}
+  .contact-strip span{opacity:.55;}
+
+  ::selection{background:var(--green); color:#fff;}
+</style>
+</head>
+<body class="blueprint-bg">
+
+<header class="top">
+  <div class="brandbar">
+    <svg class="brand-symbol" width="34" height="34" viewBox="0 0 40 40">
+      <defs>
+        <linearGradient id="astGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset="1" stop-color="#bfe0d3"/>
+        </linearGradient>
+      </defs>
+      <g stroke="url(#astGrad)" stroke-width="4.4" stroke-linecap="round">
+        <line x1="20" y1="4" x2="20" y2="36"/>
+        <line x1="6.6" y1="11" x2="33.4" y2="29"/>
+        <line x1="33.4" y1="11" x2="6.6" y2="29"/>
+      </g>
+      <circle cx="20" cy="20" r="3.4" fill="#ffffff"/>
+      <text x="30" y="10" font-family="Montserrat" font-size="7" fill="#dfeeea">TM</text>
+    </svg>
+    <div>
+      <div class="brand-word">SMG</div>
+      <div class="brand-tag">Only the significant</div>
+    </div>
+    <div class="brand-divider"></div>
+    <div class="brand-title-block">
+      <h1>Curtain Wall Studio — เครื่องมือคำนวณผนังกระจกโครงอลูมิเนียม</h1>
+      <div class="sub">แบ่งช่องกระจก · ตรวจสอบความหนา/แรงลม · ประเมิน OTTV เบื้องต้น ก่อนให้วิศวกรคำนวณจริงเฉพาะโครงการ</div>
+    </div>
+    <div class="brand-meta">SMG GLASS &amp; METAL CO., LTD.<br>THE GLASS SPECIALIST</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- LEFT: INPUTS -->
+  <div class="panel">
+    <div class="step">
+      <div class="step-num">STEP 01</div>
+      <h2>เลือกชนิดแผงผนังกระจก</h2>
+      <div class="type-grid" id="typeGrid"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">STEP 02</div>
+      <h2>แรงลมออกแบบ &amp; ความปลอดภัยกระจก</h2>
+      <div class="field">
+        <label>แรงลมออกแบบ (กก./ตร.ม.)</label>
+        <div class="wind-grid" id="windGrid"></div>
+        <div class="hint">อ้างอิงตารางความหนากระจก TAG Glacade — พื้นที่ลมแรง (ริมทะเล ที่โล่ง อาคารสูงล้อมรอบ) ต้องให้วิศวกรคำนวณแรงลมเฉพาะพื้นที่จริง</div>
+      </div>
+      <div class="field">
+        <label>ชนิดกระจกนิรภัยที่ต้องการใช้</label>
+        <div class="glass-opt-row" id="glassOptRow">
+          <div class="glass-opt" data-g="HS">Heat-<br>Strengthened</div>
+          <div class="glass-opt" data-g="TP">Tempered</div>
+          <div class="glass-opt" data-g="HSLAM">HS/LAM<br><span style="font-weight:400;font-size:9.5px;">(ลามิเนต)</span></div>
+          <div class="glass-opt" data-g="TPLAM">TP/LAM<br><span style="font-weight:400;font-size:9.5px;">(ลามิเนต)</span></div>
+        </div>
+        <div class="hint" id="glassHint">กระจก Annealed ดิบห้ามใช้ในผนังกระจกบานใหญ่ที่คนเข้าถึงได้เสมอ</div>
+        <div class="hint" id="lamHint" style="display:none; margin-top:6px;"></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">STEP 03</div>
+      <h2>ขนาดผนังอาคาร</h2>
+      <div class="row2">
+        <div class="field">
+          <label>ความกว้างผนัง (ม.)</label>
+          <input type="number" id="bWidth" value="9.0" step="0.1" min="0.5">
+        </div>
+        <div class="field">
+          <label>ความสูงผนัง (ม.)</label>
+          <input type="number" id="bHeight" value="6.0" step="0.1" min="0.5">
+        </div>
+      </div>
+
+      <span class="advanced-toggle" id="advToggle">ปรับขนาดช่อง / ค่าอลูมิเนียม / จุดรองรับ ▾</span>
+      <div class="advanced-body" id="advBody">
+        <div class="step-num" style="margin-bottom:8px;">ขนาดช่อง</div>
+        <div class="row2">
+          <div class="field">
+            <label>กว้างช่องสูงสุดที่ต้องการ (ม.)</label>
+            <input type="number" id="maxModW" step="0.05" min="0.4">
+            <div class="hint">ใช้แบ่งจำนวนคอลัมน์ตามความเป็นไปได้ของงานติดตั้ง</div>
+          </div>
+          <div class="field">
+            <label>สูงช่องสูงสุดที่ต้องการ (ม.)</label>
+            <input type="number" id="maxModH" step="0.05" min="0.4">
+            <div class="hint">มักอิงความสูงต่อชั้น หรือขีดจำกัดขนส่ง/โรงงาน</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>ส่วนลดพื้นที่กระจกจากบังฝาครอบเฟรม (%)</label>
+          <input type="number" id="frameDeduct" value="8" step="1" min="0" max="30">
+        </div>
+        <div class="step-num" style="margin:16px 0 8px 0;">น้ำหนักอลูมิเนียม</div>
+        <div class="weight-inputs">
+          <div class="field">
+            <label>น้ำหนักเส้นมุลเลียน (กก./ม.)</label>
+            <input type="number" id="wMullion" step="0.1">
+          </div>
+          <div class="field">
+            <label>น้ำหนักเส้นทรานซัม (กก./ม.)</label>
+            <input type="number" id="wTransom" step="0.1">
+          </div>
+          <div class="field">
+            <label>อุปกรณ์เสริม (% เพิ่มจากอลูฯ)</label>
+            <input type="number" id="pctAccessory" value="15" step="1" min="0">
+          </div>
+        </div>
+        <div class="hint" style="margin-top:8px;">ค่าน้ำหนักเส้นอลูมิเนียมเป็น<b>ค่าประมาณอุตสาหกรรมทั่วไป</b> ไม่ใช่สเปกจากแคตตาล็อกผู้ผลิตเส้นเฉพาะราย ควรตรวจสอบกับผู้ผลิตเส้นจริงก่อนสั่งผลิต</div>
+        <div style="margin-top:14px; padding-top:14px; border-top:1px dashed var(--line);">
+          <div class="step-num" style="margin-bottom:8px;">จุดรองรับ (Bracket)</div>
+        </div>
+        <div class="two-col-adv">
+          <div class="field">
+            <label>ขนาดสลักเกลียวที่จุดรองรับ (มม.)</label>
+            <input type="number" id="boltDia" value="12" step="1" min="6">
+          </div>
+          <div class="field">
+            <label>หน่วยแรงเฉือนที่ยอมให้ของสลัก (กก./ตร.ซม.)</label>
+            <input type="number" id="boltShear" value="1480" step="10" min="100">
+          </div>
+        </div>
+        <div class="hint">ค่าเริ่มต้นอ้างอิงจากรายการคำนวณจริง (สลักเกลียว 12mm, τallow=1,480 กก./ตร.ซม.) — ใช้ตรวจสอบแรงที่จุดรองรับ (bracket) แบบคร่าวๆ เท่านั้น</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">STEP 04</div>
+      <h2>ทิศทางผนัง &amp; สัดส่วนกระจกต่อผนัง (WWR)</h2>
+      <div class="field">
+        <label>ทิศที่ผนังหันหน้าเข้าหา</label>
+        <div class="compass" id="compassGrid"></div>
+      </div>
+      <div class="field">
+        <label>สัดส่วนพื้นที่กระจกต่อพื้นที่ผนังทั้งหมด (WWR) — <span id="wwrVal">80</span>%</label>
+        <input type="range" id="wwrRange" min="20" max="100" value="80" step="5">
+        <div class="hint">ค่านี้ใช้ประเมิน OTTV เบื้องต้นเท่านั้น — ผนังทึบส่วนที่เหลือ (สแปนเดรลอลูมิเนียม/ผนังก่อ) นับเป็นพื้นที่ทึบ</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">STEP 05</div>
+      <h2>แพ็กเกจกระจกประหยัดพลังงาน</h2>
+      <div class="step-note">อ้างอิงกลุ่มคุณสมบัติกระจก 3 กลุ่ม (งานวิจัยสถาปัตยกรรม มช. 2567) — ใช้ประเมิน OTTV แยกจากชนิดกระจกนิรภัยใน STEP 02 หน้างานจริงต้องเลือกสเปกให้ตรงกันทั้งคู่กับผู้ผลิต</div>
+      <div id="energyCardRow"></div>
+      <span class="advanced-toggle" id="energyAdvToggle" style="margin-top:10px;">ปรับค่า SHGC / U ด้วยตนเอง ▾</span>
+      <div class="advanced-body" id="energyAdvBody">
+        <div class="two-col-adv">
+          <div class="field">
+            <label>SHGC ของกระจก</label>
+            <input type="number" id="ovShgc" step="0.01" min="0.05" max="1">
+          </div>
+          <div class="field">
+            <label>U-Value กระจก (W/m²K)</label>
+            <input type="number" id="ovU" step="0.1" min="0.5">
+          </div>
+        </div>
+        <div class="two-col-adv" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);">
+          <div class="field">
+            <label>U-Value ผนังทึบ/สแปนเดรล (W/m²K)</label>
+            <input type="number" id="opaqueU" value="3.5" step="0.1" min="0.5">
+          </div>
+          <div class="field">
+            <label>TDeq ผนังทึบ (°C)</label>
+            <input type="number" id="opaqueTDeq" value="12" step="0.5" min="1">
+          </div>
+        </div>
+        <div class="hint">ค่าเริ่มต้นสำหรับผนังสแปนเดรลอลูมิเนียมน้ำหนักเบาทั่วไป ปรับได้ตามสเปกจริงของโครงการ</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="right-col">
+
+    <div class="panel diagram-card">
+      <div class="diagram-head">
+        <div class="diagram-title">ผังช่องกระจก (Elevation)</div>
+        <div class="diagram-meta" id="diagMeta">—</div>
+      </div>
+      <div class="svg-frame">
+        <svg id="elevSvg" width="640" height="420" viewBox="0 0 640 420"></svg>
+      </div>
+      <div class="flag" id="areaFlag"></div>
+      <div class="flag" id="rangeFlag"></div>
+    </div>
+
+    <div class="panel">
+      <div style="padding:20px 20px 4px 20px;">
+        <div class="results-grid">
+          <div class="stat">
+            <div class="k">จำนวนช่อง</div>
+            <div class="v" id="statPanels">—</div>
+          </div>
+          <div class="stat accent">
+            <div class="k">ขนาดช่องจริง</div>
+            <div class="v" id="statModule">—</div>
+          </div>
+          <div class="stat accent">
+            <div class="k">ความหนากระจกแนะนำ</div>
+            <div class="v" id="statThickness">—</div>
+          </div>
+          <div class="stat">
+            <div class="k">ชนิดกระจกที่ต้องใช้</div>
+            <div class="v" id="statGlassType">—</div>
+          </div>
+        </div>
+        <div id="lamConstructionBox" style="display:none; padding:12px 16px; margin-top:1px; background:var(--card); border-top:1px solid var(--line); font-size:12px;">
+          <span style="color:var(--ink-soft);">โครงสร้างลามิเนต:</span> <b id="lamConstructionText" style="font-family:var(--font-data);">—</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel table-card">
+      <h3>ประมาณการ OTTV เบื้องต้น <span class="source-tag">SCREENING ESTIMATE · ไม่ใช่ผลจากโปรแกรม BEC</span></h3>
+      <div class="hint" style="margin-bottom:14px;">ประเมินค่าการถ่ายเทความร้อนรวมของผนัง (OTTV) แบบคัดกรองเบื้องต้น จากทิศทาง + WWR + คุณสมบัติกระจกที่เลือก เพื่อคุยกับลูกค้าและสถาปนิกก่อนยื่นคำนวณจริงด้วยโปรแกรม BEC Web-based (เกณฑ์อาคารสำนักงาน OTTV ≤ 50 W/m² ตามกฎหมายอนุรักษ์พลังงาน)</div>
+      <div class="ottv-hero">
+        <div class="ottv-number"><span id="ottvValue">—</span><small>W/m²</small></div>
+        <div class="ottv-breakdown" id="ottvBreakdown"></div>
+      </div>
+      <div class="flag" id="ottvFlag" style="margin-top:14px;"></div>
+    </div>
+
+    <div class="panel table-card">
+      <h3>ประมาณการกระจก <span class="source-tag">SECTION 41 · TAG GLACADE + สูตร น้ำหนัก mm×2.5</span></h3>
+      <table class="data">
+        <tr><th>รายการ</th><th class="num">ค่า</th></tr>
+        <tr><td>พื้นที่ผนังรวม</td><td class="num" id="tArea">—</td></tr>
+        <tr><td>พื้นที่กระจกสุทธิ (หักฝาครอบเฟรม)</td><td class="num" id="tGlassArea">—</td></tr>
+        <tr><td>น้ำหนักกระจกต่อตร.ม.</td><td class="num" id="tGlassUnitW">—</td></tr>
+        <tr style="font-weight:700;"><td>น้ำหนักกระจกต่อแผ่น (1 ช่อง)</td><td class="num" id="tGlassPanelW">—</td></tr>
+        <tr><td>น้ำหนักกระจกรวมทั้งผนัง</td><td class="num" id="tGlassTotalW">—</td></tr>
+      </table>
+    </div>
+
+    <div class="panel table-card">
+      <h3>ประมาณการเส้นอลูมิเนียมและอุปกรณ์ติดตั้ง <span class="source-tag">ค่าประมาณ — ตรวจสอบกับผู้ผลิตเส้นจริง</span></h3>
+      <table class="data">
+        <tr><th>รายการ</th><th class="num">ความยาวรวม</th><th class="num">น้ำหนัก</th></tr>
+        <tr><td>เส้นมุลเลียน (แนวตั้ง)</td><td class="num" id="tMullionLen">—</td><td class="num" id="tMullionW">—</td></tr>
+        <tr><td>เส้นทรานซัม (แนวนอน)</td><td class="num" id="tTransomLen">—</td><td class="num" id="tTransomW">—</td></tr>
+        <tr><td>อุปกรณ์เสริม (บังกัน/น็อต/วงเล็บยึด ฯลฯ)</td><td class="num">—</td><td class="num" id="tAccessoryW">—</td></tr>
+        <tr style="font-weight:700;"><td>น้ำหนักโครงอลูมิเนียมรวม</td><td class="num">—</td><td class="num" id="tAluTotalW">—</td></tr>
+      </table>
+      <table class="data" style="margin-top:14px;">
+        <tr><th>สรุประบบ</th><th class="num">ค่า</th></tr>
+        <tr style="font-weight:700;"><td>น้ำหนักรวมทั้งระบบ (กระจก+อลูฯ+อุปกรณ์)</td><td class="num" id="tSystemTotal">—</td></tr>
+        <tr><td>น้ำหนักรวมต่อพื้นที่ผนัง 1 ตร.ม.</td><td class="num" id="tSystemPerSqm">—</td></tr>
+      </table>
+    </div>
+
+    <div class="panel table-card">
+      <h3>แรงที่จุดรองรับ (Bracket Reaction) &amp; ตรวจสอบสลักเกลียว <span class="source-tag">Tributary Area</span></h3>
+      <div class="hint" style="margin-bottom:10px;">ประมาณแรงที่จุดรองรับ (bracket) ตัวแทน 1 จุด โดยสมมติว่าแต่ละจุดรับพื้นที่ 1 ช่อง — ใช้เป็นตัวเลขเบื้องต้นเพื่อคุยกับช่าง ไม่ใช่ค่าออกแบบจริง</div>
+      <table class="data">
+        <tr><th>รายการ</th><th class="num">สูตร</th><th class="num">ผลลัพธ์</th></tr>
+        <tr><td>Fx — แรงลมที่จุดรองรับ</td><td class="num">Wind × พื้นที่ช่อง</td><td class="num" id="tFx">—</td></tr>
+        <tr><td>Fy — น้ำหนักดิ่งที่จุดรองรับ</td><td class="num">กระจก+อลูฯ ต่อช่อง</td><td class="num" id="tFy">—</td></tr>
+        <tr><td>กำลังรับแรงเฉือนสลักเกลียว/ตัว</td><td class="num">(π/4×d²)×τallow</td><td class="num" id="tBoltCap">—</td></tr>
+        <tr><td>ตรวจสอบ Fx</td><td class="num">—</td><td class="num" id="tCheckFx">—</td></tr>
+        <tr><td>ตรวจสอบ Fy</td><td class="num">—</td><td class="num" id="tCheckFy">—</td></tr>
+      </table>
+    </div>
+
+    <div class="panel table-card">
+      <h3>เทียบ 3 กลุ่มกระจกประหยัดพลังงาน <span class="source-tag">ที่ทิศ &amp; WWR ปัจจุบัน</span></h3>
+      <table class="data" id="compareTable">
+        <tr><th>กลุ่มกระจก</th><th class="num">SHGC</th><th class="num">U</th><th class="num">OTTV ประมาณ</th><th class="num">เกณฑ์ ≤50</th></tr>
+      </table>
+    </div>
+
+    <div class="footer-note">
+      <b>ขอบเขตการใช้งาน:</b> เครื่องมือนี้จัดทำสำหรับงานที่พักอาศัยแนวราบและงานต่อเติมดาดฟ้า/ชั้นบนสุดของอาคาร ไม่ครอบคลุมอาคารสูงเกิน 4 ชั้นซึ่งมีข้อกำหนดโครงสร้าง แรงลม พลังงาน และกฎหมายควบคุมอาคารที่ซับซ้อนกว่านี้มาก — ต้องใช้วิศวกรโครงสร้างและผู้ตรวจสอบอาคารเฉพาะทาง<br><br>
+      <b>ข้อมูลอ้างอิง:</b> ตารางความหนากระจกต่อแรงลมอ้างอิงตาราง TAG Glacade (Section 41 คลังความรู้ SMG) กระจกพื้นที่ต่อแผ่นเกิน 4.65 ตร.ม. มาตรฐานสากลบังคับใช้กระจกเทมเปอร์เท่านั้น ส่วนค่า OTTV เป็นการประมาณแบบคัดกรอง สังเคราะห์จากงานวิจัยสถาปัตยกรรมมหาบัณฑิต มหาวิทยาลัยเชียงใหม่ (2567) เรื่องแนวทางออกแบบผนังกระจกเพื่อการอนุรักษ์พลังงาน ค่าตัวเลขทั้งหมดต้องตรวจสอบกับผู้ผลิตกระจก วิศวกร และผลจากโปรแกรม BEC ก่อนใช้งานจริง<br><br>
+      <b>เครื่องมือนี้ให้ตัวเลขเบื้องต้นสำหรับพูดคุยกับช่างและวิศวกรเท่านั้น</b> อ่านเพิ่มเติม: <a href="https://www.smg-con.co.th/news_detail.php?id=79" target="_blank">Two-side / Four-side / Unitized เลือกแบบไหนดี</a> และ <a href="https://www.smg-con.co.th/news_detail.php?id=78" target="_blank">กระจกหนาเท่าไหร่ถึงปลอดภัย</a>
+    </div>
+
+    <div class="contact-strip">
+      <b>SMG GLASS &amp; METAL CO., LTD.</b>
+      <span>|</span> www.smg-con.co.th
+      <span>|</span> Line @smg58
+      <span>|</span> 086-317-4966
+      <span>|</span> ONLY THE SIGNIFICANT
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- DATA ----------
+const WIDTH_COLS = [1.0,1.25,1.5,1.75,2.0];
+const HEIGHT_ROWS = [3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0];
+
+// min recommended thickness (mm), Section 41 TAG Glacade (Annealed base)
+const GLASS_TABLE = {
+  50: {
+    rows: HEIGHT_ROWS,
+    data: [
+      [6,6,8,8,8],
+      [6,6,8,8,10],
+      [8,8,10,10,10],
+      [10,10,10,12,12],
+      [10,10,10,12,12],
+      [12,12,12,15,15],
+      [12,12,12,15,15],
+      [15,15,15,19,19],
+      [15,15,15,19,19],
+      [15,15,15,19,19],
+      [15,15,15,19,19],
+      [15,15,19,19,19],
+      [15,15,19,19,19],
+      [15,15,19,19,19],
+      [19,19,19,19,19]
+    ]
+  },
+  80: {
+    rows: HEIGHT_ROWS,
+    data: [
+      [6,8,8,10,10],
+      [6,8,8,10,10],
+      [8,8,10,10,12],
+      [10,10,10,12,12],
+      [10,10,10,12,12],
+      [12,12,12,15,15],
+      [12,12,12,15,15],
+      [15,15,15,19,19],
+      [15,15,15,19,19],
+      [15,15,15,19,19],
+      [15,15,15,19,19],
+      [15,15,19,19,19],
+      [19,19,19,19,19],
+      [19,19,19,19,19],
+      [19,19,19,19,19]
+    ]
+  },
+  120: {
+    rows: [3.0,3.5,4.0,4.5,5.0],
+    data: [
+      [8,8,10,10,12],
+      [8,10,10,12,12],
+      [8,10,10,12,15],
+      [10,10,12,12,15],
+      [10,12,12,15,15]
+    ]
+  },
+  160: {
+    rows: [3.0,3.5,4.0,4.5,5.0],
+    data: [
+      [8,10,10,12,15],
+      [8,10,12,15,15],
+      [10,10,12,15,15],
+      [10,12,15,15,19],
+      [10,12,15,15,19]
+    ]
+  }
+};
+
+const TYPE_DEFAULTS = {
+  '2side': { name:'Two-side', maxW:1.5, maxH:3.5, mullion:3.0, transom:2.2,
+    desc:'มุลเลียนแนวตั้งเรียบเสมอกระจก ทรานซัมมีฝาครอบ' },
+  '4side': { name:'Four-side', maxW:1.5, maxH:3.5, mullion:3.4, transom:2.4,
+    desc:'เรียบเสมอกระจกทุกด้าน ต้องมี backup mullion รับกระจก' },
+  'unitize': { name:'Unitized', maxW:1.5, maxH:3.5, mullion:4.2, transom:3.1,
+    desc:'ประกอบยูนิตสำเร็จจากโรงงาน กรอบซ้อนสองชั้นที่รอยต่อ' }
+};
+
+const TYPE_ICONS = {
+  '2side': `<svg width="52" height="40" viewBox="0 0 52 40"><rect x="4" y="4" width="44" height="32" fill="none" stroke="#003e52" stroke-width="1.5"/><line x1="17" y1="4" x2="17" y2="36" stroke="#003e52" stroke-width="3"/><line x1="35" y1="4" x2="35" y2="36" stroke="#003e52" stroke-width="3"/><line x1="4" y1="20" x2="48" y2="20" stroke="#003e52" stroke-width="0.75" stroke-dasharray="2,2"/></svg>`,
+  '4side': `<svg width="52" height="40" viewBox="0 0 52 40"><rect x="4" y="4" width="44" height="32" fill="none" stroke="#003e52" stroke-width="1"/><line x1="17" y1="4" x2="17" y2="36" stroke="#6fa088" stroke-width="1"/><line x1="35" y1="4" x2="35" y2="36" stroke="#6fa088" stroke-width="1"/><line x1="4" y1="20" x2="48" y2="20" stroke="#6fa088" stroke-width="1"/></svg>`,
+  'unitize': `<svg width="52" height="40" viewBox="0 0 52 40"><rect x="4" y="4" width="20" height="14" fill="none" stroke="#003e52" stroke-width="1.5"/><rect x="28" y="4" width="20" height="14" fill="none" stroke="#003e52" stroke-width="1.5"/><rect x="4" y="22" width="20" height="14" fill="none" stroke="#003e52" stroke-width="1.5"/><rect x="28" y="22" width="20" height="14" fill="none" stroke="#003e52" stroke-width="1.5"/></svg>`
+};
+
+// approximate comparative solar factor by orientation (W/m2) — screening only, verify with BEC
+const ORIENTATIONS = [
+  {key:'N',  label:'เหนือ',            sf:96,  gx:2,gy:1},
+  {key:'NE', label:'ตะวันออกเฉียงเหนือ', sf:145, gx:3,gy:1},
+  {key:'E',  label:'ตะวันออก',          sf:168, gx:3,gy:2},
+  {key:'SE', label:'ตะวันออกเฉียงใต้',   sf:150, gx:3,gy:3},
+  {key:'S',  label:'ใต้',               sf:110, gx:2,gy:3},
+  {key:'SW', label:'ตะวันตกเฉียงใต้',    sf:148, gx:1,gy:3},
+  {key:'W',  label:'ตะวันตก',           sf:170, gx:1,gy:2},
+  {key:'NW', label:'ตะวันตกเฉียงเหนือ',  sf:132, gx:1,gy:1}
+];
+
+// energy glass groups by construction type (SMG architectural thesis synthesis, 2567)
+const ENERGY_GROUPS = {
+  LAM:    { key:'LAM',    name:'กลุ่ม 1 · Laminated Glass',           desc:'กระจกลามิเนตเดี่ยว ไม่มีช่องอากาศ',        shgc:0.62, u:5.5 },
+  IGU:    { key:'IGU',    name:'กลุ่ม 2 · Insulated Glass (IGU)',     desc:'กระจกอินซูเลทสองชั้น มีช่องอากาศ',         shgc:0.40, u:2.8 },
+  LAMIGU: { key:'LAMIGU', name:'กลุ่ม 3 · Laminated-Insulated Glass', desc:'ลามิเนต + อินซูเลท ประสิทธิภาพสูงสุด',    shgc:0.25, u:2.2 }
+};
+
+// ---------- STATE ----------
+let state = {
+  type: '2side',
+  wind: 50,
+  glass: 'HS', // HS | TP | HSLAM | TPLAM
+  orientation: 'W',
+  wwr: 80,
+  energyGroup: 'IGU',
+  overrides: { shgc:null, u:null }
+};
+
+// standard monolithic pane thicknesses available for laminating
+const STD_PLY = [3,4,5,6,8,10,12,15,19];
+function nextStandardPly(minHalf){
+  for(const t of STD_PLY){ if(t >= minHalf) return t; }
+  return STD_PLY[STD_PLY.length-1];
+}
+function pvbForPly(ply){ return ply >= 10 ? 0.76 : 0.38; }
+function pvbWeight(pvbMm){ return (pvbMm/0.38) * 0.42; } // kg/m2, linear from KB base figure
+
+// ---------- BUILD STATIC UI ----------
+const typeGrid = document.getElementById('typeGrid');
+Object.keys(TYPE_DEFAULTS).forEach(key=>{
+  const t = TYPE_DEFAULTS[key];
+  const card = document.createElement('div');
+  card.className = 'type-card' + (key===state.type ? ' active':'');
+  card.dataset.type = key;
+  card.innerHTML = `${TYPE_ICONS[key]}<div class="name">${t.name}</div><div class="desc">${t.desc}</div>`;
+  card.addEventListener('click', ()=>{
+    state.type = key;
+    document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));
+    card.classList.add('active');
+    document.getElementById('maxModW').value = t.maxW;
+    document.getElementById('maxModH').value = t.maxH;
+    document.getElementById('wMullion').value = t.mullion;
+    document.getElementById('wTransom').value = t.transom;
+    calculate();
+  });
+  typeGrid.appendChild(card);
+});
+// init defaults
+document.getElementById('maxModW').value = TYPE_DEFAULTS['2side'].maxW;
+document.getElementById('maxModH').value = TYPE_DEFAULTS['2side'].maxH;
+document.getElementById('wMullion').value = TYPE_DEFAULTS['2side'].mullion;
+document.getElementById('wTransom').value = TYPE_DEFAULTS['2side'].transom;
+
+const windGrid = document.getElementById('windGrid');
+[
+  {v:50, l:'ทั่วไป / บ้านพักอาศัย'},
+  {v:80, l:'ลมค่อนข้างแรง'},
+  {v:120, l:'พื้นที่เสี่ยงลมแรง'},
+  {v:160, l:'ลมแรงมาก / ต้องยืนยันวิศวกร'}
+].forEach(w=>{
+  const el = document.createElement('div');
+  el.className = 'wind-opt' + (w.v===state.wind ? ' active':'');
+  el.dataset.wind = w.v;
+  el.innerHTML = `<div class="kg">${w.v}</div><div class="lbl">${w.l}</div>`;
+  el.addEventListener('click', ()=>{
+    state.wind = w.v;
+    document.querySelectorAll('.wind-opt').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+    calculate();
+  });
+  windGrid.appendChild(el);
+});
+
+document.querySelectorAll('.glass-opt').forEach(el=>{
+  if(el.dataset.g===state.glass) el.classList.add('active');
+  el.addEventListener('click', ()=>{
+    if(el.classList.contains('disabled')) return;
+    state.glass = el.dataset.g;
+    document.querySelectorAll('.glass-opt').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+    calculate();
+  });
+});
+
+document.getElementById('advToggle').addEventListener('click', ()=>{
+  const body = document.getElementById('advBody');
+  body.classList.toggle('open');
+  document.getElementById('advToggle').textContent = body.classList.contains('open')
+    ? 'ปรับขนาดช่อง / ค่าอลูมิเนียม / จุดรองรับ ▴'
+    : 'ปรับขนาดช่อง / ค่าอลูมิเนียม / จุดรองรับ ▾';
+});
+
+document.getElementById('energyAdvToggle').addEventListener('click', ()=>{
+  const body = document.getElementById('energyAdvBody');
+  body.classList.toggle('open');
+  document.getElementById('energyAdvToggle').textContent = body.classList.contains('open')
+    ? 'ปรับค่า SHGC / U ด้วยตนเอง ▴'
+    : 'ปรับค่า SHGC / U ด้วยตนเอง ▾';
+});
+
+// compass grid (3x3, center decorative)
+const compassGrid = document.getElementById('compassGrid');
+const cells = [];
+for(let gy=1; gy<=3; gy++){
+  for(let gx=1; gx<=3; gx++){
+    if(gx===2 && gy===2){
+      const center = document.createElement('div');
+      center.className='center';
+      center.innerHTML = `<svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="none" stroke="#d7e2df" stroke-width="1.5"/><line x1="13" y1="4" x2="13" y2="22" stroke="#6fa088" stroke-width="1.5"/><line x1="4" y1="13" x2="22" y2="13" stroke="#6fa088" stroke-width="1.5"/></svg>`;
+      compassGrid.appendChild(center);
+      continue;
+    }
+    const dirData = ORIENTATIONS.find(o=>o.gx===gx && o.gy===gy);
+    const el = document.createElement('div');
+    el.className = 'dir' + (dirData.key===state.orientation ? ' active':'');
+    el.dataset.dir = dirData.key;
+    el.textContent = dirData.key;
+    el.title = dirData.label;
+    el.addEventListener('click', ()=>{
+      state.orientation = dirData.key;
+      document.querySelectorAll('.compass .dir').forEach(c=>c.classList.remove('active'));
+      el.classList.add('active');
+      calculate();
+    });
+    compassGrid.appendChild(el);
+  }
+}
+
+document.getElementById('wwrRange').addEventListener('input', (e)=>{
+  state.wwr = parseFloat(e.target.value);
+  document.getElementById('wwrVal').textContent = state.wwr;
+  calculate();
+});
+
+// energy group cards
+const energyCardRow = document.getElementById('energyCardRow');
+function renderEnergyCards(){
+  energyCardRow.innerHTML = '';
+  Object.values(ENERGY_GROUPS).forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'energy-card' + (g.key===state.energyGroup ? ' active':'');
+    card.dataset.key = g.key;
+    card.innerHTML = `
+      <div class="en-name">${g.name}</div>
+      <div class="en-desc">${g.desc}</div>
+      <div class="en-figs">
+        <div><b>${g.shgc.toFixed(2)}</b><span>SHGC</span></div>
+        <div><b>${g.u.toFixed(1)}</b><span>U W/m²K</span></div>
+      </div>`;
+    card.addEventListener('click', ()=>{
+      state.energyGroup = g.key;
+      state.overrides = { shgc:null, u:null };
+      syncEnergyOverrideInputs();
+      document.querySelectorAll('.energy-card').forEach(c=>c.classList.remove('active'));
+      card.classList.add('active');
+      calculate();
+    });
+    energyCardRow.appendChild(card);
+  });
+}
+function syncEnergyOverrideInputs(){
+  const g = ENERGY_GROUPS[state.energyGroup];
+  document.getElementById('ovShgc').value = g.shgc;
+  document.getElementById('ovU').value = g.u;
+}
+renderEnergyCards();
+syncEnergyOverrideInputs();
+
+['ovShgc','ovU'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=>{
+    state.overrides.shgc = parseFloat(document.getElementById('ovShgc').value) || null;
+    state.overrides.u = parseFloat(document.getElementById('ovU').value) || null;
+    calculate();
+  });
+});
+
+['bWidth','bHeight','maxModW','maxModH','frameDeduct','wMullion','wTransom','pctAccessory','boltDia','boltShear',
+ 'opaqueU','opaqueTDeq'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', calculate);
+});
+
+// ---------- HELPERS ----------
+function fmt(n, d=1){
+  return Number(n).toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d});
+}
+function lookupThickness(wind, moduleWidth, moduleHeight){
+  const table = GLASS_TABLE[wind];
+  let colIdx = WIDTH_COLS.findIndex(w => moduleWidth <= w + 1e-9);
+  let outOfWidthRange = false;
+  if(colIdx === -1){ colIdx = WIDTH_COLS.length - 1; outOfWidthRange = true; }
+
+  let rowIdx = table.rows.findIndex(h => moduleHeight <= h + 1e-9);
+  let outOfHeightRange = false;
+  if(rowIdx === -1){ rowIdx = table.rows.length - 1; outOfHeightRange = true; }
+
+  const thickness = table.data[rowIdx][colIdx];
+  return { thickness, outOfRange: outOfWidthRange || outOfHeightRange };
+}
+
+function currentEnergySpec(){
+  const g = ENERGY_GROUPS[state.energyGroup];
+  return {
+    shgc: state.overrides.shgc ?? g.shgc,
+    u: state.overrides.u ?? g.u
+  };
+}
+
+function calcOTTV(spec, wwrPct, orientationKey, opaqueU, opaqueTDeq){
+  const wwr = wwrPct/100;
+  const sf = ORIENTATIONS.find(o=>o.key===orientationKey).sf;
+  const glassDT = 4; // standard screening design temperature difference (°C)
+  const condWall = (1-wwr) * opaqueU * opaqueTDeq;
+  const condGlass = wwr * spec.u * glassDT;
+  const solar = wwr * spec.shgc * sf;
+  return { condWall, condGlass, solar, total: condWall + condGlass + solar };
+}
+
+// ---------- ELEVATION DRAWING ----------
+function drawElevation(cols, rows, W, H, panelGlassWeight){
+  const svg = document.getElementById('elevSvg');
+  const padding = 60;
+  const maxW = 640 - padding*2;
+  const maxH = 420 - padding*2;
+  const scale = Math.min(maxW / W, maxH / H);
+  const drawW = W * scale;
+  const drawH = H * scale;
+  const ox = (640 - drawW)/2;
+  const oy = (420 - drawH)/2 + 6;
+
+  let svgContent = '';
+  svgContent += `<rect x="${ox}" y="${oy}" width="${drawW}" height="${drawH}" fill="#EAF1EF" stroke="#003e52" stroke-width="2"/>`;
+
+  const colW = drawW / cols;
+  const rowH = drawH / rows;
+  for(let c=1;c<cols;c++){
+    const x = ox + c*colW;
+    svgContent += `<line x1="${x}" y1="${oy}" x2="${x}" y2="${oy+drawH}" stroke="#002a38" stroke-width="3"/>`;
+  }
+  for(let r=1;r<rows;r++){
+    const y = oy + r*rowH;
+    svgContent += `<line x1="${ox}" y1="${y}" x2="${ox+drawW}" y2="${y}" stroke="#002a38" stroke-width="2"/>`;
+  }
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const x = ox + c*colW + 2;
+      const y = oy + r*rowH + 2;
+      svgContent += `<rect x="${x}" y="${y}" width="${colW-4}" height="${rowH-4}" fill="#6fa088" opacity="0.10"/>`;
+    }
+  }
+
+  for(let r=0;r<=rows;r++){
+    for(let c=0;c<=cols;c++){
+      const x = ox + c*colW;
+      const y = oy + r*rowH;
+      svgContent += `<circle cx="${x}" cy="${y}" r="3.5" fill="#B8632C" stroke="#fff" stroke-width="1"/>`;
+    }
+  }
+
+  const dimY = oy + drawH + 26;
+  svgContent += `<line x1="${ox}" y1="${dimY}" x2="${ox+drawW}" y2="${dimY}" stroke="#56676a" stroke-width="1"/>`;
+  svgContent += `<line x1="${ox}" y1="${dimY-5}" x2="${ox}" y2="${dimY+5}" stroke="#56676a" stroke-width="1"/>`;
+  svgContent += `<line x1="${ox+drawW}" y1="${dimY-5}" x2="${ox+drawW}" y2="${dimY+5}" stroke="#56676a" stroke-width="1"/>`;
+  svgContent += `<text x="${ox+drawW/2}" y="${dimY+18}" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#56676a">${fmt(W,2)} ม.</text>`;
+
+  const dimX = ox - 26;
+  svgContent += `<line x1="${dimX}" y1="${oy}" x2="${dimX}" y2="${oy+drawH}" stroke="#56676a" stroke-width="1"/>`;
+  svgContent += `<line x1="${dimX-5}" y1="${oy}" x2="${dimX+5}" y2="${oy}" stroke="#56676a" stroke-width="1"/>`;
+  svgContent += `<line x1="${dimX-5}" y1="${oy+drawH}" x2="${dimX+5}" y2="${oy+drawH}" stroke="#56676a" stroke-width="1"/>`;
+  svgContent += `<text x="${dimX-8}" y="${oy+drawH/2}" text-anchor="end" font-family="IBM Plex Mono" font-size="11" fill="#56676a" transform="rotate(-90 ${dimX-8} ${oy+drawH/2})">${fmt(H,2)} ม.</text>`;
+
+  svgContent += `<text x="${ox+colW/2}" y="${oy+rowH/2-6}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono" font-size="10.5" fill="#002a38">${fmt(W/cols,2)}×${fmt(H/rows,2)} ม.</text>`;
+  if(panelGlassWeight !== undefined){
+    svgContent += `<text x="${ox+colW/2}" y="${oy+rowH/2+10}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#56676a">${fmt(panelGlassWeight,0)} กก./แผ่น</text>`;
+  }
+
+  svgContent += `<circle cx="16" cy="14" r="3.5" fill="#B8632C" stroke="#fff" stroke-width="1"/>`;
+  svgContent += `<text x="24" y="18" font-family="IBM Plex Mono" font-size="9.5" fill="#56676a">จุดรองรับ (Bracket)</text>`;
+
+  svg.innerHTML = svgContent;
+}
+
+// ---------- MAIN CALCULATION ----------
+function calculate(){
+  const W = parseFloat(document.getElementById('bWidth').value) || 0;
+  const H = parseFloat(document.getElementById('bHeight').value) || 0;
+  const maxModW = parseFloat(document.getElementById('maxModW').value) || 1.5;
+  const maxModH = parseFloat(document.getElementById('maxModH').value) || 3.5;
+  const frameDeductPct = parseFloat(document.getElementById('frameDeduct').value) || 0;
+  const wMullion = parseFloat(document.getElementById('wMullion').value) || 0;
+  const wTransom = parseFloat(document.getElementById('wTransom').value) || 0;
+  const pctAccessory = parseFloat(document.getElementById('pctAccessory').value) || 0;
+
+  if(W<=0 || H<=0){ return; }
+
+  const cols = Math.max(1, Math.ceil(W / maxModW));
+  const rows = Math.max(1, Math.ceil(H / maxModH));
+  const moduleW = W / cols;
+  const moduleH = H / rows;
+  const moduleArea = moduleW * moduleH;
+  const totalPanels = cols * rows;
+
+  const { thickness, outOfRange } = lookupThickness(state.wind, moduleW, moduleH);
+
+  const forceTempered = moduleArea > 4.65;
+  document.querySelectorAll('.glass-opt').forEach(el=>{
+    if(el.dataset.g==='HS' || el.dataset.g==='HSLAM'){
+      el.classList.toggle('disabled', forceTempered);
+    }
+  });
+  if(forceTempered && (state.glass === 'HS' || state.glass === 'HSLAM')){
+    state.glass = (state.glass === 'HSLAM') ? 'TPLAM' : 'TP';
+    document.querySelectorAll('.glass-opt').forEach(c=>c.classList.remove('active'));
+    document.querySelector(`.glass-opt[data-g="${state.glass}"]`).classList.add('active');
+  }
+  document.getElementById('glassHint').textContent = forceTempered
+    ? `พื้นที่ช่องกระจก ${fmt(moduleArea,2)} ตร.ม. เกิน 4.65 ตร.ม. → มาตรฐานสากลบังคับใช้กระจกเทมเปอร์เท่านั้น`
+    : 'กระจก Annealed ดิบห้ามใช้ในผนังกระจกบานใหญ่ที่คนเข้าถึงได้เสมอ';
+
+  const areaFlag = document.getElementById('areaFlag');
+  if(forceTempered){
+    areaFlag.className = 'flag show';
+    areaFlag.textContent = `⚠ ขนาดช่องต่อแผ่น ${fmt(moduleArea,2)} ตร.ม. เกินเกณฑ์ 4.65 ตร.ม. — ต้องใช้กระจกเทมเปอร์ (Tempered) เท่านั้นตามมาตรฐานสากล`;
+  } else {
+    areaFlag.className = 'flag show ok';
+    areaFlag.textContent = `✓ ขนาดช่องต่อแผ่น ${fmt(moduleArea,2)} ตร.ม. ไม่เกิน 4.65 ตร.ม. — เลือกใช้ Heat-Strengthened หรือ Tempered ได้ตามความเหมาะสมของจุดติดตั้ง`;
+  }
+
+  const rangeFlag = document.getElementById('rangeFlag');
+  if(outOfRange){
+    rangeFlag.className = 'flag show';
+    rangeFlag.textContent = `⚠ ขนาดช่อง (กว้าง ${fmt(moduleW,2)} ม. × สูง ${fmt(moduleH,2)} ม.) เกินช่วงข้อมูลอ้างอิงของตารางที่แรงลม ${state.wind} กก./ตร.ม. — ต้องให้วิศวกรคำนวณเฉพาะโครงการ ตัวเลขที่แสดงเป็นค่าอ้างอิงสูงสุดในตารางเท่านั้น`;
+  } else {
+    rangeFlag.className = '';
+  }
+
+  document.getElementById('statPanels').innerHTML = `${totalPanels} <small>ช่อง</small>`;
+  document.getElementById('statModule').innerHTML = `${fmt(moduleW,2)}×${fmt(moduleH,2)} <small>ม.</small>`;
+  const isLam = (state.glass === 'HSLAM' || state.glass === 'TPLAM');
+  const glassTypeLabels = { HS:'Heat-Strengthened', TP:'Tempered', HSLAM:'HS/Laminated', TPLAM:'TP/Laminated' };
+  document.getElementById('statGlassType').textContent = glassTypeLabels[state.glass];
+
+  const totalArea = W * H;
+  const glassArea = totalArea * (1 - frameDeductPct/100);
+
+  let glassUnitWeight, lamConstructionLabel = null, displayThickness;
+
+  if(isLam){
+    const ply = nextStandardPly(Math.ceil((thickness/2)*10)/10);
+    const pvb = pvbForPly(ply);
+    displayThickness = 2*ply + pvb;
+    glassUnitWeight = (2*ply)*2.5 + pvbWeight(pvb);
+    lamConstructionLabel = `${ply}mm + PVB ${pvb}mm + ${ply}mm  =  ${fmt(displayThickness,2)}mm นิรภัยลามิเนต`;
+  } else {
+    displayThickness = thickness;
+    glassUnitWeight = thickness * 2.5;
+  }
+
+  document.getElementById('statThickness').innerHTML = `${fmt(displayThickness,2)} <small>มม.</small>`;
+
+  const lamBox = document.getElementById('lamConstructionBox');
+  const lamHint = document.getElementById('lamHint');
+  if(isLam){
+    lamBox.style.display = 'block';
+    document.getElementById('lamConstructionText').textContent = lamConstructionLabel;
+    lamHint.style.display = 'block';
+    lamHint.textContent = 'กระจกลามิเนตกันเสียงและกันของหลุดร่วงได้ดีกว่ากระจกเดี่ยวความหนาเท่ากัน เหมาะสำหรับผนังกระจกที่คนเดินผ่าน ราวกันตก หรือหลังคา — น้ำหนักต่อตร.ม. จะมากกว่า HS/TP เดี่ยวเล็กน้อยจากฟิล์ม PVB';
+  } else {
+    lamBox.style.display = 'none';
+    lamHint.style.display = 'none';
+  }
+
+  const glassTotalWeight = glassUnitWeight * glassArea;
+  const panelGlassArea = moduleW * moduleH * (1 - frameDeductPct/100);
+  const panelGlassWeight = glassUnitWeight * panelGlassArea;
+
+  document.getElementById('tArea').textContent = `${fmt(totalArea,2)} ตร.ม.`;
+  document.getElementById('tGlassArea').textContent = `${fmt(glassArea,2)} ตร.ม.`;
+  document.getElementById('tGlassUnitW').textContent = `${fmt(glassUnitWeight,1)} กก./ตร.ม.`;
+  document.getElementById('tGlassPanelW').textContent = `${fmt(panelGlassWeight,1)} กก./แผ่น`;
+  document.getElementById('tGlassTotalW').textContent = `${fmt(glassTotalWeight,0)} กก.`;
+
+  drawElevation(cols, rows, W, H, panelGlassWeight);
+  document.getElementById('diagMeta').textContent = `${cols} คอลัมน์ × ${rows} แถว = ${totalPanels} ช่อง`;
+
+  const mullionLen = (cols + 1) * H;
+  const transomLen = (rows + 1) * W;
+  const mullionWeight = mullionLen * wMullion;
+  const transomWeight = transomLen * wTransom;
+  const baseAluWeight = mullionWeight + transomWeight;
+  const accessoryWeight = baseAluWeight * (pctAccessory/100);
+  const aluTotalWeight = baseAluWeight + accessoryWeight;
+
+  document.getElementById('tMullionLen').textContent = `${fmt(mullionLen,1)} ม.`;
+  document.getElementById('tMullionW').textContent = `${fmt(mullionWeight,0)} กก.`;
+  document.getElementById('tTransomLen').textContent = `${fmt(transomLen,1)} ม.`;
+  document.getElementById('tTransomW').textContent = `${fmt(transomWeight,0)} กก.`;
+  document.getElementById('tAccessoryW').textContent = `${fmt(accessoryWeight,0)} กก.`;
+  document.getElementById('tAluTotalW').textContent = `${fmt(aluTotalWeight,0)} กก.`;
+
+  const systemTotal = glassTotalWeight + aluTotalWeight;
+  document.getElementById('tSystemTotal').textContent = `${fmt(systemTotal,0)} กก.`;
+  document.getElementById('tSystemPerSqm').textContent = `${fmt(systemTotal/totalArea,1)} กก./ตร.ม.`;
+
+  const boltDiaMm = parseFloat(document.getElementById('boltDia').value) || 12;
+  const boltShearKgCm2 = parseFloat(document.getElementById('boltShear').value) || 1480;
+  const boltDiaCm = boltDiaMm / 10;
+
+  const panelAluWeight = aluTotalWeight / totalPanels;
+  const Fy = panelGlassWeight + panelAluWeight;
+  const Fx = state.wind * moduleArea;
+  const boltCapacity = (Math.PI/4) * (boltDiaCm*boltDiaCm) * boltShearKgCm2;
+
+  document.getElementById('tFx').textContent = `${fmt(Fx,0)} กก. (${fmt(Fx*9.8,0)} N)`;
+  document.getElementById('tFy').textContent = `${fmt(Fy,0)} กก. (${fmt(Fy*9.8,0)} N)`;
+  document.getElementById('tBoltCap').textContent = `${fmt(boltCapacity,0)} กก./ตัว`;
+
+  const checkFxEl = document.getElementById('tCheckFx');
+  const checkFyEl = document.getElementById('tCheckFy');
+  if(Fx <= boltCapacity){
+    checkFxEl.innerHTML = `${fmt(Fx,0)} < ${fmt(boltCapacity,0)} กก. <span class="pass-tag">ผ่าน</span>`;
+  } else {
+    checkFxEl.innerHTML = `${fmt(Fx,0)} > ${fmt(boltCapacity,0)} กก. <span class="pass-tag fail">ไม่ผ่าน — เพิ่มขนาด/จำนวนสลัก</span>`;
+  }
+  if(Fy <= boltCapacity){
+    checkFyEl.innerHTML = `${fmt(Fy,0)} < ${fmt(boltCapacity,0)} กก. <span class="pass-tag">ผ่าน</span>`;
+  } else {
+    checkFyEl.innerHTML = `${fmt(Fy,0)} > ${fmt(boltCapacity,0)} กก. <span class="pass-tag fail">ไม่ผ่าน — เพิ่มขนาด/จำนวนสลัก</span>`;
+  }
+
+  // ---- OTTV screening estimate ----
+  const opaqueU = parseFloat(document.getElementById('opaqueU').value) || 3.5;
+  const opaqueTDeq = parseFloat(document.getElementById('opaqueTDeq').value) || 12;
+  const spec = currentEnergySpec();
+  const ottv = calcOTTV(spec, state.wwr, state.orientation, opaqueU, opaqueTDeq);
+
+  document.getElementById('ottvValue').textContent = fmt(ottv.total,1);
+  const maxTerm = Math.max(ottv.condWall, ottv.condGlass, ottv.solar, 1);
+  const breakdownHtml = `
+    <div class="ottv-bar-row"><div class="ottv-bar-label">นำความร้อนผ่านผนังทึบ</div><div class="ottv-bar-track"><div class="ottv-bar-fill" style="width:${(ottv.condWall/maxTerm*100).toFixed(0)}%; background:#231f20;"></div></div><div class="ottv-bar-val">${fmt(ottv.condWall,1)}</div></div>
+    <div class="ottv-bar-row"><div class="ottv-bar-label">นำความร้อนผ่านกระจก</div><div class="ottv-bar-track"><div class="ottv-bar-fill" style="width:${(ottv.condGlass/maxTerm*100).toFixed(0)}%; background:#6fa088;"></div></div><div class="ottv-bar-val">${fmt(ottv.condGlass,1)}</div></div>
+    <div class="ottv-bar-row"><div class="ottv-bar-label">ความร้อนจากรังสีอาทิตย์</div><div class="ottv-bar-track"><div class="ottv-bar-fill" style="width:${(ottv.solar/maxTerm*100).toFixed(0)}%; background:#003e52;"></div></div><div class="ottv-bar-val">${fmt(ottv.solar,1)}</div></div>
+  `;
+  document.getElementById('ottvBreakdown').innerHTML = breakdownHtml;
+
+  const ottvFlag = document.getElementById('ottvFlag');
+  const orientationLabel = ORIENTATIONS.find(o=>o.key===state.orientation).label;
+  if(ottv.total <= 50){
+    ottvFlag.className = 'flag show ok';
+    ottvFlag.textContent = `✓ ประมาณ ${fmt(ottv.total,1)} W/m² ที่ทิศ${orientationLabel} WWR ${state.wwr}% — อยู่ในเกณฑ์อาคารสำนักงาน (OTTV ≤ 50 W/m²) เบื้องต้น ยังต้องยืนยันด้วยโปรแกรม BEC ก่อนขออนุญาต`;
+  } else {
+    ottvFlag.className = 'flag show fail';
+    ottvFlag.textContent = `⚠ ประมาณ ${fmt(ottv.total,1)} W/m² ที่ทิศ${orientationLabel} WWR ${state.wwr}% — เกินเกณฑ์ 50 W/m² ลองลด WWR หรือเลือกกระจกกลุ่มที่มี SHGC/U ต่ำกว่านี้`;
+  }
+
+  // ---- Compare 3 energy groups ----
+  const compareTable = document.getElementById('compareTable');
+  compareTable.innerHTML = `<tr><th>กลุ่มกระจก</th><th class="num">SHGC</th><th class="num">U</th><th class="num">OTTV ประมาณ</th><th class="num">เกณฑ์ ≤50</th></tr>`;
+  Object.values(ENERGY_GROUPS).forEach(g=>{
+    const specG = { shgc:g.shgc, u:g.u };
+    const o = calcOTTV(specG, state.wwr, state.orientation, opaqueU, opaqueTDeq);
+    const row = document.createElement('tr');
+    if(g.key === state.energyGroup) row.className = 'hl';
+    row.innerHTML = `
+      <td>${g.name}</td>
+      <td class="num">${g.shgc.toFixed(2)}</td>
+      <td class="num">${g.u.toFixed(1)}</td>
+      <td class="num">${fmt(o.total,1)}</td>
+      <td class="num">${o.total<=50 ? '<span class="pass-tag">ผ่าน</span>' : '<span class="pass-tag fail">ไม่ผ่าน</span>'}</td>
+    `;
+    compareTable.appendChild(row);
+  });
+}
+
+calculate();
+</script>
+</body>
+</html>
